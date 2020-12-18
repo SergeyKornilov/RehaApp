@@ -6,6 +6,8 @@
 </head>
 <body>
 <p>Hello</p>
-<img src="img/cat.jpg">
+<#list patients as patient>
+    <p>${patient.toString()}</p>
+</#list>
 </body>
 </html>
