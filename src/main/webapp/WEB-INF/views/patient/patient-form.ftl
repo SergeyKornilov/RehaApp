@@ -6,7 +6,6 @@
 </head>
 <body>
 
-
 <#if add>
     <p>add</p>
     <#assign formAction>/patient-add</#assign>
@@ -14,7 +13,6 @@
     <p>edit</p>
         <#assign formAction>/patient-edit</#assign>
 </#if>
-
 
 <form action=${formAction} method="post">
     <#if !add>

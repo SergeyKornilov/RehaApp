@@ -23,10 +23,10 @@ public class PatientController {
     @GetMapping("/patient-list")
     public String allPatientsPage(Model model) {
         model.addAttribute("patients", patientService.allPatients());
-
         return "patient/patient-list";
 
     }
+
     @GetMapping("/patient-add")
     public String addPatientPage(Model model) {
         model.addAttribute("add", true);
@@ -36,7 +36,6 @@ public class PatientController {
     @PostMapping("/patient-add")
     public String patientSave(@ModelAttribute Patient patient, Model model){
         patientService.addPatient(patient);
-
         model.addAttribute("patients", patientService.allPatients());
         return "patient/patient-list";
     }
@@ -52,7 +51,6 @@ public class PatientController {
     @PostMapping("/patient-edit")
     public String patientUpdate(@ModelAttribute Patient patient, Model model){
         patientService.updatePatient(patient);
-
         model.addAttribute("patients", patientService.allPatients());
         return "patient/patient-list";
     }
@@ -60,7 +58,6 @@ public class PatientController {
     @GetMapping("/patient/delete/{id}")
     public String patientDelete(@PathVariable("id") int id, Model model) {
         patientService.deletePatient(patientService.getPatientById(id));
-
         model.addAttribute("patients", patientService.allPatients());
         return "patient/patient-list";
     }

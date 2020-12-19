@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="patients")
@@ -40,10 +41,15 @@ public class Patient {
     @Column(name="status")
     private String status;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "prescribing_id")
+    private List<Prescribing> prescribings;
+
     public Patient() {
     }
 
-    public Patient(String surname, String name, String secondname, Date dateOfBirth, String diagnosis, String insuranceNumber, String attendingDoctor, String status) {
+
+    public Patient(String surname, String name, String secondname, Date dateOfBirth, String diagnosis, String insuranceNumber, String attendingDoctor, String status, List<Prescribing> prescribings) {
         this.surname = surname;
         this.name = name;
         this.secondname = secondname;
@@ -52,6 +58,7 @@ public class Patient {
         this.insuranceNumber = insuranceNumber;
         this.attendingDoctor = attendingDoctor;
         this.status = status;
+        this.prescribings = prescribings;
     }
 
     public int getId() {
@@ -125,6 +132,15 @@ public class Patient {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public List<Prescribing> getPrescribings() {
+        return prescribings;
+    }
+
+    public void setPrescribings(List<Prescribing> prescribings) {
+        this.prescribings = prescribings;
+    }
+
 
     @Override
     public String toString() {
