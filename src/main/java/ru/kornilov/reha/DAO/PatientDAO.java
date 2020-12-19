@@ -31,14 +31,18 @@ public class PatientDAO  {
     }
 
     public void deletePatient(Patient patient) {
-
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(patient);
     }
 
     public void updatePatient(Patient patient) {
-
+        Session session = sessionFactory.getCurrentSession();
+        session.update(patient);
     }
 
     public Patient getById(int id) {
-        return null;
+
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Patient.class, id);
     }
 }

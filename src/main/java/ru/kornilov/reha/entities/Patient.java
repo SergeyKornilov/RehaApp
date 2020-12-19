@@ -1,6 +1,8 @@
 package ru.kornilov.reha.entities;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -22,6 +24,7 @@ public class Patient {
     @Column(name="second_name")
     private String secondname;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="date_of_birth")
     private Date dateOfBirth;
 
@@ -83,7 +86,7 @@ public class Patient {
         this.secondname = secondname;
     }
 
-    public Date getAge() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 

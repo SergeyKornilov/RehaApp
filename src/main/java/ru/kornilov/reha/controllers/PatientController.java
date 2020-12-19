@@ -5,9 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.service.PatientService;
 
@@ -15,6 +14,11 @@ import ru.kornilov.reha.service.PatientService;
 public class PatientController {
     @Autowired
     private PatientService patientService;
+
+    @GetMapping("/")
+    public String main(){
+        return "main/main";
+    }
 
     @GetMapping("/patient-list")
     public String allPatientsPage(Model model) {
@@ -25,13 +29,39 @@ public class PatientController {
     }
     @GetMapping("/patient-add")
     public String addPatientPage(Model model) {
-        return "patient/patient-add";
+        model.addAttribute("add", true);
+        return "patient/patient-form";
     }
 
     @PostMapping("/patient-add")
-    public String patientSave(@ModelAttribute Patient patient){
+    public String patientSave(@ModelAttribute Patient patient, Model model){
         patientService.addPatient(patient);
-        return "patient/patient-add";
+
+        model.addAttribute("patients", patientService.allPatients());
+        return "patient/patient-list";
     }
 
+    @GetMapping("/patient/edit/{id}")
+    public String patientEdit(@PathVariable("id") int id, Model model) {
+        Patient patient = patientService.getPatientById(id);
+        model.addAttribute(patient);
+        model.addAttribute("add", false);
+        return "patient/patient-form";
+    }
+
+    @PostMapping("/patient-edit")
+    public String patientUpdate(@ModelAttribute Patient patient, Model model){
+        patientService.updatePatient(patient);
+
+        model.addAttribute("patients", patientService.allPatients());
+        return "patient/patient-list";
+    }
+
+    @GetMapping("/patient/delete/{id}")
+    public String patientDelete(@PathVariable("id") int id, Model model) {
+        patientService.deletePatient(patientService.getPatientById(id));
+
+        model.addAttribute("patients", patientService.allPatients());
+        return "patient/patient-list";
+    }
 }

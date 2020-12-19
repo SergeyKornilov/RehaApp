@@ -26,7 +26,7 @@ public class PatientService {
 
     @Transactional
     public void deletePatient (Patient patient) {
-        patientDAO.addPatient(patient);
+        patientDAO.deletePatient(patient);
     }
 
     @Transactional
