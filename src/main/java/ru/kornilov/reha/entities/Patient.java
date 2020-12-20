@@ -41,13 +41,12 @@ public class Patient {
     @Column(name="status")
     private String status;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "prescribing_id")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     private List<Prescribing> prescribings;
+
 
     public Patient() {
     }
-
 
     public Patient(String surname, String name, String secondname, Date dateOfBirth, String diagnosis, String insuranceNumber, String attendingDoctor, String status, List<Prescribing> prescribings) {
         this.surname = surname;

@@ -1,7 +1,7 @@
 package ru.kornilov.reha.entities;
 
-import javax.persistence.*;
-import java.util.Date;
+        import javax.persistence.*;
+        import java.util.Date;
 
 @Entity
 @Table(name = "event")
@@ -17,6 +17,10 @@ public class Event {
 
     @Column(name = "status")
     private String status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "prescribing_id")
+    private Prescribing prescribing;
 
     public int getId() {
         return id;
@@ -42,11 +46,21 @@ public class Event {
         this.status = status;
     }
 
+    public Prescribing getPrescribing() {
+        return prescribing;
+    }
+
+    public void setPrescribing(Prescribing prescribing) {
+        this.prescribing = prescribing;
+    }
+
     public Event() {
     }
 
-    public Event(Date date, String status) {
+    public Event(Date date, String status, Prescribing prescribing) {
         this.date = date;
         this.status = status;
+        this.prescribing = prescribing;
     }
+
 }

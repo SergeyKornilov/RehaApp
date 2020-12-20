@@ -19,16 +19,22 @@ public class Prescribing {
     @Column(name="description")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="event_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+
+
+    @OneToMany(mappedBy = "prescribing",fetch = FetchType.EAGER)
     private List<Event> events;
 
     public Prescribing() {
     }
 
-    public Prescribing(String type, String description, List<Event> events) {
+    public Prescribing(String type, String description, Patient patient, List<Event> events) {
         this.type = type;
         this.description = description;
+        this.patient = patient;
         this.events = events;
     }
 
@@ -62,6 +68,13 @@ public class Prescribing {
 
     public void setEvents(List<Event> events) {
         this.events = events;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
 }
