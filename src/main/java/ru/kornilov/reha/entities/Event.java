@@ -63,4 +63,13 @@ public class Event {
         this.prescribing = prescribing;
     }
 
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", date=" + date +
+                ", status='" + status + '\'' +
+                ", prescribing=" + prescribing +
+                '}';
+    }
 }

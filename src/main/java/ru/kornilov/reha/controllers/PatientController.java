@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kornilov.reha.entities.Patient;
+import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.service.PatientService;
 
 @Controller
@@ -15,10 +16,7 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    @GetMapping("/")
-    public String main(){
-        return "main/main";
-    }
+
 
     @GetMapping("/patient-list")
     public String allPatientsPage(Model model) {
@@ -41,7 +39,7 @@ public class PatientController {
     }
 
     @GetMapping("/patient/edit/{id}")
-    public String patientEdit(@PathVariable("id") int id, Model model) {
+    public String editPatientPage(@PathVariable("id") int id, Model model) {
         Patient patient = patientService.getPatientById(id);
         model.addAttribute(patient);
         model.addAttribute("add", false);
@@ -61,4 +59,13 @@ public class PatientController {
         model.addAttribute("patients", patientService.allPatients());
         return "patient/patient-list";
     }
+
+    @GetMapping("/patient/card/{id}")
+    public String openPatientCart(@PathVariable("id") int id, Model model) {
+        model.addAttribute("patient", patientService.getPatientById(id));
+        return "patient/patient-card";
+    }
+
+
+
 }

@@ -23,9 +23,7 @@ public class Prescribing {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-
-
-    @OneToMany(mappedBy = "prescribing",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "prescribing",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Event> events;
 
     public Prescribing() {
@@ -77,4 +75,14 @@ public class Prescribing {
         this.patient = patient;
     }
 
+    @Override
+    public String toString() {
+        return "Prescribing{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", description='" + description + '\'' +
+                ", patient=" + patient +
+                ", events=" + events +
+                '}';
+    }
 }

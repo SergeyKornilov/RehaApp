@@ -5,12 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<p>Hello</p>
-<p><a href="/patient-list">Patient list</a></p>
 
 
-
-
-<img src="img/cat.jpg">
 </body>
 </html>

@@ -41,7 +41,7 @@ public class Patient {
     @Column(name="status")
     private String status;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Prescribing> prescribings;
 
 

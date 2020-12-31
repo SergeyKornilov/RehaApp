@@ -32,6 +32,7 @@
         <td>${patient.status}</td>
         <td><a href="/patient/edit/${patient.id}">Edit</a></td>
         <td><a href="/patient/delete/${patient.id}">Delete</a></td>
+        <td><a href="/patient/card/${patient.id}">Open card</a></td>
     </tr>
     </#if>
 </#list>
