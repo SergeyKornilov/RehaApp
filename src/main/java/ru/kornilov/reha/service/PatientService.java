@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kornilov.reha.DAO.PatientDAO;
 import ru.kornilov.reha.entities.Patient;
+import ru.kornilov.reha.entities.Prescribing;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -38,5 +39,9 @@ public class PatientService {
     public Patient getPatientById(int id) {
         return patientDAO.getById(id);
     }
+
+
+
+
 
 }

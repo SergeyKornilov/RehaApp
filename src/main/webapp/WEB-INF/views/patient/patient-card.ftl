@@ -22,16 +22,32 @@
     <table>
         <tr>
             <td>type</td>
-        </tr>
-        <tr>
             <td>description</td>
+            <td>time</td>
+            <td>quantity</td>
         </tr>
     <#list prescribings as prescribing>
         <tr>
             <td>${prescribing.type}</td>
-        </tr>
-        <tr>
             <td>${prescribing.description}</td>
+            <td>${prescribing.time}</td>
+            <td>${prescribing.quantity}</td>
+
+            <td><a href="/prescribing/delete/${prescribing.id}">Delete</a></td>
+
+            <form method="post">
+            <input type="hidden" name="action" value="edit">
+
+
+            <input type="hidden" name="id" value="${(prescribing.id)!}">
+
+            <td><input type="text" name="type" placeholder="type" value="${(prescribing.type)!}"></td>
+            <td><input type="text" name="description" placeholder="description" value="${(prescribing.description)!}"></td>
+            <td><input type="text" name="quantity" placeholder="quantity" value="${(prescribing.quantity)!}"></td>
+            <td><input type="text" name="time" placeholder="time" value="${(prescribing.time)!}"></td>
+
+            <td><button type="submit">Save</button></td>
+            </form>
         </tr>
     </#list>
     </table>
@@ -39,10 +55,11 @@
     <p>no prescribing..</p>
 </#if>
 
-<p><a href="">Add prescribing</a></p>
+<p>Add prescribing</p>
 <form method="post">
 <p>
-    <input type="hidden" name="id" value="${patient.id}">
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="idPatient" value="${patient.id}">
 </p>
 <p>
     <label>Type</label>
@@ -52,6 +69,19 @@
     <label>Description</label>
     <input type="text" name="description">
 </p>
+
+    <p>
+        <label>quantity</label>
+        <input type="text" name="quantity">
+    </p>
+    <p>
+        <label>time</label>
+        <input type="text" name="time">
+    </p>
+
+
+
+
     <button type="submit">Add</button>
 </form>
 

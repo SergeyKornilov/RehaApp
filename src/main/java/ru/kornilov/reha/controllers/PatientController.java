@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.service.PatientService;
+import ru.kornilov.reha.service.PrescribingService;
 
 @Controller
 public class PatientController {
     @Autowired
     private PatientService patientService;
-
+    @Autowired
+    private PrescribingService prescribingService;
 
 
     @GetMapping("/patient-list")
@@ -62,7 +64,14 @@ public class PatientController {
 
     @GetMapping("/patient/card/{id}")
     public String openPatientCart(@PathVariable("id") int id, Model model) {
-        model.addAttribute("patient", patientService.getPatientById(id));
+
+        Patient patient = patientService.getPatientById(id);
+
+        model.addAttribute("patient", patient);
+
+        model.addAttribute("prescribings", patient.getPrescribings());
+
+
         return "patient/patient-card";
     }
 

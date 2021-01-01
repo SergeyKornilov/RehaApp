@@ -19,21 +19,29 @@ public class Prescribing {
     @Column(name="description")
     private String description;
 
+    @Column(name = "time")
+    private String time;
+
+    @Column(name="quantity")
+    private String quantity;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToMany(mappedBy = "prescribing",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Event> events;
+//    @OneToMany(mappedBy = "prescribing",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private List<Event> events;
 
     public Prescribing() {
     }
 
-    public Prescribing(String type, String description, Patient patient, List<Event> events) {
+    public Prescribing(String type, String description, String time, String quantity, Patient patient /*,List<Event> events*/) {
         this.type = type;
         this.description = description;
+        this.time = time;
+        this.quantity = quantity;
         this.patient = patient;
-        this.events = events;
+//        this.events = events;
     }
 
     public int getId() {
@@ -60,13 +68,13 @@ public class Prescribing {
         this.description = description;
     }
 
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
+//    public List<Event> getEvents() {
+//        return events;
+//    }
+//
+//    public void setEvents(List<Event> events) {
+//        this.events = events;
+//    }
 
     public Patient getPatient() {
         return patient;
@@ -75,14 +83,31 @@ public class Prescribing {
         this.patient = patient;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getquantity() {
+        return quantity;
+    }
+
+    public void setquantity(String quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "Prescribing{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
+                ", time='" + time + '\'' +
+                ", quantity='" + quantity + '\'' +
                 ", patient=" + patient +
-                ", events=" + events +
                 '}';
     }
 }
