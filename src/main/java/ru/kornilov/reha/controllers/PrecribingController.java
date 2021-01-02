@@ -61,7 +61,4 @@ public class PrecribingController {
 
         return "patient/patient-card";
     }
-
-
-
 }

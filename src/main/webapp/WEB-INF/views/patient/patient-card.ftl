@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
 <p>Patient cart</p>
 
 <!-- <p><img src=""></p> -->
@@ -79,11 +84,25 @@
         <input type="text" name="time">
     </p>
 
-
-
-
     <button type="submit">Add</button>
 </form>
+
+<div id="input0"></div>
+<div class="add" onclick="addPrescribingInput()">+</div>
+
+<script>
+    var x = 0;
+    function addPrescribingInput() {
+    if (x < 10) {
+    var str = '<input type="text" class="link" placeholder="Time"> <div id="input' + (x + 1) + '"></div>';
+    document.getElementById('input' + x).innerHTML = str;
+    x++;
+    } else
+    {
+    alert('STOP it!');
+    }
+    }
+</script>
 
 </body>
 </html>

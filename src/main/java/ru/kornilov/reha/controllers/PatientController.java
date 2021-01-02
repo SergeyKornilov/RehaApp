@@ -33,6 +33,13 @@ public class PatientController {
         return "patient/patient-form";
     }
 
+    @GetMapping("/test")
+    public String test(Model model) {
+
+        return "patient/patient-card-test";
+    }
+
+
     @PostMapping("/patient-add")
     public String patientSave(@ModelAttribute Patient patient, Model model){
         patientService.addPatient(patient);
