@@ -3,11 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <!--  css for Date Start/End-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
+
+    <!--  js for Date Start/End-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script><script type="text/javascript" src="jquery.timepicker.js"></script>
+
+    <!--  js for Date Start/End - connect fields  -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.16/datepair.js" integrity="sha512-rID0ls9BRjYTViswphwtM8n2d8eSykJklr9w23gRW94qwsFQnj2Syi/f2pvUcMa2H8P9Z0yqlIkth7Ma5G1mzg==" crossorigin="anonymous"></script>
+
+    <!-- bootstrap-formhelpers fro TimeInputs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/js/bootstrap-formhelpers.min.js" integrity="sha512-m4xvGpNhCfricSMGJF5c99JBI8UqWdIlSmybVLRPo+LSiB9FHYH73aHzYZ8EdlzKA+s5qyv0yefvkqjU2ErLMg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/css/bootstrap-formhelpers.css" integrity="sha512-UPFdMcy+35cR5gyOgX+1vkDEzlMa3ZkZJUdaI1JoqWbH7ubiS/mhGrcM5C72QYouc2EascN3UtUrYnPoUpk+Pg==" crossorigin="anonymous" />
+
 </head>
 <body>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
 
 <p>Patient cart</p>
@@ -24,7 +42,7 @@
 <p>${patient.status}</p>
 <p>Prescribings:</p>
 <#if prescribings??>
-    <table>
+    <table class="table">
         <tr>
             <td>type</td>
             <td>description</td>
@@ -60,15 +78,17 @@
     <p>no prescribing..</p>
 </#if>
 
-<p>Add prescribing</p>
+
+<button type="button" class="btn btn-primary" onclick="openAddProcedure()">Add procedure</button>
+<div id="addProcedureForm" hidden="true">
 <form method="post">
 <p>
-    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="action" value="addProcedure">
     <input type="hidden" name="idPatient" value="${patient.id}">
 </p>
 <p>
     <label>Type</label>
-    <input type="text" name="type">
+    <input hidden type="text" name="type" value="procedure">
 </p>
 <p>
     <label>Description</label>
@@ -90,6 +110,22 @@
 <div id="input0"></div>
 <div class="add" onclick="addPrescribingInput()">+</div>
 
+
+<p id="basicExample">
+    Date start <input type="text" class="date start" />
+    Date end <input type="text" class="date end" />
+</p>
+</div>
+<script>
+    function openAddProcedure() {
+        console.log(document.getElementById("addProcedureForm").getAttribute("hidden"))
+        if (document.getElementById("addProcedureForm").getAttribute("hidden")==="true")
+        {document.getElementById("addProcedureForm").removeAttribute("hidden")}
+        else {document.getElementById("addProcedureForm").setAttribute("hidden", "true")}
+        ;
+    }
+    </script>
+
 <script>
     var x = 0;
     function addPrescribingInput() {
@@ -102,6 +138,18 @@
     alert('STOP it!');
     }
     }
+</script>
+
+<!-- Datepair script-->
+<script>
+    $('#basicExample .date').datepicker({
+        'format': 'd.m.yyyy',
+        'autoclose': true
+    });
+
+    // initialize datepair
+    var basicExampleEl = document.getElementById('basicExample');
+    var datepair = new Datepair(basicExampleEl);
 </script>
 
 </body>

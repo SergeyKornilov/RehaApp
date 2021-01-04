@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
@@ -37,10 +36,10 @@ public class PrecribingController {
     }
 
 
-    @PostMapping(path = "patient/card/{idPatient}", params = {"action=add"})
+    @PostMapping(path = "patient/card/{idPatient}", params = {"action=addProcedure"})
     public String addPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model){
 
-        prescribing.setPatient(patientService.getPatientById(idPatient));
+        prescribing.setPatient(patientService.getPatientById(idPatient));  //перенсти в сервис
         prescribingService.addPrescribing(prescribing);
 
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
@@ -53,7 +52,7 @@ public class PrecribingController {
     public String editPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model) {
         System.out.println(prescribing);
 
-        prescribing.setPatient(patientService.getPatientById(idPatient));
+        prescribing.setPatient(patientService.getPatientById(idPatient)); //перенести в сервис
         prescribingService.updatePrescribing(prescribing);
 
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
