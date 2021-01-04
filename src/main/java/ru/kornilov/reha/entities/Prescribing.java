@@ -2,7 +2,6 @@ package ru.kornilov.reha.entities;
 
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name="prescribing")
@@ -16,8 +15,8 @@ public class Prescribing {
     @Column(name="type")
     private String type;
 
-    @Column(name="description")
-    private String description;
+    @Column(name="name")
+    private String name;
 
     @Column(name = "time")
     private String time;
@@ -35,9 +34,9 @@ public class Prescribing {
     public Prescribing() {
     }
 
-    public Prescribing(String type, String description, String time, String quantity, Patient patient /*,List<Event> events*/) {
+    public Prescribing(String type, String name, String time, String quantity, Patient patient /*,List<Event> events*/) {
         this.type = type;
-        this.description = description;
+        this.name = name;
         this.time = time;
         this.quantity = quantity;
         this.patient = patient;
@@ -60,12 +59,12 @@ public class Prescribing {
         this.type = type;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String description) {
+        this.name = description;
     }
 
 //    public List<Event> getEvents() {
@@ -104,7 +103,7 @@ public class Prescribing {
         return "Prescribing{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
-                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
                 ", time='" + time + '\'' +
                 ", quantity='" + quantity + '\'' +
                 ", patient=" + patient +

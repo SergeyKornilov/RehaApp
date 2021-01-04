@@ -24,6 +24,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/js/bootstrap-formhelpers.min.js" integrity="sha512-m4xvGpNhCfricSMGJF5c99JBI8UqWdIlSmybVLRPo+LSiB9FHYH73aHzYZ8EdlzKA+s5qyv0yefvkqjU2ErLMg==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/css/bootstrap-formhelpers.css" integrity="sha512-UPFdMcy+35cR5gyOgX+1vkDEzlMa3ZkZJUdaI1JoqWbH7ubiS/mhGrcM5C72QYouc2EascN3UtUrYnPoUpk+Pg==" crossorigin="anonymous" />
 
+
+    <style>
+    .footer{
+        height: 300px;
+    }
+    .hide{
+        display: none;
+    }
+    </style>
 </head>
 <body>
 
@@ -52,7 +61,7 @@
     <#list prescribings as prescribing>
         <tr>
             <td>${prescribing.type}</td>
-            <td>${prescribing.description}</td>
+<#--            <td>${prescribing.name}</td>-->
             <td>${prescribing.time}</td>
             <td>${prescribing.quantity}</td>
 
@@ -65,7 +74,7 @@
             <input type="hidden" name="id" value="${(prescribing.id)!}">
 
             <td><input type="text" name="type" placeholder="type" value="${(prescribing.type)!}"></td>
-            <td><input type="text" name="description" placeholder="description" value="${(prescribing.description)!}"></td>
+<#--           <td><input type="text" name="description" placeholder="description" value="${(prescribing.name)!}"></td>  -->
             <td><input type="text" name="quantity" placeholder="quantity" value="${(prescribing.quantity)!}"></td>
             <td><input type="text" name="time" placeholder="time" value="${(prescribing.time)!}"></td>
 
@@ -81,7 +90,7 @@
 
 <button type="button" class="btn btn-primary" onclick="openAddProcedure()">Add procedure</button>
 <div id="addProcedureForm" hidden="true">
-<form method="post">
+<form method="post" onsubmit="setTime()">
 <p>
     <input type="hidden" name="action" value="addProcedure">
     <input type="hidden" name="idPatient" value="${patient.id}">
@@ -92,30 +101,162 @@
 </p>
 <p>
     <label>Description</label>
-    <input type="text" name="description">
+    <input type="text" name="name">
 </p>
-
+    <p id="dateInput">
+        Date start <input type="text" class="date start" />
+        Date end <input type="text" class="date end" />
+    </p>
     <p>
         <label>quantity</label>
         <input type="text" name="quantity">
     </p>
     <p>
+        <button type="button" class="btn btn-primary" onclick="addProcedureTimeInput()">+ times per day</button>
+        <button type="button" class="btn btn-primary" onclick="deleteProcedureTimeInput()">- times per day</button>
         <label>time</label>
-        <input type="text" name="time">
+        <div id="procedureTimeInput1" class="bfh-selectbox" data-name="selectbox3" data-value="1" data-filter="true">
+            <div data-value="1">Morning</div>
+            <div data-value="2">Afternoon</div>
+            <div data-value="3">Evening</div>
+            <div data-value="4">8:00</div>
+            <div data-value="5">9:00</div>
+            <div data-value="6">10:00</div>
+            <div data-value="7">11:00</div>
+            <div data-value="8">12:00</div>
+            <div data-value="9">13:00</div>
+            <div data-value="10">14:00</div>
+            <div data-value="11">15:00</div>
+            <div data-value="12">16:00</div>
+            <div data-value="13">17:00</div>
+            <div data-value="14">18:00</div>
+            <div data-value="15">19:00</div>
+            <div data-value="16">20:00</div>
+            <div data-value="17">21:00</div>
+            <div data-value="18">22:00</div>
+            <div data-value="19">23:00</div>
+        </div>
+        <input name="time1" hidden>
+        <div id="procedureTimeInput2" hidden = "true" class="bfh-selectbox" data-name="selectbox3" data-value="1" data-filter="true">
+            <div data-value="1">Morning</div>
+            <div data-value="2">Afternoon</div>
+            <div data-value="3">Evening</div>
+            <div data-value="4">8:00</div>
+            <div data-value="5">9:00</div>
+            <div data-value="6">10:00</div>
+            <div data-value="7">11:00</div>
+            <div data-value="8">12:00</div>
+            <div data-value="9">13:00</div>
+            <div data-value="10">14:00</div>
+            <div data-value="11">15:00</div>
+            <div data-value="12">16:00</div>
+            <div data-value="13">17:00</div>
+            <div data-value="14">18:00</div>
+            <div data-value="15">19:00</div>
+            <div data-value="16">20:00</div>
+            <div data-value="17">21:00</div>
+            <div data-value="18">22:00</div>
+            <div data-value="19">23:00</div>
+        </div>
+        <input name="time2" hidden>
+        <div id="procedureTimeInput3" hidden = "true" class="bfh-selectbox" data-name="selectbox3" data-value="1" data-filter="true">
+            <div data-value="1">Morning</div>
+            <div data-value="2">Afternoon</div>
+            <div data-value="3">Evening</div>
+            <div data-value="4">8:00</div>
+            <div data-value="5">9:00</div>
+            <div data-value="6">10:00</div>
+            <div data-value="7">11:00</div>
+            <div data-value="8">12:00</div>
+            <div data-value="9">13:00</div>
+            <div data-value="10">14:00</div>
+            <div data-value="11">15:00</div>
+            <div data-value="12">16:00</div>
+            <div data-value="13">17:00</div>
+            <div data-value="14">18:00</div>
+            <div data-value="15">19:00</div>
+            <div data-value="16">20:00</div>
+            <div data-value="17">21:00</div>
+            <div data-value="18">22:00</div>
+            <div data-value="19">23:00</div>
+        </div>
+        <input name="time3" hidden>
+        <div id="procedureTimeInput4" hidden = "true" class="bfh-selectbox" data-name="selectbox3" data-value="1" data-filter="true">
+            <div data-value="1">Morning</div>
+            <div data-value="2">Afternoon</div>
+            <div data-value="3">Evening</div>
+            <div data-value="4">8:00</div>
+            <div data-value="5">9:00</div>
+            <div data-value="6">10:00</div>
+            <div data-value="7">11:00</div>
+            <div data-value="8">12:00</div>
+            <div data-value="9">13:00</div>
+            <div data-value="10">14:00</div>
+            <div data-value="11">15:00</div>
+            <div data-value="12">16:00</div>
+            <div data-value="13">17:00</div>
+            <div data-value="14">18:00</div>
+            <div data-value="15">19:00</div>
+            <div data-value="16">20:00</div>
+            <div data-value="17">21:00</div>
+            <div data-value="18">22:00</div>
+            <div data-value="19">23:00</div>
+        </div>
+        <input name="time4" hidden>
+        <div id="procedureTimeInput5" hidden = "true" class="bfh-selectbox" data-name="selectbox3" data-value="1" data-filter="true">
+            <div data-value="1">Morning</div>
+            <div data-value="2">Afternoon</div>
+            <div data-value="3">Evening</div>
+            <div data-value="4">8:00</div>
+            <div data-value="5">9:00</div>
+            <div data-value="6">10:00</div>
+            <div data-value="7">11:00</div>
+            <div data-value="8">12:00</div>
+            <div data-value="9">13:00</div>
+            <div data-value="10">14:00</div>
+            <div data-value="11">15:00</div>
+            <div data-value="12">16:00</div>
+            <div data-value="13">17:00</div>
+            <div data-value="14">18:00</div>
+            <div data-value="15">19:00</div>
+            <div data-value="16">20:00</div>
+            <div data-value="17">21:00</div>
+            <div data-value="18">22:00</div>
+            <div data-value="19">23:00</div>
+        </div>
+        <input name="time5" hidden>
     </p>
 
-    <button type="submit">Add</button>
+
+
+    <button type="button" onclick="setTime()" >Test input time</button>
+    <button type="submit" >Add</button>
 </form>
 
-<div id="input0"></div>
-<div class="add" onclick="addPrescribingInput()">+</div>
 
 
-<p id="basicExample">
-    Date start <input type="text" class="date start" />
-    Date end <input type="text" class="date end" />
-</p>
+
 </div>
+<div class="footer">
+
+</div>
+
+<script>
+
+        function setTime() {
+            var elements = document.getElementsByClassName("bfh-selectbox-option");
+            console.log(elements);
+            for (x = 1; x <= 5; x++){
+                if (document.getElementById("procedureTimeInput" + x).getAttribute("hidden") === "true") break;
+                var text = document.getElementById("procedureTimeInput" + x).getElementsByClassName("bfh-selectbox-option")[0].textContent;
+                console.log(text);
+
+                console.log(document.getElementsByName("time" + x)[0]);
+
+            }
+
+        }
+</script>
 <script>
     function openAddProcedure() {
         console.log(document.getElementById("addProcedureForm").getAttribute("hidden"))
@@ -142,14 +283,40 @@
 
 <!-- Datepair script-->
 <script>
-    $('#basicExample .date').datepicker({
-        'format': 'd.m.yyyy',
+    $('#dateInput .date').datepicker({
+        'format': 'dd.mm.yyyy',
         'autoclose': true
     });
 
     // initialize datepair
-    var basicExampleEl = document.getElementById('basicExample');
+    var basicExampleEl = document.getElementById('dateInput');
     var datepair = new Datepair(basicExampleEl);
+</script>
+<script>
+
+        var x = 2;
+        function addProcedureTimeInput() {
+            if (x <= 5) {
+                document.getElementById('procedureTimeInput' + x).removeAttribute("hidden");
+                console.log("add " + x);
+                x++;
+            } else
+            {
+                alert('Maximum!');
+            }
+        }
+        function deleteProcedureTimeInput() {
+            if (x > 2) {
+                x--;
+                document.getElementById('procedureTimeInput' + x).setAttribute("hidden", "true");
+                console.log("delete " + x);
+
+            } else
+            {
+                alert('Minimum!');
+            }
+        }
+
 </script>
 
 </body>
