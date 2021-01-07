@@ -36,7 +36,7 @@ public class PrecribingController {
     }
 
 
-    @PostMapping(path = "patient/card/{idPatient}", params = {"action=addProcedure"})
+    @PostMapping(path = "patient/card/{idPatient}", params = {"action=addPrescribing"})
     public String addPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model){
 
         prescribing.setPatient(patientService.getPatientById(idPatient));  //перенсти в сервис

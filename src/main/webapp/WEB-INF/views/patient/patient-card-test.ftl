@@ -39,7 +39,8 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.16/jquery.timepicker.js" integrity="sha512-znJmsCnj1pyv7QN2fn4UYqXw3Bp2KXMYPPbphEOkhGP8RQbePNSLUfZWd733MXIQsyaszx4PhVq9jadWa1fq5w==" crossorigin="anonymous"></script>
 -->
 
-
+<input type="date" class="date-picker">
+<input type="date">
 
 <p>Hello</p>
 
@@ -161,7 +162,6 @@
 
 <div class="add" onclick="addPrescribingInput()">ADD medication intake</div>
 <div class="delete" onclick="deletePrescribingInput()">DELETE medication intake</div>
-
 
 
 <!--  ADD/DELETE InputTime  -->

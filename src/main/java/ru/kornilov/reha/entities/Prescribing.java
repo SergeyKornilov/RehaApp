@@ -1,7 +1,12 @@
 package ru.kornilov.reha.entities;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.DayOfWeek;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="prescribing")
@@ -18,11 +23,22 @@ public class Prescribing {
     @Column(name="name")
     private String name;
 
-    @Column(name = "time")
-    private String time;
+    @Column(name="dose")
+    private String dose;
 
-    @Column(name="quantity")
-    private String quantity;
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @Column(name="date_start")
+    private Date dateStart;
+
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @Column(name="date_end")
+    private Date dateEnd;
+
+    @ElementCollection
+    private List<String> dayOfWeeks;
+
+    @ElementCollection
+    private List<String> time;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
@@ -34,13 +50,15 @@ public class Prescribing {
     public Prescribing() {
     }
 
-    public Prescribing(String type, String name, String time, String quantity, Patient patient /*,List<Event> events*/) {
+    public Prescribing(String type, String name, String dose, Date dateStart, Date dateEnd, List<String> dayOfWeeks, List<String> time, Patient patient) {
         this.type = type;
         this.name = name;
+        this.dose = dose;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.dayOfWeeks = dayOfWeeks;
         this.time = time;
-        this.quantity = quantity;
         this.patient = patient;
-//        this.events = events;
     }
 
     public int getId() {
@@ -63,39 +81,56 @@ public class Prescribing {
         return name;
     }
 
-    public void setName(String description) {
-        this.name = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
-//    public List<Event> getEvents() {
-//        return events;
-//    }
-//
-//    public void setEvents(List<Event> events) {
-//        this.events = events;
-//    }
+    public String getDose() {
+        return dose;
+    }
+
+    public void setDose(String dose) {
+        this.dose = dose;
+    }
+
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public List<String> getDayOfWeeks() {
+        return dayOfWeeks;
+    }
+
+    public void setDayOfWeeks(List<String> dayOfWeeks) {
+        this.dayOfWeeks = dayOfWeeks;
+    }
+
+    public List<String> getTime() {
+        return time;
+    }
+
+    public void setTime(List<String> time) {
+        this.time = time;
+    }
 
     public Patient getPatient() {
         return patient;
     }
+
     public void setPatient(Patient patient) {
         this.patient = patient;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getquantity() {
-        return quantity;
-    }
-
-    public void setquantity(String quantity) {
-        this.quantity = quantity;
     }
 
     @Override
@@ -104,8 +139,11 @@ public class Prescribing {
                 "id=" + id +
                 ", type='" + type + '\'' +
                 ", name='" + name + '\'' +
-                ", time='" + time + '\'' +
-                ", quantity='" + quantity + '\'' +
+                ", dose='" + dose + '\'' +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                ", dayOfWeeks=" + dayOfWeeks +
+                ", time=" + time +
                 ", patient=" + patient +
                 '}';
     }
