@@ -12,6 +12,10 @@ import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Controller
 public class PatientController {
     @Autowired
@@ -74,9 +78,13 @@ public class PatientController {
 
         Patient patient = patientService.getPatientById(id);
 
-        model.addAttribute("patient", patient);
+        Set<Prescribing> prescribing = patient.getPrescribings();
 
-        model.addAttribute("prescribings", patient.getPrescribings());
+
+        model.addAttribute("patient", patient);
+        model.addAttribute("prescribings", prescribing);
+
+        System.out.println(prescribing);
 
 
         return "patient/patient-card";

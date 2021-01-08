@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
 
     <!--  js for Date Start/End-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script><script type="text/javascript" src="jquery.timepicker.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
 
     <!--  js for Date Start/End - connect fields  -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.16/datepair.js" integrity="sha512-rID0ls9BRjYTViswphwtM8n2d8eSykJklr9w23gRW94qwsFQnj2Syi/f2pvUcMa2H8P9Z0yqlIkth7Ma5G1mzg==" crossorigin="anonymous"></script>
@@ -24,6 +24,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/js/bootstrap-formhelpers.min.js" integrity="sha512-m4xvGpNhCfricSMGJF5c99JBI8UqWdIlSmybVLRPo+LSiB9FHYH73aHzYZ8EdlzKA+s5qyv0yefvkqjU2ErLMg==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/css/bootstrap-formhelpers.css" integrity="sha512-UPFdMcy+35cR5gyOgX+1vkDEzlMa3ZkZJUdaI1JoqWbH7ubiS/mhGrcM5C72QYouc2EascN3UtUrYnPoUpk+Pg==" crossorigin="anonymous" />
 
+
+
+    <!--TEST -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.16/jquery.timepicker.js" integrity="sha512-znJmsCnj1pyv7QN2fn4UYqXw3Bp2KXMYPPbphEOkhGP8RQbePNSLUfZWd733MXIQsyaszx4PhVq9jadWa1fq5w==" crossorigin="anonymous"></script>
 
     <style>
     .footer{
@@ -37,7 +41,11 @@
 <body>
 
 
+
+
 <p>Patient cart</p>
+
+
 
 <!-- <p><img src=""></p> -->
 <p>${patient.id}</p>
@@ -52,44 +60,58 @@
 <p>Prescribings:</p>
 
 
-<#--
 <#if prescribings??>
     <table class="table">
         <tr>
             <td>type</td>
-            <td>description</td>
+            <td>name</td>
             <td>time</td>
-            <td>quantity</td>
+            <td>dose</td>
+            <td>dateStart</td>
+            <td>dateEnd</td>
+            <td>dayOfWeeks</td>
         </tr>
     <#list prescribings as prescribing>
         <tr>
             <td>${prescribing.type}</td>
             <td>${prescribing.name}</td>
-            <td>${prescribing.time}</td>
+            <td><p id="time${prescribing.id}"><#list prescribing.time as time>
+                    ${time}
+
+                    </#list> </p></td>
             <td>${prescribing.dose}</td>
             <td>${prescribing.dateStart}</td>
             <td>${prescribing.dateEnd}</td>
-            <td>${prescribing.dayOfWeeks}</td>
+            <td>
+                <p id="weeks${prescribing.id}">
+           <#list prescribing.dayOfWeeks as day>
+               ${day}
+            </#list>
+                </p>
+            </td>
+               <td></td>
+                 <td><a href="/prescribing/delete/${prescribing.id}">Delete</a></td>
+                 <td><button type="button" onclick="editPrescribing(${prescribing.id}, '${prescribing.type}' , '${prescribing.name}',
+                             '${prescribing.dose}', '${prescribing.dateStart}', '${prescribing.dateEnd}')">Edit</button>
+                 </td>
+              <#--              <form method="post">
+                      <input type="hidden" name="action" value="edit">
 
-            <td><a href="/prescribing/delete/${prescribing.id}">Delete</a></td>
-
-            <form method="post">
-            <input type="hidden" name="action" value="edit">
-
-            <input type="hidden" name="id" value="${(prescribing.id)!}">
+                      <input type="hidden" name="id" value="${(prescribing.id)!}">
 
 
-            <td><input type="text" name="type" placeholder="type" value="${(prescribing.type)!}"></td>
-            <td><input type="text" name="name" placeholder="name" value="${(prescribing.name)!}"></td>
-            <td><input type="text" name="time" placeholder="time" value="${(prescribing.time)!}"></td>
-            <td><input type="text" name="dose" placeholder="dose" value="${(prescribing.dose)!}"></td>
-            <td><input type="text" name="date_start" placeholder="date start" value="${(prescribing.dateStart)!}"></td>
-            <td><input type="text" name="date_end" placeholder="date end" value="${(prescribing.dateEnd)!}"></td>
+                      <td><input type="text" name="type" placeholder="type" value="${(prescribing.type)!}"></td>
+                      <td><input type="text" name="name" placeholder="name" value="${(prescribing.name)!}"></td>
+                      <td><input type="text" name="time" placeholder="time" value="${(prescribing.time)!}"></td>
+                      <td><input type="text" name="dose" placeholder="dose" value="${(prescribing.dose)!}"></td>
+                      <td><input type="text" name="date_start" placeholder="date start" value="${(prescribing.dateStart)!}"></td>
+                      <td><input type="text" name="date_end" placeholder="date end" value="${(prescribing.dateEnd)!}"></td>
 
-            <td>input for days of week</td>
+                      <td>input for days of week</td>
 
-            <td><button type="submit">Save</button></td>
-            </form>
+                      <td><button type="submit">Save</button></td>
+                      </form>
+                      -->
         </tr>
     </#list>
     </table>
@@ -97,37 +119,43 @@
     <p>no prescribing..</p>
 </#if>
 
--->
 
-<button type="button" class="btn btn-primary" onclick="openAddProcedure()">Add prescribing</button>
+
+<button type="button" class="btn btn-primary" onclick="openAddPrescribing()">Add prescribing</button>
+<h3 id="prescribingTitle"></h3>
+
 
 <div id="prescribingForm" hidden="true">
 
 <form method="post" onsubmit="setTime()">
-    <input type="hidden" name="action" value="addPrescribing">
-    <input type="hidden" name="idPatient" value="${patient.id}">
 
+
+
+    <input id="postTypeAddPrescribing" type="hidden" name="action" value="addPrescribing">
+
+    <input type="hidden" name="idPatient" value="${patient.id}">
+    <input id="prescribingId" type="hidden" name="id" disabled>
 
 
 
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label id="btnProcedure" class="btn btn-secondary active" onclick="selectProcedure()">
-            <input type="radio" name="options" id="option1" autocomplete="off" checked> Add procedure
+            <input type="radio" name="options" id="option1" autocomplete="off" checked> Procedure
         </label>
         <label id="btnMedicines" class="btn btn-secondary" onclick="selectMedicines()">
-            <input type="radio" name="options" id="option2" autocomplete="off"> Add medicines
+            <input type="radio" name="options" id="option2" autocomplete="off"> Medicines
         </label>
     </div>
-
+    <p></p>
 
     <input hidden type="text" name="type" value="procedure">
 
 <p>
     <label>Name</label>
-    <input type="text" name="name">
+    <input id="prescribingName" type="text" name="name">
 </p>
     <p id="dateInput">
-        Date start <input type="text" class="date start" name="dateStart"/>
+        Date start <input id="inputDateStart" type="text" class="date start" name="dateStart"/>
         Date end <input type="text" class="date end" name="dateEnd"/>
     </p>
     <div id="daysOfWeek">
@@ -170,8 +198,9 @@
     </div>
     <div id="doseInput" hidden>
         <label>dose</label>
-        <input type="text" name="dose" value="1">
+        <input id="prescribingDose" type="text" name="dose" value="1">
     </div>
+    <p></p>
     <p>
         <button type="button" class="btn btn-primary" onclick="addProcedureTimeInput()">+ times per day</button>
         <button type="button" class="btn btn-primary" onclick="deleteProcedureTimeInput()">- times per day</button>
@@ -301,13 +330,99 @@
 
 
 </div>
+<button type="button" class="btn btn-primary" onclick="clearPrescribingForm()">AAAAAAAAAAAAA</button>
+
 <div class="footer">
 
 </div>
+
+
+<script>
+    var countTimeInputs = 2;
+
+    function clearPrescribingForm(){
+
+        $('#dateInput .date').datepicker('setDate', null);
+        $('#sunday').removeClass("active");
+        $('#monday').removeClass("active");
+        $('#tuesday').removeClass("active");
+        $('#wednesday').removeClass("active");
+        $('#thursday').removeClass("active");
+        $('#friday').removeClass("active");
+        $('#saturday').removeClass("active");
+        while(countTimeInputs > 2) {
+            deleteProcedureTimeInput();
+            console.log(countTimeInputs);
+        }
+    }
+
+    function addProcedureTimeInput() {
+        while (countTimeInputs < 2) countTimeInputs++;                   // ???
+        if (countTimeInputs <= 5) {
+            console.log(countTimeInputs);
+            document.getElementById('procedureTimeInput' + countTimeInputs).removeAttribute("hidden");
+
+            countTimeInputs++;
+        } else
+        {
+            alert('Maximum!');
+        }
+    }
+    function deleteProcedureTimeInput() {
+        if (countTimeInputs > 2) {
+            countTimeInputs--;
+            console.log(countTimeInputs);
+            document.getElementById('procedureTimeInput' + countTimeInputs).setAttribute("hidden", "true");
+        } else
+        {
+            alert('Minimum!');
+        }
+    }
+</script>
+
+
+<script>
+    function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на вход принимаем значения из списка назначений
+
+        document.getElementById("prescribingTitle").innerText="Edit prescribing";
+        document.getElementById("prescribingForm").removeAttribute("hidden");
+
+        document.getElementById("postTypeAddPrescribing").setAttribute("value", "edit");
+
+        if(type==="procedure") selectProcedure();
+        if(type==="medicines") selectMedicines();
+
+        document.getElementById("prescribingId").removeAttribute("disabled");
+        document.getElementById("prescribingId").setAttribute("value", id);
+
+        document.getElementById("prescribingName").setAttribute("value", name);
+        document.getElementById("prescribingDose").setAttribute("value", dose);
+
+        document.getElementsByName("dateStart")[0].setAttribute("value", dateStart);
+        document.getElementsByName("dateEnd")[0].setAttribute("value", dateEnd);
+
+        var strWeeks = document.getElementById("weeks" + id).innerText;
+
+        if (strWeeks.indexOf("Sunday") !== -1) document.getElementById("sunday").click();
+        if (strWeeks.indexOf("Monday") !== -1) document.getElementById("monday").click();
+        if (strWeeks.indexOf("Tuesday") !== -1) document.getElementById("tuesday").click();
+        if (strWeeks.indexOf("Wednesday") !== -1) document.getElementById("wednesday").click();
+        if (strWeeks.indexOf("Thursday") !== -1) document.getElementById("thursday").click();
+        if (strWeeks.indexOf("Friday") !== -1) document.getElementById("friday").click();
+        if (strWeeks.indexOf("Saturday") !== -1) document.getElementById("saturday").click();
+
+
+        console.log(document.getElementById("time"+id).innerText);
+        var strTime = document.getElementById("time"+id).innerText.split(" ");
+        for(x = 1; x < strTime.length; x++){
+            addProcedureTimeInput();
+        }
+    }
+</script>
 <script>
     function setWeek(el) {
         var day = el.getAttribute("id");
-        el.classList.add("active");
+        // el.classList.add("active");
         if(document.getElementById("dayOfWeek-" + day).getAttribute("disabled") === "true"){
             document.getElementById("dayOfWeek-" + day).removeAttribute("disabled");
             el.classList.add("active");
@@ -366,9 +481,13 @@
         }
 </script>
 <script>
-    function openAddProcedure() {
+    function openAddPrescribing() {
+        document.getElementById("prescribingTitle").innerText="Add prescribing";
         if (document.getElementById("prescribingForm").getAttribute("hidden")==="true")
-        {document.getElementById("prescribingForm").removeAttribute("hidden")}
+        {document.getElementById("prescribingForm").removeAttribute("hidden");
+         document.getElementById("postTypeAddPrescribing").setAttribute("value", "addPrescribing");
+         document.getElementById("prescribingId").setAttribute("disabled", 'true');
+        }
         else {document.getElementById("prescribingForm").setAttribute("hidden", "true")}
     }
     </script>
@@ -392,9 +511,7 @@
     $('#dateInput .date').datepicker({
         'format': 'dd.mm.yyyy',
         'autoclose': true
-
     });
-
 
     // initialize datepair
     var basicExampleEl = document.getElementById('dateInput');
@@ -402,30 +519,6 @@
 </script>
 <script>
 
-        var x = 2;
-        function addProcedureTimeInput() {
-            if (x <= 5) {
-                document.getElementById('procedureTimeInput' + x).removeAttribute("hidden");
-
-                x++;
-            } else
-            {
-                alert('Maximum!');
-            }
-        }
-        function deleteProcedureTimeInput() {
-            if (x > 2) {
-                x--;
-                document.getElementById('procedureTimeInput' + x).setAttribute("hidden", "true");
-
-
-            } else
-            {
-                alert('Minimum!');
-            }
-        }
-
 </script>
-
 </body>
 </html>

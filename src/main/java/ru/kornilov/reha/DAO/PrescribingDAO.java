@@ -8,6 +8,7 @@ import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class PrescribingDAO {
@@ -44,7 +45,6 @@ public class PrescribingDAO {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Prescribing.class, id);
     }
-
 
 
 }

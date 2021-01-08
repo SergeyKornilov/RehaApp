@@ -5,7 +5,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="patients")
@@ -42,13 +44,13 @@ public class Patient {
     private String status;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Prescribing> prescribings;
+    private Set<Prescribing> prescribings;
 
 
     public Patient() {
     }
 
-    public Patient(String surname, String name, String secondname, Date dateOfBirth, String diagnosis, String insuranceNumber, String attendingDoctor, String status, List<Prescribing> prescribings) {
+    public Patient(String surname, String name, String secondname, Date dateOfBirth, String diagnosis, String insuranceNumber, String attendingDoctor, String status, HashSet<Prescribing> prescribings) {
         this.surname = surname;
         this.name = name;
         this.secondname = secondname;
@@ -132,11 +134,11 @@ public class Patient {
         this.status = status;
     }
 
-    public List<Prescribing> getPrescribings() {
+    public Set<Prescribing> getPrescribings() {
         return prescribings;
     }
 
-    public void setPrescribings(List<Prescribing> prescribings) {
+    public void setPrescribings(Set<Prescribing> prescribings) {
         this.prescribings = prescribings;
     }
 
@@ -156,3 +158,4 @@ public class Patient {
                 '}';
     }
 }
+

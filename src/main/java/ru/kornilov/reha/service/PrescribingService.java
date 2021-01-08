@@ -38,4 +38,15 @@ public class PrescribingService {
     public Prescribing getPrescribingById(int id) {
         return prescribingDao.getById(id);
     }
+
+//    public List<Prescribing> deleteCopy (List<Prescribing> prescribings){
+//        for (Prescribing prescribing:
+//             prescribings) {
+//
+//        }
+//
+//
+//
+//        return
+//    }
 }

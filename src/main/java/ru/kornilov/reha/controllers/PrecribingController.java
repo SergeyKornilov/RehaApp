@@ -58,6 +58,8 @@ public class PrecribingController {
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));
 
+
+
         return "patient/patient-card";
     }
 }

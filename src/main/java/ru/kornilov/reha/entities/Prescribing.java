@@ -5,8 +5,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="prescribing")
@@ -34,11 +36,11 @@ public class Prescribing {
     @Column(name="date_end")
     private Date dateEnd;
 
-    @ElementCollection
-    private List<String> dayOfWeeks;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> dayOfWeeks;
 
-    @ElementCollection
-    private List<String> time;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> time;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
@@ -50,7 +52,7 @@ public class Prescribing {
     public Prescribing() {
     }
 
-    public Prescribing(String type, String name, String dose, Date dateStart, Date dateEnd, List<String> dayOfWeeks, List<String> time, Patient patient) {
+    public Prescribing(String type, String name, String dose, Date dateStart, Date dateEnd, Set<String> dayOfWeeks, Set<String> time, Patient patient) {
         this.type = type;
         this.name = name;
         this.dose = dose;
@@ -109,19 +111,19 @@ public class Prescribing {
         this.dateEnd = dateEnd;
     }
 
-    public List<String> getDayOfWeeks() {
+    public Set<String> getDayOfWeeks() {
         return dayOfWeeks;
     }
 
-    public void setDayOfWeeks(List<String> dayOfWeeks) {
+    public void setDayOfWeeks(Set<String> dayOfWeeks) {
         this.dayOfWeeks = dayOfWeeks;
     }
 
-    public List<String> getTime() {
+    public Set<String> getTime() {
         return time;
     }
 
-    public void setTime(List<String> time) {
+    public void setTime(Set<String> time) {
         this.time = time;
     }
 
