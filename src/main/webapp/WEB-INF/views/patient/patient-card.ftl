@@ -39,24 +39,24 @@
     </style>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <h2>Patient cart #${patient.id}</h2>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h3>${patient.surname} ${patient.name} ${patient.secondname}</h3>
+        </div>
+        <div class="col-6">
+            <p>${patient.dateOfBirth} ${patient.dateOfBirth} ${patient.dateOfBirth} ${patient.status} ${patient.attendingDoctor}</p>
+        </div>
 
-
-
-
-<p>Patient cart</p>
-
-
+    </div>
 
 <!-- <p><img src=""></p> -->
-<p>${patient.id}</p>
-<p>${patient.surname}</p>
-<p>${patient.name}</p>
-<p>${patient.secondname}</p>
-<p>${patient.dateOfBirth}</p>
-<p>${patient.diagnosis}</p>
-<p>${patient.insuranceNumber}</p>
-<p>${patient.attendingDoctor}</p>
-<p>${patient.status}</p>
+
+
+    <div class="row">
 <p>Prescribings:</p>
 
 
@@ -135,8 +135,8 @@
 <#else>
     <p>no prescribing..</p>
 </#if>
-
-
+    </div>
+    <div class="row">
 
 <button type="button" class="btn btn-primary" onclick="openAddPrescribing()">Add prescribing</button>
 <h3 id="prescribingTitle"></h3>
@@ -349,12 +349,14 @@
 
 
 </div>
-
+    </div>
+        <div class="row">
 <div class="footer">
 
 </div>
 
-
+</div>
+</div>
 <script>
     var countTimeInputs = 2;
 
