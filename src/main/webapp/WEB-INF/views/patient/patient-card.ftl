@@ -75,7 +75,7 @@
         <tr>
             <td>${prescribing.type}</td>
             <td>${prescribing.name}</td>
-            <td><p id="time${prescribing.id}"><#list prescribing.time as time>
+            <td><p id="timePrescribingList${prescribing.id}"><#list prescribing.time as time>
                     ${time}
 
                     </#list> </p></td>
@@ -196,6 +196,7 @@
         <input id="dayOfWeek-saturday" name="dayOfWeeks" disabled="true" value="Saturday" hidden>
 
     </div>
+    <p></p>
     <div id="doseInput" hidden>
         <label>dose</label>
         <input id="prescribingDose" type="text" name="dose" value="1">
@@ -412,8 +413,8 @@
         if (strWeeks.indexOf("Saturday") !== -1) document.getElementById("saturday").click();
 
 
-        console.log(document.getElementById("time"+id).innerText);
-        var strTime = document.getElementById("time"+id).innerText.split(" ");
+        console.log(document.getElementById("timePrescribingInput"+id).innerText);
+        var strTime = document.getElementById("timePrescribingInput"+id).innerText.split(" ");
         for(x = 1; x < strTime.length; x++){
             addProcedureTimeInput();
         }
