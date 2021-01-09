@@ -18,9 +18,22 @@ public class Event {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "time")
+    private String time;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "prescribing_id")
     private Prescribing prescribing;
+
+    public Event() {
+    }
+
+    public Event(Date date, String status, String time, Prescribing prescribing) {
+        this.date = date;
+        this.status = status;
+        this.time = time;
+        this.prescribing = prescribing;
+    }
 
     public int getId() {
         return id;
@@ -46,20 +59,19 @@ public class Event {
         this.status = status;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public Prescribing getPrescribing() {
         return prescribing;
     }
 
     public void setPrescribing(Prescribing prescribing) {
-        this.prescribing = prescribing;
-    }
-
-    public Event() {
-    }
-
-    public Event(Date date, String status, Prescribing prescribing) {
-        this.date = date;
-        this.status = status;
         this.prescribing = prescribing;
     }
 
@@ -69,7 +81,9 @@ public class Event {
                 "id=" + id +
                 ", date=" + date +
                 ", status='" + status + '\'' +
+                ", time='" + time + '\'' +
                 ", prescribing=" + prescribing +
                 '}';
     }
+
 }

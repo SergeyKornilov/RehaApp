@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kornilov.reha.entities.Prescribing;
+import ru.kornilov.reha.service.EventService;
 import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
 
@@ -15,10 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PrecribingController {
+
     @Autowired
     PrescribingService prescribingService;
     @Autowired
     PatientService patientService;
+    @Autowired
+    EventService eventService;
 
 
     @GetMapping("/precribing-list")
@@ -39,8 +43,12 @@ public class PrecribingController {
     @PostMapping(path = "patient/card/{idPatient}", params = {"action=addPrescribing"})
     public String addPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model){
 
-        prescribing.setPatient(patientService.getPatientById(idPatient));  //перенсти в сервис
+
+        prescribingService.setPatient(prescribing, idPatient);
+
         prescribingService.addPrescribing(prescribing);
+
+        eventService.createEvents(prescribing);
 
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));
@@ -52,7 +60,8 @@ public class PrecribingController {
     public String editPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model) {
         System.out.println(prescribing);
 
-        prescribing.setPatient(patientService.getPatientById(idPatient)); //перенести в сервис
+
+        prescribingService.setPatient(prescribing, idPatient);
         prescribingService.updatePrescribing(prescribing);
 
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());

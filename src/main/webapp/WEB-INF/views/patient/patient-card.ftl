@@ -75,7 +75,7 @@
         <tr>
             <td>${prescribing.type}</td>
             <td>${prescribing.name}</td>
-            <td><p id="timePrescribingList${prescribing.id}"><#list prescribing.time as time>
+            <td><p id="timePrescribingList${prescribing.id}"><#list prescribing.time?sort as time>
                     ${time}
 
                     </#list> </p></td>
@@ -84,9 +84,26 @@
             <td>${prescribing.dateEnd}</td>
             <td>
                 <p id="weeks${prescribing.id}">
-           <#list prescribing.dayOfWeeks as day>
-               ${day}
-            </#list>
+<#--                    <#if prescribing.dayOfWeeks?contain("Sunday")>Sunday</#if>-->
+
+                    <#if prescribing.dayOfWeeks?seq_contains("Sunday")>Sunday</#if>
+                    <#if prescribing.dayOfWeeks?seq_contains("Monday")>Monday</#if>
+                    <#if prescribing.dayOfWeeks?seq_contains("Tuesday")>Tuesday</#if>
+                    <#if prescribing.dayOfWeeks?seq_contains("Wednesday")>Wednesday</#if>
+                    <#if prescribing.dayOfWeeks?seq_contains("Thursday")>Thursday</#if>
+                    <#if prescribing.dayOfWeeks?seq_contains("Friday")>Friday</#if>
+                    <#if prescribing.dayOfWeeks?seq_contains("Saturday")>Saturday</#if>
+
+<#--           <#list prescribing.dayOfWeeks?sort as day>-->
+<#--               <#if day?contains("Sunday")>Sunday</#if>-->
+<#--               <#if day?contains("Monday")>Monday</#if>-->
+<#--               <#if day?contains("Tuesday")>Tuesday</#if>-->
+<#--               <#if day?contains("Wednesday")>Wednesday</#if>-->
+<#--               <#if day?contains("Thursday")>Thursday</#if>-->
+<#--               <#if day?contains("Friday")>Friday</#if>-->
+<#--               <#if day?contains("Saturday")>Saturday</#if>-->
+<#--            </#list>-->
+
                 </p>
             </td>
                <td></td>
@@ -211,8 +228,8 @@
                 <div data-value="1">Morning</div>
                 <div data-value="2">Afternoon</div>
                 <div data-value="3">Evening</div>
-                <div data-value="4">8:00</div>
-                <div data-value="5">9:00</div>
+                <div data-value="4">08:00</div>
+                <div data-value="5">09:00</div>
                 <div data-value="6">10:00</div>
                 <div data-value="7">11:00</div>
                 <div data-value="8">12:00</div>
@@ -233,8 +250,8 @@
                 <div data-value="1">Morning</div>
                 <div data-value="2">Afternoon</div>
                 <div data-value="3">Evening</div>
-                <div data-value="4">8:00</div>
-                <div data-value="5">9:00</div>
+                <div data-value="4">08:00</div>
+                <div data-value="5">09:00</div>
                 <div data-value="6">10:00</div>
                 <div data-value="7">11:00</div>
                 <div data-value="8">12:00</div>
@@ -255,8 +272,8 @@
                 <div data-value="1">Morning</div>
                 <div data-value="2">Afternoon</div>
                 <div data-value="3">Evening</div>
-                <div data-value="4">8:00</div>
-                <div data-value="5">9:00</div>
+                <div data-value="4">08:00</div>
+                <div data-value="5">09:00</div>
                 <div data-value="6">10:00</div>
                 <div data-value="7">11:00</div>
                 <div data-value="8">12:00</div>
@@ -277,8 +294,8 @@
                 <div data-value="1">Morning</div>
                 <div data-value="2">Afternoon</div>
                 <div data-value="3">Evening</div>
-                <div data-value="4">8:00</div>
-                <div data-value="5">9:00</div>
+                <div data-value="4">08:00</div>
+                <div data-value="5">09:00</div>
                 <div data-value="6">10:00</div>
                 <div data-value="7">11:00</div>
                 <div data-value="8">12:00</div>
@@ -299,8 +316,8 @@
                 <div data-value="1">Morning</div>
                 <div data-value="2">Afternoon</div>
                 <div data-value="3">Evening</div>
-                <div data-value="4">8:00</div>
-                <div data-value="5">9:00</div>
+                <div data-value="4">08:00</div>
+                <div data-value="5">09:00</div>
                 <div data-value="6">10:00</div>
                 <div data-value="7">11:00</div>
                 <div data-value="8">12:00</div>
@@ -323,15 +340,15 @@
 
 
 
-    <button type="button" onclick="setTime()" >Test input time</button>
-    <button type="submit" >Add</button>
+    <button type="submit" class="btn btn-primary">Add</button>
 </form>
+    <p></p>
+    <button type="button" class="btn btn-primary" onclick="clearPrescribingForm()">Clear</button>
 
 
 
 
 </div>
-<button type="button" class="btn btn-primary" onclick="clearPrescribingForm()">AAAAAAAAAAAAA</button>
 
 <div class="footer">
 
@@ -351,16 +368,29 @@
         $('#thursday').removeClass("active");
         $('#friday').removeClass("active");
         $('#saturday').removeClass("active");
+
+        document.getElementById("dayOfWeek-" + "sunday").setAttribute("disabled", "true");
+        document.getElementById("dayOfWeek-" + "monday").setAttribute("disabled", "true");
+        document.getElementById("dayOfWeek-" + "tuesday").setAttribute("disabled", "true");
+        document.getElementById("dayOfWeek-" + "wednesday").setAttribute("disabled", "true");
+        document.getElementById("dayOfWeek-" + "thursday").setAttribute("disabled", "true");
+        document.getElementById("dayOfWeek-" + "friday").setAttribute("disabled", "true");
+        document.getElementById("dayOfWeek-" + "saturday").setAttribute("disabled", "true");
+
+    //    $('#prescribingDose').setAttribute('value', "123");
+
+
+
         while(countTimeInputs > 2) {
             deleteProcedureTimeInput();
-            console.log(countTimeInputs);
+
         }
     }
 
     function addProcedureTimeInput() {
         while (countTimeInputs < 2) countTimeInputs++;                   // ???
         if (countTimeInputs <= 5) {
-            console.log(countTimeInputs);
+
             document.getElementById('procedureTimeInput' + countTimeInputs).removeAttribute("hidden");
 
             countTimeInputs++;
@@ -372,7 +402,7 @@
     function deleteProcedureTimeInput() {
         if (countTimeInputs > 2) {
             countTimeInputs--;
-            console.log(countTimeInputs);
+
             document.getElementById('procedureTimeInput' + countTimeInputs).setAttribute("hidden", "true");
         } else
         {
@@ -384,6 +414,7 @@
 
 <script>
     function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на вход принимаем значения из списка назначений
+        clearPrescribingForm();
 
         document.getElementById("prescribingTitle").innerText="Edit prescribing";
         document.getElementById("prescribingForm").removeAttribute("hidden");
@@ -399,8 +430,17 @@
         document.getElementById("prescribingName").setAttribute("value", name);
         document.getElementById("prescribingDose").setAttribute("value", dose);
 
-        document.getElementsByName("dateStart")[0].setAttribute("value", dateStart);
-        document.getElementsByName("dateEnd")[0].setAttribute("value", dateEnd);
+        // document.getElementsByName("dateStart")[0].setAttribute("value", dateStart);
+        //document.getElementsByName("dateEnd")[0].setAttribute("value", dateEnd);
+
+
+        dateStart= dateStart.split(' ')[0]; //приводим время под формат для datepicker
+        dateEnd = dateEnd.split(' ')[0];
+        $('#dateInput .date.start').datepicker('setDate', dateStart);
+        $('#dateInput .date.end').datepicker('setDate', dateEnd);
+
+
+
 
         var strWeeks = document.getElementById("weeks" + id).innerText;
 
@@ -413,10 +453,14 @@
         if (strWeeks.indexOf("Saturday") !== -1) document.getElementById("saturday").click();
 
 
-        console.log(document.getElementById("timePrescribingInput"+id).innerText);
-        var strTime = document.getElementById("timePrescribingInput"+id).innerText.split(" ");
+
+//подставляем время
+        var strTime = document.getElementById("timePrescribingList"+id).innerText.split(" ");
         for(x = 1; x < strTime.length; x++){
             addProcedureTimeInput();
+        }
+        for(x=0; x < strTime.length; x++){
+            document.getElementsByClassName("bfh-selectbox-option")[x].textContent=strTime[x];
         }
     }
 </script>
@@ -458,7 +502,7 @@
         var elements = document.getElementsByClassName("bfh-selectbox-option");
         for (var i = 0; i < elements.length; i ++){
             switch (document.getElementsByClassName("bfh-selectbox-option")[i].textContent) {
-                case "Morning": document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "8:00";
+                case "Morning": document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "08:00";
                 break;
                 case "Afternoon": document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "14:00";
                 break;

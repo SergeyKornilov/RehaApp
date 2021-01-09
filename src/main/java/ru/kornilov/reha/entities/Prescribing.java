@@ -5,10 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="prescribing")
@@ -37,7 +34,8 @@ public class Prescribing {
     private Date dateEnd;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> dayOfWeeks;
+    private Set<String> dayOfWeeks = new LinkedHashSet<>();
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> time;
@@ -46,13 +44,13 @@ public class Prescribing {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-//    @OneToMany(mappedBy = "prescribing",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    private List<Event> events;
+    @OneToMany(mappedBy = "prescribing",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Event> events;
 
     public Prescribing() {
     }
 
-    public Prescribing(String type, String name, String dose, Date dateStart, Date dateEnd, Set<String> dayOfWeeks, Set<String> time, Patient patient) {
+    public Prescribing(String type, String name, String dose, Date dateStart, Date dateEnd, Set<String> dayOfWeeks, Set<String> time, Patient patient, List<Event> events) {
         this.type = type;
         this.name = name;
         this.dose = dose;
@@ -61,6 +59,7 @@ public class Prescribing {
         this.dayOfWeeks = dayOfWeeks;
         this.time = time;
         this.patient = patient;
+        this.events = events;
     }
 
     public int getId() {
@@ -135,6 +134,14 @@ public class Prescribing {
         this.patient = patient;
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
     @Override
     public String toString() {
         return "Prescribing{" +
@@ -147,6 +154,7 @@ public class Prescribing {
                 ", dayOfWeeks=" + dayOfWeeks +
                 ", time=" + time +
                 ", patient=" + patient +
+                ", events=" + events +
                 '}';
     }
 }

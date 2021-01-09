@@ -10,6 +10,8 @@ import java.util.List;
 
 @Service
 public class PrescribingService {
+    @Autowired
+    PatientService patientService;
 
     @Autowired
     private PrescribingDAO prescribingDao;
@@ -39,14 +41,11 @@ public class PrescribingService {
         return prescribingDao.getById(id);
     }
 
-//    public List<Prescribing> deleteCopy (List<Prescribing> prescribings){
-//        for (Prescribing prescribing:
-//             prescribings) {
-//
-//        }
-//
-//
-//
-//        return
-//    }
+
+    public void setPatient(Prescribing prescribing, int idPatient){
+
+        prescribing.setPatient(patientService.getPatientById(idPatient));
+
+
+    }
 }

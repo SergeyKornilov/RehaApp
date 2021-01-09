@@ -84,7 +84,6 @@ public class PatientController {
         model.addAttribute("patient", patient);
         model.addAttribute("prescribings", prescribing);
 
-        System.out.println(prescribing);
 
 
         return "patient/patient-card";
