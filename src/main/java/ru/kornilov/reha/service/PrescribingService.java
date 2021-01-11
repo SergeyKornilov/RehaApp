@@ -2,7 +2,9 @@ package ru.kornilov.reha.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.kornilov.reha.DAO.EventDAO;
 import ru.kornilov.reha.DAO.PrescribingDAO;
+import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Prescribing;
 
 import javax.transaction.Transactional;
@@ -12,6 +14,8 @@ import java.util.List;
 public class PrescribingService {
     @Autowired
     PatientService patientService;
+    @Autowired
+    private EventDAO eventDAO;
 
     @Autowired
     private PrescribingDAO prescribingDao;
@@ -39,6 +43,15 @@ public class PrescribingService {
     @Transactional
     public Prescribing getPrescribingById(int id) {
         return prescribingDao.getById(id);
+    }
+
+    @Transactional
+    public void deleteChildEvents(Prescribing prescribing){
+        List<Event> events = prescribing.getEvents();
+        for (Event event :
+                events) {
+            eventDAO.deleteEvent(event);
+        }
     }
 
 

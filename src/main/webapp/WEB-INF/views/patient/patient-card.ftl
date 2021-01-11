@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-    <!-- Jquery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
     <!--  css for Date Start/End-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
@@ -35,6 +37,50 @@
     }
     .hide{
         display: none;
+    }
+    </style>
+    <style>
+    button {
+    display: inline-block;
+    font-family: arial,sans-serif;
+    font-size: 1.5rem;
+    color: rgb(205,216,228);
+    text-shadow: 0 -1px rgb(46,53,58);
+    text-decoration: none;
+    user-select: none;
+    line-height: 2em;
+    padding: 1px 1.2em;
+    outline: none;
+    border: 1px solid rgba(33,43,52,1);
+    border-radius: 3px;
+    background: rgb(81,92,102) linear-gradient(rgb(81,92,102), rgb(69,78,87));
+    box-shadow:
+    inset 0 1px rgba(101,114,126,1),
+    inset 0 0 5px rgba(140,150,170,.9),
+    0 1px rgb(83,94,104),
+    0 0 1px rgb(86,96,106);
+    }
+    .active {
+    box-shadow:
+    inset 0 5px 20px rgba(0,10,20,0.9),
+    0 1px rgb(83,94,104),
+    0 0 1px rgb(86,96,106);
+    }
+    .active {
+    border: 1px solid rgb(22,32,43);
+    border-bottom: 1px solid rgb(25,34,45);
+    background: rgb(53,61,71);
+    box-shadow:
+    inset 0 2px 12px rgba(0,10,20,0.8),
+    0 1px rgb(83,94,104),
+    0 0 1px rgb(86,96,106);
+
+    }
+    button:active {
+        box-shadow:
+                inset 0 1px 12px rgba(0,10,20,.5),
+                0 2px rgb(83,94,104),
+                0 0 2px rgb(86,96,106);
     }
     </style>
 </head>
@@ -138,10 +184,12 @@
     </div>
     <div class="row">
 
-<button type="button" class="btn btn-primary" onclick="openAddPrescribing()">Add prescribing</button>
-<h3 id="prescribingTitle"></h3>
-
-
+<button type="button" class="" onclick="openAddPrescribing()">Add prescribing</button>
+    </div>
+    <div class="row">
+        <h3 id="prescribingTitle"></h3>
+    </div>
+    <div class="row">
 <div id="prescribingForm" hidden="true">
 
 <form method="post" onsubmit="setTime()">
@@ -156,10 +204,10 @@
 
 
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label id="btnProcedure" class="btn btn-secondary active" onclick="selectProcedure()">
+        <label id="btnProcedure" class="btn btn-secondary active " onclick="selectProcedure()">
             <input type="radio" name="options" id="option1" autocomplete="off" checked> Procedure
         </label>
-        <label id="btnMedicines" class="btn btn-secondary" onclick="selectMedicines()">
+        <label id="btnMedicines" class="btn btn-secondary ml-1" onclick="selectMedicines()">
             <input type="radio" name="options" id="option2" autocomplete="off"> Medicines
         </label>
     </div>
@@ -175,54 +223,59 @@
         Date start <input id="inputDateStart" type="text" class="date start" name="dateStart"/>
         Date end <input type="text" class="date end" name="dateEnd"/>
     </p>
-    <div id="daysOfWeek">
 
-        <button id="sunday" onclick="setWeek(this)" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+    <div id="daysOfWeek" class="row">
+        <div class="col-12">
+        <button id="sunday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Sunday
         </button>
         <input id="dayOfWeek-sunday" name="dayOfWeeks" disabled="true" value="Sunday" hidden>
 
-        <button id="monday" onclick="setWeek(this)" type="button" class="btn btn-primary"  data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="monday" onclick="setWeek(this)" type="button" class=""  data-toggle="button" aria-pressed="false" autocomplete="off">
             Monday
         </button>
         <input id="dayOfWeek-monday" name="dayOfWeeks" disabled="true" value="Monday" hidden>
 
-        <button id="tuesday" onclick="setWeek(this)" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="tuesday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Tuesday
         </button>
         <input id="dayOfWeek-tuesday" name="dayOfWeeks" disabled="true" value="Tuesday" hidden>
 
-        <button id="wednesday" onclick="setWeek(this)" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="wednesday" onclick="setWeek(this)" type="button" class=" " data-toggle="button" aria-pressed="false" autocomplete="off">
             Wednesday
         </button>
         <input id="dayOfWeek-wednesday" name="dayOfWeeks" disabled="true" value="Wednesday" hidden>
 
-        <button id="thursday" onclick="setWeek(this)" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="thursday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Thursday
         </button>
         <input id="dayOfWeek-thursday" name="dayOfWeeks" disabled="true" value="Thursday" hidden>
 
-        <button id="friday" onclick="setWeek(this)" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="friday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Friday
         </button>
         <input id="dayOfWeek-friday" name="dayOfWeeks" disabled="true" value="Friday" hidden>
 
-        <button id="saturday" onclick="setWeek(this)" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="saturday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Saturday
         </button>
         <input id="dayOfWeek-saturday" name="dayOfWeeks" disabled="true" value="Saturday" hidden>
-
+        </div>
     </div>
-    <p></p>
+
+        <div class="row">
+
     <div id="doseInput" hidden>
         <label>dose</label>
         <input id="prescribingDose" type="text" name="dose" value="1">
     </div>
-    <p></p>
-    <p>
-        <button type="button" class="btn btn-primary" onclick="addProcedureTimeInput()">+ times per day</button>
-        <button type="button" class="btn btn-primary" onclick="deleteProcedureTimeInput()">- times per day</button>
-        <label>time</label>
+        </div>
+    <div class="row">
+        <button type="button" class="" onclick="addProcedureTimeInput()">+ times per day</button>
+        <button type="button" class="" onclick="deleteProcedureTimeInput()">- times per day</button>
+    </div>
+    <div class="row">
+        <div class="col-12">
         <div id = "timeInputForm">
             <div id="procedureTimeInput1" class="bfh-selectbox" data-name="selectbox3" data-value="1" data-filter="true">
                 <div data-value="1">Morning</div>
@@ -336,14 +389,17 @@
             <input id="time5" name="time" hidden disabled>
         </div>
         <div id = "myTimeInputs"></div>
-    </p>
+
+        </div>
+    </div>
 
 
 
-    <button type="submit" class="btn btn-primary">Add</button>
+
+    <button type="submit" class="">Add</button>
 </form>
     <p></p>
-    <button type="button" class="btn btn-primary" onclick="clearPrescribingForm()">Clear</button>
+    <button type="button" class="" onclick="clearPrescribingForm()">Clear</button>
 
 
 
@@ -379,8 +435,9 @@
         document.getElementById("dayOfWeek-" + "friday").setAttribute("disabled", "true");
         document.getElementById("dayOfWeek-" + "saturday").setAttribute("disabled", "true");
 
-    //    $('#prescribingDose').setAttribute('value', "123");
 
+        document.getElementById('prescribingDose').value="";
+        document.getElementById('prescribingName').value="";
 
 
         while(countTimeInputs > 2) {
@@ -429,8 +486,11 @@
         document.getElementById("prescribingId").removeAttribute("disabled");
         document.getElementById("prescribingId").setAttribute("value", id);
 
-        document.getElementById("prescribingName").setAttribute("value", name);
-        document.getElementById("prescribingDose").setAttribute("value", dose);
+        // document.getElementById("prescribingName").setAttribute("value", name);
+        // document.getElementById("prescribingDose").setAttribute("value", dose);
+
+        document.getElementById('prescribingDose').value=dose;
+        document.getElementById('prescribingName').value=name;
 
         // document.getElementsByName("dateStart")[0].setAttribute("value", dateStart);
         //document.getElementsByName("dateEnd")[0].setAttribute("value", dateEnd);
@@ -482,12 +542,37 @@
 
 <script>
     function selectProcedure() {
+
         document.getElementById("btnProcedure").classList.add("active");
         document.getElementById("btnMedicines").classList.remove("active");
 
         document.getElementsByName("type")[0].setAttribute("value", "procedure");
         document.getElementById("doseInput").setAttribute("hidden", "true");
         document.getElementsByName("dose")[0].setAttribute("value", "1");
+
+        //open weeks pattern input
+        document.getElementById("daysOfWeek").removeAttribute("hidden");
+
+        document.getElementById("dayOfWeek-sunday").setAttribute("disabled", "true");
+        document.getElementById("sunday").classList.remove("active");
+
+        document.getElementById("dayOfWeek-monday").setAttribute("disabled", "true");
+        document.getElementById("monday").classList.remove("active");
+
+        document.getElementById("dayOfWeek-tuesday").setAttribute("disabled", "true");
+        document.getElementById("tuesday").classList.remove("active");
+
+        document.getElementById("dayOfWeek-wednesday").setAttribute("disabled", "true");
+        document.getElementById("wednesday").classList.remove("active");
+
+        document.getElementById("dayOfWeek-thursday").setAttribute("disabled", "true");
+        document.getElementById("thursday").classList.remove("active");
+
+        document.getElementById("dayOfWeek-friday").setAttribute("disabled", "true");
+        document.getElementById("friday").classList.remove("active");
+
+        document.getElementById("dayOfWeek-saturday").setAttribute("disabled", "true");
+        document.getElementById("saturday").classList.remove("active");
     }
     function selectMedicines() {
         document.getElementById("btnMedicines").classList.add("active");
@@ -495,6 +580,34 @@
         document.getElementsByName("type")[0].setAttribute("value", "medicines");
         document.getElementById("doseInput").removeAttribute("hidden");
         document.getElementsByName("dose")[0].setAttribute("value", "");
+
+        //hide weeks pattern input
+        document.getElementById("daysOfWeek").setAttribute("hidden", "true");
+
+        document.getElementById("dayOfWeek-sunday").removeAttribute("disabled");
+        document.getElementById("sunday").classList.add("active");
+
+        document.getElementById("dayOfWeek-monday").removeAttribute("disabled");
+        document.getElementById("monday").classList.add("active");
+
+        document.getElementById("dayOfWeek-tuesday").removeAttribute("disabled");
+        document.getElementById("tuesday").classList.add("active");
+
+        document.getElementById("dayOfWeek-wednesday").removeAttribute("disabled");
+        document.getElementById("wednesday").classList.add("active");
+
+        document.getElementById("dayOfWeek-thursday").removeAttribute("disabled");
+        document.getElementById("thursday").classList.add("active");
+
+        document.getElementById("dayOfWeek-friday").removeAttribute("disabled");
+        document.getElementById("friday").classList.add("active");
+
+        document.getElementById("dayOfWeek-saturday").removeAttribute("disabled");
+        document.getElementById("saturday").classList.add("active");
+
+
+
+
     }
 </script>
 

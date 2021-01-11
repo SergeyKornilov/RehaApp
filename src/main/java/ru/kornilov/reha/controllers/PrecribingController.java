@@ -60,9 +60,18 @@ public class PrecribingController {
     public String editPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model) {
         System.out.println(prescribing);
 
+        Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
+
+
+        prescribingService.deleteChildEvents(oldPrescribing);
+
 
         prescribingService.setPatient(prescribing, idPatient);
         prescribingService.updatePrescribing(prescribing);
+
+        eventService.createEvents(prescribing);
+
+
 
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));

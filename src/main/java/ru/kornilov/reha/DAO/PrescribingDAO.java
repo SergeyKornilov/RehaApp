@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
 
@@ -45,6 +46,5 @@ public class PrescribingDAO {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Prescribing.class, id);
     }
-
 
 }

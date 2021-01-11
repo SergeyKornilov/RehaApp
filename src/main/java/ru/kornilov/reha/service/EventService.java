@@ -46,6 +46,16 @@ public class EventService {
     }
 
     @Transactional
+    public void changeStatus(int id){
+        Event event = getEventById(id);
+        if (event.getStatus().equals("open")) {
+            event.setStatus("close");
+        } else event.setStatus("open");
+        updateEvent(event);
+    }
+
+
+    @Transactional
     public void createEvents (Prescribing prescribing){
 
 
@@ -85,4 +95,6 @@ public class EventService {
 
         } while (!eventsDateStart.isAfter(eventsDateEnd));
     }
+
+
 }
