@@ -271,9 +271,10 @@
     </div>
         </div>
     <div class="row">
+        <div class="col-12">
         <button type="button" class="" onclick="addProcedureTimeInput()">+ times per day</button>
         <button type="button" class="" onclick="deleteProcedureTimeInput()">- times per day</button>
-    </div>
+    </div></div>
     <div class="row">
         <div class="col-12">
         <div id = "timeInputForm">
