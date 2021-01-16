@@ -1,4 +1,4 @@
-package ru.kornilov.reha.config;
+package ru.kornilov.reha.config.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

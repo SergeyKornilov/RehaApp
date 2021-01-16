@@ -193,6 +193,7 @@
 <div id="prescribingForm" hidden="true">
 
 <form method="post" onsubmit="setTime()">
+    <input type="hidden" name="_csrf" value="${_csrf.token}" />
 
 
 

@@ -15,6 +15,7 @@
 </#if>
 
 <form action=${formAction} method="post">
+    <input type="hidden" name="_csrf" value="${_csrf.token}" />
     <#if !add>
     <p>
         <input type="hidden" name="id" value="${(patient.id)!}">
