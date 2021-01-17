@@ -12,23 +12,21 @@ import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Controller
 public class PatientController {
+
     @Autowired
     private PatientService patientService;
+
     @Autowired
     private PrescribingService prescribingService;
-
 
     @GetMapping("/patient-list")
     public String allPatientsPage(Model model) {
         model.addAttribute("patients", patientService.allPatients());
         return "patient/patient-list";
-
     }
 
     @GetMapping("/patient-add")
@@ -39,7 +37,6 @@ public class PatientController {
 
     @GetMapping("/test")
     public String test(Model model) {
-
         return "patient/patient-card-test";
     }
 
@@ -77,18 +74,11 @@ public class PatientController {
     public String openPatientCart(@PathVariable("id") int id, Model model) {
 
         Patient patient = patientService.getPatientById(id);
-
         Set<Prescribing> prescribing = patient.getPrescribings();
-
 
         model.addAttribute("patient", patient);
         model.addAttribute("prescribings", prescribing);
 
-
-
         return "patient/patient-card";
     }
-
-
-
 }

@@ -54,9 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .exceptionHandling()
                 .accessDeniedPage("/access-denied");
-
-
     }
+
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
         return new CustomUrlAuthenticationSuccessHandler();

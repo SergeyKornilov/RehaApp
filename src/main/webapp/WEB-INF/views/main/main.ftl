@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<#include "../parts/head.ftl">
 <p>Hello</p>
 <p><a href="/patient-list">Patients list</a></p>
 <p><a href="/event-list">Events list</a></p>
@@ -19,6 +20,6 @@
 
 
 
-<img src="img/cat.jpg">
+
 </body>
 </html>

@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Controller
-public class RegistrationController {
+public class UserController {
     @Autowired
     private UserService userService;
 
@@ -29,10 +29,15 @@ public class RegistrationController {
             return "admin/admin-panel";
         }
 
-        user.setRoles(Collections.singleton(Role.ROLE_ADMIN));
+    //    user.setRoles(Collections.singleton(Role.ROLE_ADMIN));
 
         userService.addUser(user);
 
         return "admin/admin-panel";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDenied(){
+        return "main/access-denied";
     }
 }
