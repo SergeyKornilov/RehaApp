@@ -13,6 +13,5 @@
     <div><input type="submit" value="Sing in"></div>
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
 </form>
-
 </body>
 </html>

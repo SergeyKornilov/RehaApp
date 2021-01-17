@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<#include "../parts/head.ftl">
 <body>
-
 <#if add>
     <p>add</p>
     <#assign formAction>/patient-add</#assign>

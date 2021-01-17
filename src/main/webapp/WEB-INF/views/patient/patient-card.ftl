@@ -84,12 +84,13 @@
     }
     </style>
 </head>
-<#--<#include "../parts/head.ftl">-->
+<#include "../parts/head.ftl">
 <body>
+
 <div class="container">
     <div class="row">
         <h2>Patient cart #${patient.id}</h2>
-        <img src="img/cat.jpg">
+
 
     </div>
     <div class="row">
@@ -685,5 +686,6 @@
 <script>
 
 </script>
+
 </body>
 </html>

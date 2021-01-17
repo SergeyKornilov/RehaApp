@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<#include "../parts/head.ftl">
 <body>
 <p>Patients list</p>
 <table>
