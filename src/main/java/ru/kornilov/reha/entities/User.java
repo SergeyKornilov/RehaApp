@@ -1,6 +1,5 @@
 package ru.kornilov.reha.entities;
 
-import com.sun.javafx.beans.IDProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
-import static com.oracle.jrockit.jfr.FlightRecorder.isActive;
+
 
 @Entity
 @Table(name = "users")
@@ -25,13 +24,8 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
-//    @Column(name = "active")
-//    private boolean active;
 
-
-   // @Transient
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
- //   @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 

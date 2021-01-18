@@ -6,8 +6,11 @@
 </head>
 <#include "../parts/head.ftl">
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
 <p>Patients list</p>
-<table>
+<table class="table">
 <tr>
     <td>id</td>
     <td>surname</td>
@@ -18,6 +21,9 @@
     <td>insuranceNumber</td>
     <td>attendingDoctor</td>
     <td>status</td>
+    <td></td>
+    <td></td>
+    <td></td>
 </tr>
 <#list patients as patient>
     <#if patient.id??>
@@ -39,6 +45,9 @@
 </#list>
 </table>
 <a href="/patient-add/">Add patient</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

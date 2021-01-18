@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/patient-list/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/event-list/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/main/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
+                .antMatchers("/profile/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
                     .and()
                 .formLogin()
 //                .failureHandler(authenticationFailureHandler())

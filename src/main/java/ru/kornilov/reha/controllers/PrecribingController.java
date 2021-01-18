@@ -1,5 +1,6 @@
 package ru.kornilov.reha.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PrecribingController {
+    private static final Logger logger = Logger.getLogger(PrecribingController.class);
+
 
     @Autowired
     PrescribingService prescribingService;
@@ -25,14 +28,11 @@ public class PrecribingController {
     EventService eventService;
 
 
-    @GetMapping("/precribing-list")
-    public String allPrecribingPage(@ModelAttribute Prescribing prescribing, Model model){
-
-        return "prescribing/prescribing-list";
-    }
-
     @GetMapping("/prescribing/delete/{id}")
     public String prescribingDelete(@PathVariable("id") int id, Model model, HttpServletRequest request) {
+
+        logger.debug("running method prescribingDelete, on GetMapping /prescribing/delete/{id}");
+
         prescribingService.deletePrescribing(prescribingService.getPrescribingById(id));
         String referer = request.getHeader("Referer");
         return "redirect:"+ referer;
@@ -42,6 +42,7 @@ public class PrecribingController {
 
     @PostMapping(path = "patient/card/{idPatient}", params = {"action=addPrescribing"})
     public String addPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model){
+        logger.debug("running method addPrescribing, on PostMapping patient/card/{idPatient}");
 
 
         prescribingService.setPatient(prescribing, idPatient);
@@ -58,25 +59,21 @@ public class PrecribingController {
 
     @PostMapping(path = "patient/card/{idPatient}", params = {"action=edit"})
     public String editPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model) {
-        System.out.println(prescribing);
+        logger.debug("running method editPrescribing, on PostMapping patient/card/{idPatient}");
+
 
         Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
 
 
         prescribingService.deleteChildEvents(oldPrescribing);
 
-
         prescribingService.setPatient(prescribing, idPatient);
         prescribingService.updatePrescribing(prescribing);
 
         eventService.createEvents(prescribing);
 
-
-
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));
-
-
 
         return "patient/patient-card";
     }

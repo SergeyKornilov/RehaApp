@@ -17,7 +17,7 @@
                 </a>
             </div>
 
-            <div class="col-xl-7 col-md-4">
+            <div class="col-xl-5 col-md-4">
 
                 <div class="title">
                     <a class="titleText" href="/">
@@ -28,7 +28,10 @@
                     </a>
                 </div>
 
-
+            </div>
+            <div class="col-1">
+                <img class="eventsImg" src="/img/pill.png">
+                <p>Events</p>
             </div>
             <a href="/patient-list">
                 <div class="col-2 btn-my-patients">
@@ -37,25 +40,19 @@
                 </div>
             </a>
 
-
-
-
-            <a href="#">
-                <div class="col-1 btn-profile">
+                <div class="col-2 btn-profile">
+                    <a href="/profile">
                     <img src="/img/profile.png">
-                    <p class="profile-lable">Kornilov Sergey<br>Leonardovich</p>
+                    </a>
+                    <a href="/profile">
+                    <lable id="profile-lable" class="profile-lable">${user.fullName}</lable>
+                    </a>
                 </div>
-            </a>
-
 
             <form action="/logout" method="post">
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <input class="btn-logout" type="submit" value="LoGout"/>
             </form>
-
-<#--            <div class="col-1">-->
-<#--                <button class="btn-logout">LoGout</button>-->
-<#--            </div>-->
 
         </div>
     </div>

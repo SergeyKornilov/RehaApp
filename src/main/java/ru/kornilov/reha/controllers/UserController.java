@@ -1,19 +1,22 @@
 package ru.kornilov.reha.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.kornilov.reha.entities.Role;
 import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.UserService;
 
-import java.util.Collections;
 import java.util.Map;
 
 @Controller
 public class UserController {
+    private static final Logger logger = Logger.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -21,15 +24,13 @@ public class UserController {
     @PostMapping("/registration")
     public String addUser(@ModelAttribute User user, Map<String, Object> model) {
 
-
+        logger.debug("running method addUser, on PostMapping /registration");
         User userFromDb = userService.findByUsername(user.getUsername());
 
         if(userFromDb != null){
             model.put("message", "User exists!");
             return "admin/admin-panel";
         }
-
-    //    user.setRoles(Collections.singleton(Role.ROLE_ADMIN));
 
         userService.addUser(user);
 
@@ -38,6 +39,17 @@ public class UserController {
 
     @GetMapping("/access-denied")
     public String accessDenied(){
+        logger.debug("running method accessDenied, on GetMapping /access-denied");
+
         return "main/access-denied";
+    }
+
+
+
+    @GetMapping("/profile")
+    public String openProfile(@AuthenticationPrincipal User user, Model model){
+        logger.debug("running method openProfile, on GetMapping /profile");
+        model.addAttribute("user", user);
+        return "main/profile";
     }
 }

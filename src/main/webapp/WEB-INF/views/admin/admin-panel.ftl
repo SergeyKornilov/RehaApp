@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Control panel</title>
 </head>
+<#include "../parts/head.ftl">
 <body>
 <p>Control panel</p>
     ${message!}
