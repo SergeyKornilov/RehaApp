@@ -1,6 +1,5 @@
 package ru.kornilov.reha.controllers;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 @Controller
 public class UserController {
-    private static final Logger logger = Logger.getLogger(UserController.class);
+//    private static final Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -24,13 +23,14 @@ public class UserController {
     @PostMapping("/registration")
     public String addUser(@ModelAttribute User user, Map<String, Object> model) {
 
-        logger.debug("running method addUser, on PostMapping /registration");
+ //       logger.debug("running method addUser, on PostMapping /registration");
         User userFromDb = userService.findByUsername(user.getUsername());
 
         if(userFromDb != null){
             model.put("message", "User exists!");
             return "admin/admin-panel";
         }
+
 
         userService.addUser(user);
 
@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/access-denied")
     public String accessDenied(){
-        logger.debug("running method accessDenied, on GetMapping /access-denied");
+ //       logger.debug("running method accessDenied, on GetMapping /access-denied");
 
         return "main/access-denied";
     }
@@ -48,7 +48,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String openProfile(@AuthenticationPrincipal User user, Model model){
-        logger.debug("running method openProfile, on GetMapping /profile");
+//        logger.debug("running method openProfile, on GetMapping /profile");
         model.addAttribute("user", user);
         return "main/profile";
     }

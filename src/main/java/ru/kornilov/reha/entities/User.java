@@ -1,5 +1,6 @@
 package ru.kornilov.reha.entities;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,16 +16,23 @@ public class User implements UserDetails {
 
 
     @Id
+    @NotBlank(message = "Username cannot be empty")
     @Column(name = "username")
     private String username;
 
+    @NotBlank(message = "Password cannot be empty")
     @Column(name = "password")
     private String password;
 
+    @NotBlank(message = "Password cannot be empty")
     @Column(name = "full_name")
     private String fullName;
 
+//    @Email(message = "Email is not correct")
+//    @NotBlank(message = "Email cannot be empty")
+//    private String email;
 
+    @NotBlank(message = "Password cannot be empty")
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;

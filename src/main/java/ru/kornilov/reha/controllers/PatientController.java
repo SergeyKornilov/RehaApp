@@ -1,6 +1,5 @@
 package ru.kornilov.reha.controllers;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,7 @@ import java.util.Set;
 
 @Controller
 public class PatientController {
-    private static final Logger logger = Logger.getLogger(PatientController.class);
+//    private static final Logger logger = Logger.getLogger(PatientController.class);
 
 
     @Autowired
@@ -30,7 +29,7 @@ public class PatientController {
 
     @GetMapping("/patient-list")
     public String allPatientsPage(Model model, @AuthenticationPrincipal User user) {
-        logger.debug("running method allPatientsPage, on GetMapping /patient-list");
+ //       logger.debug("running method allPatientsPage, on GetMapping /patient-list");
 
         model.addAttribute("user", user);
         model.addAttribute("patients", patientService.allPatients());
@@ -39,7 +38,7 @@ public class PatientController {
 
     @GetMapping("/addPatientPage")
     public String addPatientPage(Model model, @AuthenticationPrincipal User user) {
-        logger.debug("running method addPatientPage, on GetMapping /addPatientPage");
+  //      logger.debug("running method addPatientPage, on GetMapping /addPatientPage");
 
         model.addAttribute("user", user);
         model.addAttribute("add", true);
@@ -49,7 +48,7 @@ public class PatientController {
 
     @PostMapping("/patient-add")
     public String patientSave(@ModelAttribute Patient patient, Model model){
-        logger.debug("running method patientSave, on PostMapping /patient-add");
+ //       logger.debug("running method patientSave, on PostMapping /patient-add");
 
         patientService.addPatient(patient);
         model.addAttribute("patients", patientService.allPatients());
@@ -59,7 +58,7 @@ public class PatientController {
 
     @GetMapping("/patient/edit/{id}")
     public String editPatientPage(@PathVariable("id") int id,  @AuthenticationPrincipal User user, Model model) {
-        logger.debug("running method editPatientPage, on GetMapping /patient/edit/{id}");
+//        logger.debug("running method editPatientPage, on GetMapping /patient/edit/{id}");
 
         Patient patient = patientService.getPatientById(id);
         model.addAttribute(patient);
@@ -70,7 +69,7 @@ public class PatientController {
 
     @PostMapping("/patient-edit")
     public String patientUpdate(@ModelAttribute Patient patient, Model model){
-        logger.debug("running method patientUpdate, on PostMapping /patient-edit");
+ //       logger.debug("running method patientUpdate, on PostMapping /patient-edit");
 
         patientService.updatePatient(patient);
         model.addAttribute("patients", patientService.allPatients());
@@ -79,7 +78,7 @@ public class PatientController {
 
     @GetMapping("/patient/delete/{id}")
     public String patientDelete(@PathVariable("id") int id, Model model) {
-        logger.debug("running method patientDelete, on GetMapping /patient/delete/{id}");
+//        logger.debug("running method patientDelete, on GetMapping /patient/delete/{id}");
 
         patientService.deletePatient(patientService.getPatientById(id));
         model.addAttribute("patients", patientService.allPatients());
@@ -89,7 +88,7 @@ public class PatientController {
 
     @GetMapping("/patient/card/{id}")
     public String openPatientCart(@PathVariable("id") int id, @AuthenticationPrincipal User user, Model model) {
-        logger.debug("running method openPatientCart, on GetMapping /patient/card/{id}");
+ //       logger.debug("running method openPatientCart, on GetMapping /patient/card/{id}");
 
         Patient patient = patientService.getPatientById(id);
         Set<Prescribing> prescribing = patient.getPrescribings();

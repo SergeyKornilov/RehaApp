@@ -67,26 +67,17 @@ public class EventService {
                 .toLocalDate();
 
         do {
-            System.out.println("date iterator");
-
-            System.out.println(prescribing.getDayOfWeeks());
-
             String dayOfWeekUpperCase = eventsDateStart.getDayOfWeek().toString().substring(0, 1);
             String dayOfWeek = dayOfWeekUpperCase + eventsDateStart.getDayOfWeek().toString().substring(1).toLowerCase();
 
-            System.out.println(dayOfWeek);
             if(
                     prescribing.getDayOfWeeks().contains(dayOfWeek)
             ){
-                System.out.println("week day contains");
                 Date date = java.sql.Date.valueOf(eventsDateStart);
 
                 for (String time :
                         prescribing.getTime()) {
-                    System.out.println("iterator time");
-
                     Event event = new Event(date, "open", time, prescribing);
-                    System.out.println(event);
                     addEvent(event);
                 }
             }

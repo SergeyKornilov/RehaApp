@@ -1,6 +1,5 @@
 package ru.kornilov.reha.controllers;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class EventController {
-    private static final Logger logger = Logger.getLogger(EventController.class);
+//    private static final Logger logger = Logger.getLogger(EventController.class);
 
 
     @Autowired
@@ -20,7 +19,7 @@ public class EventController {
 
     @GetMapping("/event-list")
     public String allEventPage(Model model) {
-        logger.debug("running method allEventPage, on GetMapping /event-list");
+//        logger.debug("running method allEventPage, on GetMapping /event-list");
 
 
         model.addAttribute("events", eventService.allEvents());
@@ -30,7 +29,7 @@ public class EventController {
 
     @GetMapping("/event/done/{id}")
     public String eventChangeStatus (@PathVariable("id") int id, Model model, HttpServletRequest request){
-        logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
+//        logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
 
         eventService.changeStatus(id);
       //  model.addAttribute("events", eventService.allEvents());
