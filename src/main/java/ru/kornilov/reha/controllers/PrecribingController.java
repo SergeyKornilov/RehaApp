@@ -30,12 +30,11 @@ public class PrecribingController {
     @GetMapping("/prescribing/delete/{id}")
     public String prescribingDelete(@PathVariable("id") int id, Model model, HttpServletRequest request) {
 
- //       logger.debug("running method prescribingDelete, on GetMapping /prescribing/delete/{id}");
+ //     logger.debug("running method prescribingDelete, on GetMapping /prescribing/delete/{id}");
 
         prescribingService.deletePrescribing(prescribingService.getPrescribingById(id));
         String referer = request.getHeader("Referer");
         return "redirect:"+ referer;
-
     }
 
 

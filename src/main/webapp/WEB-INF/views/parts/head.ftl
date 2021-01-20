@@ -45,7 +45,8 @@
                     <img src="/img/profile.png">
                     </a>
                     <a href="/profile">
-                    <lable id="profile-lable" class="profile-lable">${user.fullName}</lable>
+                    <lable id="profile-lable" class="profile-lable"><#if user??>
+                        ${user.fullName}</#if></lable>
                     </a>
                 </div>
 
@@ -53,12 +54,7 @@
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <input class="btn-logout" type="submit" value="LoGout"/>
             </form>
-
         </div>
     </div>
-
 </div>
-
-
 </body>
-

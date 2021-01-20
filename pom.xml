@@ -26,7 +26,6 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -70,7 +69,6 @@
       <version>4.0.1</version>
       <scope>provided</scope>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
     <dependency>
       <groupId>org.freemarker</groupId>
@@ -128,16 +126,18 @@
 <!--      <version>1.2.17</version>-->
 <!--    </dependency>-->
     <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+    <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>7.0.0.Final</version>
+      <version>6.1.6.Final</version>
     </dependency>
-
-
-
-
-
 
   </dependencies>
 

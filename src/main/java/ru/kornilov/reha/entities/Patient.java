@@ -4,9 +4,10 @@ package ru.kornilov.reha.entities;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,29 +19,46 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @Column(name="surname")
+    @NotBlank(message = "Surname cannot be empty")
+    @Size(min = 2, max = 25, message = "min 2 characters, max - 25")
     private String surname;
 
     @Column(name="name")
+    @NotBlank(message = "Name cannot be empty")
+    @Size(min = 2, max = 25, message = "min 2 characters, max - 25")
     private String name;
 
     @Column(name="second_name")
+    @NotBlank(message = "Second name cannot be empty")
+    @Size(min = 2, max = 25, message = "min 2 characters, max - 25")
     private String secondname;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="date_of_birth")
+
     private Date dateOfBirth;
 
     @Column(name="diagnosis")
+    @Size(min = 2, max = 25, message = "min 2 characters, max - 25")
+    @NotBlank(message = "Diagnosis name cannot be empty")
     private String diagnosis;
 
     @Column(name="insurance_number")
+    @Size(min = 2, max = 25, message = "min 8 characters, max - 25")
+    @NotBlank(message = "InsuranceNumber name cannot be empty")
     private String insuranceNumber;
 
+
     @Column(name="attending_doctor")
+    @Size(min = 2, max = 25, message = "min 5 characters, max - 50")
+    @NotBlank(message = "Attending doctor name cannot be empty")
     private String attendingDoctor;
 
     @Column(name="status")
+    @Size(min = 2, max = 15, message = "min 2 characters, max - 15")
+    @NotBlank(message = "Status cannot be empty")
     private String status;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

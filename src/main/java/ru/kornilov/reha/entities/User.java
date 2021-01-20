@@ -1,10 +1,13 @@
 package ru.kornilov.reha.entities;
 
-import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -16,23 +19,26 @@ public class User implements UserDetails {
 
 
     @Id
-    @NotBlank(message = "Username cannot be empty")
     @Column(name = "username")
+    @NotBlank(message = "Username cannot be empty")
+    @Size(min = 2, max = 25, message = "min 2 characters, max - 25")
     private String username;
 
-    @NotBlank(message = "Password cannot be empty")
     @Column(name = "password")
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 8, max = 225, message = "min 8 characters, max - 225")
     private String password;
 
-    @NotBlank(message = "Password cannot be empty")
     @Column(name = "full_name")
+    @NotBlank(message = "Full name cannot be empty")
+    @Size(min = 2, max = 50, message = "min 8 characters, max - 50")
     private String fullName;
 
 //    @Email(message = "Email is not correct")
 //    @NotBlank(message = "Email cannot be empty")
 //    private String email;
 
-    @NotBlank(message = "Password cannot be empty")
+    @NotBlank(message = "Role cannot be empty")
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;

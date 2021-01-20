@@ -1,5 +1,6 @@
 package ru.kornilov.reha.service;
 
+import org.hibernate.validator.constraints.EAN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +10,7 @@ import ru.kornilov.reha.DAO.UserDAO;
 import ru.kornilov.reha.entities.User;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -36,5 +38,9 @@ public class UserService {
         userDAO.deleteUser(user);
     }
 
+    @Transactional
+    public List<User> allUsers(){
+        return userDAO.allUsers();
+    }
 
 }

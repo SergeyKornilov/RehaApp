@@ -3,24 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <title>Control panel</title>
+    <link rel="stylesheet" href="/css/styleAdmin-panel.css">
 </head>
 <#include "../parts/head.ftl">
 <body>
-<p>Control panel</p>
-    ${message!}
-<form action="/registration" method="post">
-
-    <div><label>User name: <input type="text" name="username"/> </label></div>
-    <div><label>Password: <input type="password" name="password"/> </label></div>
-    <div><label>Full name: <input type="text" name="fullName"/> </label></div>
-    <div><label>ROLE: <input type="text" name="roles"/></label></div>
 
 
-    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+<div class="container">
 
-    <div><input type="submit" value="Add user"></div>
+    <div class="row">
+        <div class="col"> <h1 style="text-align: center" class="display-4">Admin panel</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-6">
 
-</form>
+            <h3 style="padding-bottom: 15px; margin-top: 15px">Add user:</h3>
+
+
+<#--                <form method="post">-->
+
+<#--                    <div><label>User name: <input class="form-control" type="text" name="username"/> </label></div>-->
+<#--                    <div><label>Password: <input class="form-control" type="password" name="password"/> </label></div>-->
+<#--                    <div><label>Full name: <input type="text" name="fullName"/> </label></div>-->
+<#--                    <div><label>ROLE: <input id="role" type="text" name="roles"/></label></div>-->
+
+
+<#--                    <input type="hidden" name="_csrf" value="${_csrf.token}" />-->
+
+<#--                    <div><input type="submit" value="Add user"></div>-->
+
+<#--                </form>-->
+
+
+            <form method="post">
+                <div hidden><label>ROLE: <input id="role" type="text" name="roles"/></label></div>
+                <input type="hidden" name="_csrf" value="${_csrf.token}" />
+
+                <div class="group">
+                    <input id="usernameInput" onblur="checkName()" class="dynamic" type="text" required name="username" autocomplete="off">
+                    <span class="bar"></span>
+                    <label>Username</label>
+                <ul id = "errorsUsername" class="input-requirements">
+                    <li>At least 3 characters long and max 25</li>
+                    <li>Must only contain letters</li>
+                </ul>
+                </div>
+
+                <div class="group">
+                    <input id="passwordInput" onblur="checkPassword()" class="dynamic" type="password" name="password" required  autocomplete="off">
+                    <span class="bar"></span>
+                    <label>Password</label>
+                    <ul id = "errorsPassword" class="input-requirements">
+                        <li>At least 8 characters long</li>
+                        <li>Maximum 225 characters</li>
+                    </ul>
+                </div>
+
+                <div class="group">
+                    <input id = "fullNameInput" onblur="checkFullName()" class="dynamic" type="text" name="fullName" required autocomplete="off">
+                    <span class="bar"></span>
+                    <label>Full name</label>
+                    <ul id = "errorsFullName" class="input-requirements">
+                        <li>At least 5 characters long and max 50</li>
+                        <li>Must only contain letters</li>
+                    </ul>
+                </div>
+
+            <div class="input-group mb-3 " style="width: 300px">
+                <select onclick="checkRole()" class="custom-select removeShadow" id="inputGroupSelect01">
+                    <option id="selectOptionSetRole" value="1" onclick="setRole(this)">Set Role</option>
+                    <option id="selectOptionDoctor" value="2" onclick="setRole(this)">Doctor</option>
+                    <option id="selectOptionNurse" value="3" onclick="setRole(this)">Nurse</option>
+                    <option id="selectOptionAdmin" value="4" onclick="setRole(this)">Admin</option>
+                </select>
+            </div>
+            <div><input id="addUserBtn" type="submit" value="Add user" disabled></div>
+                <div><button type="button" onclick="clearUserForm()">Clear</button> </div>
+            </form>
+
+        </div>
+        <div class="col-6" style="margin-top: 15px">
+            <h3>Users:</h3>
+            <table class="table" style="margin-top: 45px">
+                <tr>
+                    <td>Username</td>
+                    <td>Full name</td>
+                    <td>Role</td>
+                </tr>
+                <#list users as usr>
+                    <#if usr.username??>
+                    <tr>
+                        <td>${usr.username}</td>
+                        <td>${usr.fullName}</td>
+                        <td id="role${usr.username}"><#if usr.roles?seq_contains("ROLE_DOCTOR")>Doctor</#if>
+                            <#if usr.roles?seq_contains("ROLE_NURSE")>Nurse</#if>
+                            <#if usr.roles?seq_contains("ROLE_ADMIN")>Admin</#if>
+                        </td>
+
+                        <td><a href="/user/delete/${usr.username}">Delete</a></td>
+                        <td><button type="button" onclick="editUser('${usr.username}', '${usr.fullName}', '${usr.password}')">EDIT</button> </td>
+                    </tr>
+                    </#if>
+                </#list>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<#--<#if errors??>-->
+<#--    <#list errors as er>-->
+<#--        <#if er.defaultMessage == "Full name cannot be empty">-->
+<#--            <div>Full name cannot be empty</div>-->
+<#--        </#if>-->
+<#--    </#list>-->
+<#--</#if>-->
+
+<script>
+    function clearUserForm() {
+        document.getElementById("usernameInput").value = "";
+        document.getElementById("fullNameInput").value = "";
+        document.getElementById("passwordInput").value = "";
+
+        document.getElementById("inputGroupSelect01").value = 1;
+    }
+
+    function editUser(username, fullName, password) {
+        var role = document.getElementById("role" + username).innerText;
+
+
+        switch (role) {
+            case "Doctor" : document.getElementById("inputGroupSelect01").value = 2;
+                            document.getElementById("selectOptionDoctor").click();
+                break;
+            case "Admin" : document.getElementById("inputGroupSelect01").value = 4;
+                           document.getElementById("selectOptionAdmin").click();
+                break;
+            case "Nurse" : document.getElementById("inputGroupSelect01").value = 3;
+                           document.getElementById("selectOptionNurse").click();
+                break;
+        }
+
+        document.getElementById("usernameInput").value = username;
+        document.getElementById("fullNameInput").value = fullName;
+        document.getElementById("passwordInput").value = password;
+
+        checkFullName();
+        checkPassword();
+        checkName();
+        checkRole();
+    }
+
+    function setRole(el) {
+        switch (el.innerText) {
+            case "Set Role": document.getElementById("role").value = "";
+                break;
+            case "Doctor": document.getElementById("role").value = "ROLE_DOCTOR";
+                break;
+            case "Nurse": document.getElementById("role").value = "ROLE_NURSE";
+                break;
+            case "Admin": document.getElementById("role").value = "ROLE_ADMIN";
+        }
+
+
+    }
+    function setRequired(el) {
+        el.setAttribute("required", "true");
+    }
+    function removeRequired(el) {
+        el.removeAttribute("required");
+    }
+</script>
+<script>
+<#if errors??>
+    <#list errors as error>
+        <#if error = "username">
+            document.getElementById("usernameInput").classList.add("invalidInput");
+        </#if>
+        <#if error = "password">
+            document.getElementById("passwordInput").classList.add("invalidInput");
+        </#if>
+        <#if error = "password">
+            document.getElementById("fullNameInput").classList.add("invalidInput");
+        </#if>
+    </#list>
+</#if>
+</script>
+
+<script src="/js/validation.js" type="text/javascript"></script>
 
 </body>
 </html>

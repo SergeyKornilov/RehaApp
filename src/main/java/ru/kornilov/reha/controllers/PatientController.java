@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
 
+import javax.validation.Valid;
 import java.util.Set;
 
 @Controller
@@ -36,7 +38,7 @@ public class PatientController {
         return "patient/patient-list";
     }
 
-    @GetMapping("/addPatientPage")
+    @GetMapping("/add-patient-page")
     public String addPatientPage(Model model, @AuthenticationPrincipal User user) {
   //      logger.debug("running method addPatientPage, on GetMapping /addPatientPage");
 
@@ -47,8 +49,12 @@ public class PatientController {
 
 
     @PostMapping("/patient-add")
-    public String patientSave(@ModelAttribute Patient patient, Model model){
+    public String patientSave(@ModelAttribute@Valid Patient patient,
+                              BindingResult bindingResult, Model model){
  //       logger.debug("running method patientSave, on PostMapping /patient-add");
+
+
+
 
         patientService.addPatient(patient);
         model.addAttribute("patients", patientService.allPatients());

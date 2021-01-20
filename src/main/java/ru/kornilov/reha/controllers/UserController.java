@@ -4,13 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.UserService;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -19,18 +25,32 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/admin")
+    public String addUser(@ModelAttribute @Valid User user,
+                        BindingResult bindingResult,
+                          Map<String, Object> model) {
 
-    @PostMapping("/registration")
-    public String addUser(@ModelAttribute User user, Map<String, Object> model) {
 
- //       logger.debug("running method addUser, on PostMapping /registration");
+        if (bindingResult.hasErrors() ) {
+            Set<String> errors = new HashSet<>();
+
+            for (ObjectError error : bindingResult.getAllErrors()) { // 1.
+                String fieldError = ((FieldError) error).getField(); // 2.
+                errors.add(fieldError);
+            }
+            model.put("users", userService.allUsers());
+            model.put("errors", errors);
+            return "admin/admin-panel";
+        }
+
+
+ //     logger.debug("running method addUser, on PostMapping /registration");
         User userFromDb = userService.findByUsername(user.getUsername());
 
         if(userFromDb != null){
             model.put("message", "User exists!");
             return "admin/admin-panel";
         }
-
 
         userService.addUser(user);
 
@@ -39,8 +59,7 @@ public class UserController {
 
     @GetMapping("/access-denied")
     public String accessDenied(){
- //       logger.debug("running method accessDenied, on GetMapping /access-denied");
-
+ //       logger.debug("running method accessDenied, on GetMapping /access-denied")
         return "main/access-denied";
     }
 
@@ -51,5 +70,12 @@ public class UserController {
 //        logger.debug("running method openProfile, on GetMapping /profile");
         model.addAttribute("user", user);
         return "main/profile";
+    }
+
+    @GetMapping("/user/delete/{username}")
+    public String prescribingDelete(@PathVariable("username") String username, Model model, HttpServletRequest request) {
+        userService.deleteUser(userService.findByUsername(username));
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 }

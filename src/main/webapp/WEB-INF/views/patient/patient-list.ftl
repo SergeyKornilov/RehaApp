@@ -44,7 +44,7 @@
     </#if>
 </#list>
 </table>
-<a href="/patient-add/">Add patient</a>
+<a href="/add-patient-page">Add patient</a>
         </div>
     </div>
 </div>
