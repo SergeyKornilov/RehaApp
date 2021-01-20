@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.kornilov.reha.entities.Patient;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class PatientDAO  {
@@ -44,5 +45,13 @@ public class PatientDAO  {
 
         Session session = sessionFactory.getCurrentSession();
         return session.get(Patient.class, id);
+    }
+
+    public Patient getByInsuranceNumber(String insuranceNumber){
+
+        List<Patient> patients = allPatients().stream()
+                .filter(patient -> patient.getInsuranceNumber().equals(insuranceNumber))
+                .collect(Collectors.toList());
+        return patients.size() > 0 ? patients.get(0) : null;
     }
 }

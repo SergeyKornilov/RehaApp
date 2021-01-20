@@ -164,8 +164,6 @@
                 break;
             case "Admin": document.getElementById("role").value = "ROLE_ADMIN";
         }
-
-
     }
     function setRequired(el) {
         el.setAttribute("required", "true");

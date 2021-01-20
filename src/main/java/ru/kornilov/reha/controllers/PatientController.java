@@ -48,18 +48,32 @@ public class PatientController {
     }
 
 
-    @PostMapping("/patient-add")
+    @PostMapping("/add-patient-page")
     public String patientSave(@ModelAttribute@Valid Patient patient,
-                              BindingResult bindingResult, Model model){
+                              BindingResult bindingResult, Model model,
+                              @AuthenticationPrincipal User user){
  //       logger.debug("running method patientSave, on PostMapping /patient-add");
 
+        patientService.patientValidate(patient, bindingResult);
 
+        if(bindingResult.hasErrors()){
+            if(bindingResult.hasFieldErrors("insuranceNumber")){
+                if(bindingResult.getFieldError("insuranceNumber").getDefaultMessage().equals("Duplicate insurance number")){
+                    model.addAttribute("duplicatePatient", patientService.selectPatientByInsurance(patient.getInsuranceNumber()));
+                }
+            }
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("add", true);
+            model.addAttribute("user", user);
 
+            return "patient/patient-form";
+        } else {
 
-        patientService.addPatient(patient);
-        model.addAttribute("patients", patientService.allPatients());
+            patientService.addPatient(patient);
 
-        return "patient/patient-list";
+            return "redirect:/patient-list";
+
+        }
     }
 
     @GetMapping("/patient/edit/{id}")
@@ -74,12 +88,25 @@ public class PatientController {
     }
 
     @PostMapping("/patient-edit")
-    public String patientUpdate(@ModelAttribute Patient patient, Model model){
+    public String patientUpdate(@ModelAttribute@Valid Patient patient,
+                                BindingResult bindingResult,
+                                Model model,
+                                @AuthenticationPrincipal User user){
  //       logger.debug("running method patientUpdate, on PostMapping /patient-edit");
 
-        patientService.updatePatient(patient);
-        model.addAttribute("patients", patientService.allPatients());
-        return "patient/patient-list";
+        patientService.patientValidateForEdit(patient, bindingResult);
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("add", false);
+            model.addAttribute("user", user);
+            return "patient/patient-form";
+        } else {
+            patientService.updatePatient(patient);
+
+            return "redirect:/patient-list";
+        }
+
     }
 
     @GetMapping("/patient/delete/{id}")

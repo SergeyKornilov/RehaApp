@@ -21,17 +21,17 @@ public class User implements UserDetails {
     @Id
     @Column(name = "username")
     @NotBlank(message = "Username cannot be empty")
-    @Size(min = 2, max = 25, message = "min 2 characters, max - 25")
+    @Size(min = 2, max = 25, message = "Username length: min 2 characters, max - 25")
     private String username;
 
     @Column(name = "password")
     @NotBlank(message = "Password cannot be empty")
-    @Size(min = 8, max = 225, message = "min 8 characters, max - 225")
+    @Size(min = 8, max = 225, message = "Password length: min 8 characters, max - 225")
     private String password;
 
     @Column(name = "full_name")
     @NotBlank(message = "Full name cannot be empty")
-    @Size(min = 2, max = 50, message = "min 8 characters, max - 50")
+    @Size(min = 2, max = 50, message = "FullName length: min 8 characters, max - 50")
     private String fullName;
 
 //    @Email(message = "Email is not correct")
