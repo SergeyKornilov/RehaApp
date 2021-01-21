@@ -2,12 +2,15 @@ package ru.kornilov.reha.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
 import ru.kornilov.reha.DAO.EventDAO;
 import ru.kornilov.reha.DAO.PrescribingDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Prescribing;
 
 import javax.transaction.Transactional;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -45,12 +48,48 @@ public class PrescribingService {
         return prescribingDao.getById(id);
     }
 
+
+
     @Transactional
     public void deleteChildEvents(Prescribing prescribing){
         List<Event> events = prescribing.getEvents();
         for (Event event :
                 events) {
             eventDAO.deleteEvent(event);
+        }
+        prescribing.getEvents().clear();
+
+    }
+
+    public void prescribingValidate(Prescribing prescribing, Errors errors){
+        //validate date
+        if(prescribing.getDateStart() == null) {
+            errors.rejectValue("dateStart", "", "Date start cannot be empty");
+
+        } else if(prescribing.getDateEnd() == null){
+            errors.rejectValue("dateEnd", "", "Date end cannot be empty");
+        } else {
+
+            Calendar dateOfStart = new GregorianCalendar();
+            dateOfStart.setTime(prescribing.getDateStart());
+
+            Calendar dateOfEnd = new GregorianCalendar();
+            dateOfEnd.setTime(prescribing.getDateEnd());
+
+            Calendar today = Calendar.getInstance();
+            today.roll(Calendar.DATE, -1);
+
+            if (dateOfStart.after(dateOfEnd)) errors.rejectValue("dateStart", "", "End day is earlier than start day");
+            if (dateOfStart.before(today)) errors.rejectValue("dateEnd", "", "Start day in the past");
+        }
+        //validate week days
+        if(prescribing.getDayOfWeeks().size() == 0){
+            errors.rejectValue("dayOfWeeks", "", "Day of the week cannot be empty");
+        }
+
+        //validate time
+        if(prescribing.getTime().size() == 0){
+            errors.rejectValue("time", "", "Time cannot be empty");
         }
     }
 

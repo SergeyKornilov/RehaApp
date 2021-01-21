@@ -50,9 +50,11 @@ public class PatientController {
 
     @PostMapping("/add-patient-page")
     public String patientSave(@ModelAttribute@Valid Patient patient,
-                              BindingResult bindingResult, Model model,
+                              BindingResult bindingResult,
+                              Model model,
                               @AuthenticationPrincipal User user){
  //       logger.debug("running method patientSave, on PostMapping /patient-add");
+
 
         patientService.patientValidate(patient, bindingResult);
 
@@ -124,10 +126,10 @@ public class PatientController {
  //       logger.debug("running method openPatientCart, on GetMapping /patient/card/{id}");
 
         Patient patient = patientService.getPatientById(id);
-        Set<Prescribing> prescribing = patient.getPrescribings();
+        Set<Prescribing> prescribings = patient.getPrescribings();
         model.addAttribute("user", user);
         model.addAttribute("patient", patient);
-        model.addAttribute("prescribings", prescribing);
+        model.addAttribute("prescribings", prescribings);
 
         return "patient/patient-card";
     }

@@ -57,6 +57,7 @@ public class PatientService {
         checkAge(patient, errors);
     }
 
+
     @Transactional
     public void patientValidate(Patient patient, Errors errors){
         if (selectPatientByInsurance(patient.getInsuranceNumber()) != null ){

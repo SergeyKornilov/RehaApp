@@ -82,6 +82,9 @@
                 0 2px rgb(83,94,104),
                 0 0 2px rgb(86,96,106);
     }
+    .errorText{
+        color: #e74c3c;
+    }
     </style>
 </head>
 <#include "../parts/head.ftl">
@@ -123,17 +126,17 @@
         </tr>
     <#list prescribings as prescribing>
         <tr>
-            <td>${prescribing.type}</td>
-            <td>${prescribing.name}</td>
+            <td>${(prescribing.type)!}</td>
+            <td>${(prescribing.name)!}</td>
             <td><p id="timePrescribingList${prescribing.id}"><#list prescribing.time?sort as time>
                     ${time}
 
                     </#list> </p></td>
-            <td>${prescribing.dose}</td>
-            <td>${prescribing.dateStart}</td>
-            <td>${prescribing.dateEnd}</td>
+            <td>${(prescribing.dose)!}</td>
+            <td>${(prescribing.dateStart)!}</td>
+            <td>${(prescribing.dateEnd)!}</td>
             <td>
-                <p id="weeks${prescribing.id}">
+                <p id="weeks${(prescribing.id)!}">
 <#--                    <#if prescribing.dayOfWeeks?contain("Sunday")>Sunday</#if>-->
 
                     <#if prescribing.dayOfWeeks?seq_contains("Sunday")>Sunday</#if>
@@ -157,9 +160,9 @@
                 </p>
             </td>
                <td></td>
-                 <td><a href="/prescribing/delete/${prescribing.id}">Delete</a></td>
-                 <td><button type="button" onclick="editPrescribing(${prescribing.id}, '${prescribing.type}' , '${prescribing.name}',
-                             '${prescribing.dose}', '${prescribing.dateStart}', '${prescribing.dateEnd}')">Edit</button>
+                 <td><a href="/prescribing/delete/${(prescribing.id)!}">Delete</a></td>
+                 <td><button type="button" onclick="editPrescribing(${(prescribing.id)!}, '${(prescribing.type)!}' , '${(prescribing.name)!}',
+                             '${(prescribing.dose)!}', '${(prescribing.dateStart)!}', '${(prescribing.dateEnd)!}')">Edit</button>
                  </td>
               <#--              <form method="post">
                       <input type="hidden" name="action" value="edit">
@@ -208,6 +211,16 @@
 
 
 
+    <#if errors??>
+        <#list errors as error>
+            <#if error.defaultMessage == "Type cannot be empty">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+            <#if error.defaultMessage == "Type length: max - 25 characters">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+        </#list>
+    </#if>
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label id="btnProcedure" class="btn btn-secondary active " onclick="selectProcedure()">
             <input type="radio" name="options" id="option1" autocomplete="off" checked> Procedure
@@ -220,15 +233,48 @@
 
     <input hidden type="text" name="type" value="procedure">
 
+    <#if errors??>
+        <#list errors as error>
+            <#if error.defaultMessage == "Name cannot be empty">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+            <#if error.defaultMessage == "Name length: min 2 characters, max - 25">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+        </#list>
+    </#if>
 <p>
     <label>Name</label>
     <input id="prescribingName" type="text" name="name">
 </p>
+    <#if errors??>
+        <#list errors as error>
+            <#if error.defaultMessage == "Date start cannot be empty">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+            <#if error.defaultMessage == "Date end cannot be empty">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+            <#if error.defaultMessage == "End day is earlier than start day">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+            <#if error.defaultMessage == "Start day in the past">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+        </#list>
+    </#if>
     <p id="dateInput">
         Date start <input id="inputDateStart" type="text" class="date start" name="dateStart"/>
         Date end <input type="text" class="date end" name="dateEnd"/>
     </p>
 
+    <#if errors??>
+        <#list errors as error>
+            <#if error.defaultMessage == "Day of the week cannot be empty">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+        </#list>
+    </#if>
     <div id="daysOfWeek" class="row">
         <div class="col-12">
         <button id="sunday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
@@ -270,6 +316,16 @@
 
         <div class="row">
 
+            <#if errors??>
+                <#list errors as error>
+                    <#if error.defaultMessage == "Dose cannot be empty">
+                        <p class="errorText">${error.defaultMessage}</p>
+                    </#if>
+                    <#if error.defaultMessage == "Dose length: max - 25">
+                        <p class="errorText">${error.defaultMessage}</p>
+                    </#if>
+                </#list>
+            </#if>
     <div id="doseInput" hidden>
         <label>dose</label>
         <input id="prescribingDose" type="text" name="dose" value="1">
@@ -282,6 +338,13 @@
     </div></div>
     <div class="row">
         <div class="col-12">
+            <#if errors??>
+                <#list errors as error>
+                    <#if error.defaultMessage == "Time cannot be empty">
+                        <p class="errorText">${error.defaultMessage}</p>
+                    </#if>
+                </#list>
+            </#if>
         <div id = "timeInputForm">
             <div id="procedureTimeInput1" class="bfh-selectbox" data-name="selectbox3" data-value="1" data-filter="true">
                 <div data-value="1">Morning</div>

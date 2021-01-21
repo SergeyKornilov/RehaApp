@@ -1,18 +1,24 @@
 package ru.kornilov.reha.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
+import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.EventService;
 import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Set;
 
 @Controller
 public class PrecribingController {
@@ -39,12 +45,35 @@ public class PrecribingController {
 
 
     @PostMapping(path = "patient/card/{idPatient}", params = {"action=addPrescribing"})
-    public String addPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model){
+    public String addPrescribing(@PathVariable("idPatient") int idPatient,
+                                 @ModelAttribute@Valid Prescribing prescribing,
+                                 BindingResult bindingResult,
+                                 @AuthenticationPrincipal User user,
+                                 Model model){
    //     logger.debug("running method addPrescribing, on PostMapping patient/card/{idPatient}");
 
 
-        prescribingService.setPatient(prescribing, idPatient);
+        prescribingService.prescribingValidate(prescribing, bindingResult);
 
+        if(bindingResult.hasErrors()){
+
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("user", user);
+
+
+            Patient patient = patientService.getPatientById(idPatient);
+
+            Set<Prescribing> prescribings = patient.getPrescribings();
+            model.addAttribute("user", user);
+            model.addAttribute("patient", patient);
+            model.addAttribute("prescribings", prescribings);
+
+
+            return "patient/patient-card";
+        }
+
+
+        prescribingService.setPatient(prescribing, idPatient);
         prescribingService.addPrescribing(prescribing);
 
         eventService.createEvents(prescribing);
