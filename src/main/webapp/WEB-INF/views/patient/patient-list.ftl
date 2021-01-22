@@ -32,7 +32,7 @@
         <td>${patient.surname}</td>
         <td>${patient.name}</td>
         <td>${patient.secondname}</td>
-        <td>${patient.dateOfBirth}</td>
+        <td>${patient.dateOfBirth?datetime?string('dd.MM.yyyy')}</td>
         <td>${patient.diagnosis}</td>
         <td>${patient.insuranceNumber}</td>
         <td>${patient.attendingDoctor}</td>

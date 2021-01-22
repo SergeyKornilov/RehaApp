@@ -29,10 +29,14 @@
                 </div>
 
             </div>
-            <div class="col-1">
-                <img class="eventsImg" src="/img/pill.png">
-                <p>Events</p>
+
+            <a href="/event-list">
+            <div class="col-1 btn-events">
+                <img class="eventsImg" src="/img/events.png">
+                <p style="margin-top: 4px">Events</p>
             </div>
+            </a>
+
             <a href="/patient-list">
                 <div class="col-2 btn-my-patients">
                     <img src="/img/patients.png">

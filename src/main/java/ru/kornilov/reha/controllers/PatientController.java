@@ -122,7 +122,9 @@ public class PatientController {
     }
 
     @GetMapping("/patient/card/{id}")
-    public String openPatientCart(@PathVariable("id") int id, @AuthenticationPrincipal User user, Model model) {
+    public String openPatientCart(@PathVariable("id") int id,
+                                  @AuthenticationPrincipal User user,
+                                  Model model) {
  //       logger.debug("running method openPatientCart, on GetMapping /patient/card/{id}");
 
         Patient patient = patientService.getPatientById(id);

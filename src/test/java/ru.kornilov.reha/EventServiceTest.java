@@ -74,7 +74,7 @@ public class EventServiceTest {
 
         when(eventDAO.allEvents()).thenReturn(events);
 
-        assertEquals(events, eventDAO.allEvents());
+        assertEquals(events, eventService.allEvents());
     }
 
 }

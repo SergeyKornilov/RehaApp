@@ -45,13 +45,23 @@ public class EventService {
         return eventDAO.getById(id);
     }
 
+
     @Transactional
-    public void changeStatus(int id){
+    public void setStatusClose(int id){
         Event event = getEventById(id);
         if (event.getStatus().equals("open")) {
             event.setStatus("close");
-        } else event.setStatus("open");
-        updateEvent(event);
+        }
+    }
+
+    @Transactional
+    public void setStatusCancel(int id, String reason){
+        Event event = getEventById(id);
+        if (event.getStatus().equals("open")) {
+            event.setStatus("cancel");
+            event.setReason(reason);
+        }
+
     }
 
 

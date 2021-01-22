@@ -58,8 +58,6 @@ public class PrecribingController {
         if(bindingResult.hasErrors()){
 
             model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("user", user);
-
 
             Patient patient = patientService.getPatientById(idPatient);
 
@@ -78,6 +76,7 @@ public class PrecribingController {
 
         eventService.createEvents(prescribing);
 
+        model.addAttribute("user", user);
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));
 
@@ -85,20 +84,41 @@ public class PrecribingController {
     }
 
     @PostMapping(path = "patient/card/{idPatient}", params = {"action=edit"})
-    public String editPrescribing(@PathVariable("idPatient") int idPatient,@ModelAttribute Prescribing prescribing, Model model) {
-   //     logger.debug("running method editPrescribing, on PostMapping patient/card/{idPatient}");
+    public String editPrescribing(@PathVariable("idPatient") int idPatient,
+                                  @ModelAttribute@Valid Prescribing prescribing,
+                                  BindingResult bindingResult,
+                                  @AuthenticationPrincipal User user,
+                                  Model model) {
+        //     logger.debug("running method editPrescribing, on PostMapping patient/card/{idPatient}");
+
+        prescribingService.prescribingValidate(prescribing, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("errors", bindingResult.getAllErrors());
 
 
+            Patient patient = patientService.getPatientById(idPatient);
+
+            Set<Prescribing> prescribings = patient.getPrescribings();
+
+            model.addAttribute("user", user);
+            model.addAttribute("patient", patient);
+            model.addAttribute("prescribings", prescribings);
+
+
+            return "patient/patient-card";
+        }
         Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
-
-
         prescribingService.deleteChildEvents(oldPrescribing);
+
 
         prescribingService.setPatient(prescribing, idPatient);
         prescribingService.updatePrescribing(prescribing);
 
         eventService.createEvents(prescribing);
 
+        model.addAttribute("user", user);
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));
 

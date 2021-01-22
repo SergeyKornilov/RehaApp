@@ -1,6 +1,7 @@
 package ru.kornilov.reha.entities;
 
         import javax.persistence.*;
+        import javax.validation.constraints.NotBlank;
         import java.util.Date;
 
 @Entity
@@ -21,6 +22,9 @@ public class Event {
     @Column(name = "time")
     private String time;
 
+    @Column(name = "reason")
+    private String reason;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "prescribing_id")
     private Prescribing prescribing;
@@ -32,6 +36,14 @@ public class Event {
         this.date = date;
         this.status = status;
         this.time = time;
+        this.prescribing = prescribing;
+    }
+
+    public Event(Date date, String status, String time, String reason, Prescribing prescribing) {
+        this.date = date;
+        this.status = status;
+        this.time = time;
+        this.reason = reason;
         this.prescribing = prescribing;
     }
 
@@ -67,6 +79,14 @@ public class Event {
         this.time = time;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     public Prescribing getPrescribing() {
         return prescribing;
     }
@@ -82,8 +102,8 @@ public class Event {
                 ", date=" + date +
                 ", status='" + status + '\'' +
                 ", time='" + time + '\'' +
+                ", reason='" + reason + '\'' +
                 ", prescribing=" + prescribing +
                 '}';
     }
-
 }
