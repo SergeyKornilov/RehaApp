@@ -72,7 +72,7 @@ public class PrecribingController {
 
         prescribingService.setPatient(prescribing, idPatient);
 
-        String existingProcedureErrorMessage = eventService.validateEvents(prescribing);
+        String existingProcedureErrorMessage = eventService.validateEvents(prescribing, patientService.getPatientById(idPatient));
 
         if (existingProcedureErrorMessage.length() != 0){
 
@@ -124,7 +124,8 @@ public class PrecribingController {
             return "patient/patient-card";
         }
 
-        String existingProcedureErrorMessage = eventService.validateEvents(prescribing);
+        String existingProcedureErrorMessage = eventService.validateEvents(prescribing, patientService.getPatientById(idPatient));
+
 
         if (existingProcedureErrorMessage.length() != 0){
 

@@ -62,6 +62,8 @@
             border-radius: 4.9359px;
             border: none;
         }
+
+
     </style>
 </head>
 <#include "../parts/head.ftl">
@@ -87,22 +89,24 @@
 <table id="tableListEvents" class="table" style="background: #E0FDFF;">
     <tr>
         <td>Date</td>
-        <td>Status</td>
         <td>Time</td>
         <td>Type</td>
         <td>Patient Name</td>
         <td>Prescribing description</td>
+        <td>Status</td>
+
         <td></td>
     </tr>
 
 <#list events?sort_by("date") as event>
         <tr>
-            <td>${event.date?datetime?string('dd.MM.yyyy')}</td>
-            <td>${event.status}</td>
-            <td>${event.time}</td>
-            <td>${event.prescribing.type}</td>
-            <td>${event.prescribing.patient.name}</td>
-            <td>${event.prescribing.name}</td>
+            <td>${(event.date?datetime?string('dd.MM.yyyy'))!}</td>
+            <td>${(event.time)!}</td>
+            <td>${(event.prescribing.type)!}</td>
+            <td>${(event.prescribing.patient.name)!}</td>
+            <td>${(event.prescribing.name)!}</td>
+            <td>${(event.status)!} <#if event.reason??>-</#if> ${(event.reason)!}</td>
+
             <td><#if event.status = "open"><a href="/event/done/${event.id}"><button class="btn-done" type="button">Done</button> </a></#if>
                 <#if event.status = "open"><button onclick="setEventIdPostForm(${(event.id)!})" class="btn-done open" style="background: #e74c3c" type="button">Cancel</button></#if>
             </td>

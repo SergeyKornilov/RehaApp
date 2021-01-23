@@ -76,8 +76,8 @@
                     <option id="selectOptionAdmin" value="4" onclick="setRole(this)">Admin</option>
                 </select>
             </div>
-            <div><input id="addUserBtn" type="submit" value="Add user" disabled></div>
-                <div><button type="button" onclick="clearUserForm()">Clear</button> </div>
+            <div><input class="btn-add-clear-user" id="addUserBtn" type="submit" value="Add user" disabled></div>
+                <div><button style="margin-top: 20px" class="btn-add-clear-user" type="button" onclick="clearUserForm()">Clear</button> </div>
             </form>
 
         </div>
@@ -99,8 +99,10 @@
                             <#if usr.roles?seq_contains("ROLE_ADMIN")>Admin</#if>
                         </td>
 
-                        <td><a href="/user/delete/${usr.username}">Delete</a></td>
-                        <td><button type="button" onclick="editUser('${usr.username}', '${usr.fullName}', '${usr.password}')">EDIT</button> </td>
+                        <td><a href="/user/delete/${usr.username}"><img src="/img/delete.png"></a></td>
+                        <td>
+                            <img style="cursor: pointer;" src="/img/edit.png" onclick="editUser('${usr.username}', '${usr.fullName}', '${usr.password}')">
+                        </td>
                     </tr>
                     </#if>
                 </#list>
@@ -125,6 +127,8 @@
         document.getElementById("passwordInput").value = "";
 
         document.getElementById("inputGroupSelect01").value = 1;
+        addUserBtn.setAttribute("disabled", "true");
+
     }
 
     function editUser(username, fullName, password) {

@@ -4,19 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import ru.kornilov.reha.DAO.PatientDAO;
+import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
 
 import javax.transaction.Transactional;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PatientService {
 
     @Autowired
     private PatientDAO patientDAO;
+
+    @Autowired
+    private EventService eventService;
 
     @Transactional
     public List<Patient> allPatients(){
@@ -64,6 +66,33 @@ public class PatientService {
             errors.rejectValue("insuranceNumber", "", "Duplicate insurance number");
         }
         checkAge(patient, errors);
+    }
+
+    @Transactional
+    public void cancelAllEventsWhenIssued(Patient patient){
+        Set<Prescribing> prescribings = patient.getPrescribings();
+
+        Calendar today = Calendar.getInstance();
+        today.roll(Calendar.DATE, -1);
+
+        Calendar dateOfEvent = new GregorianCalendar();
+
+        for (Prescribing prescribing:
+             prescribings) {
+            Set<Event> events = new HashSet<>(prescribing.getEvents());
+            if (events.size() != 0) {
+                for (Event event :
+                        events) {
+
+                    dateOfEvent.setTime(event.getDate());
+                    if (dateOfEvent.after(today)) {
+                        event.setStatus("Cancel");
+                        event.setReason("Patient was issued");
+                        eventService.updateEvent(event);
+                    }
+                }
+            }
+        }
     }
 
     public void checkAge(Patient patient, Errors errors) {

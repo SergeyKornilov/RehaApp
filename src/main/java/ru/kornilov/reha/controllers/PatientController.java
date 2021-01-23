@@ -108,11 +108,14 @@ public class PatientController {
             model.addAttribute("user", user);
             return "patient/patient-form";
         } else {
+
             patientService.updatePatient(patient);
 
+            if (patient.getStatus().equals("Issued")) {
+                patientService.cancelAllEventsWhenIssued(patientService.getPatientById(patient.getId()));
+            }
             return "redirect:/patient-list";
         }
-
     }
 
     @GetMapping("/patient/delete/{id}")
