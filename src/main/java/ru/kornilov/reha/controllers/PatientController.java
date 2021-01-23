@@ -14,6 +14,7 @@ import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
+import ru.kornilov.reha.service.UserService;
 
 import javax.validation.Valid;
 import java.util.Set;
@@ -22,6 +23,8 @@ import java.util.Set;
 public class PatientController {
 //    private static final Logger logger = Logger.getLogger(PatientController.class);
 
+    @Autowired
+    UserService userService;
 
     @Autowired
     private PatientService patientService;
@@ -70,6 +73,7 @@ public class PatientController {
 
             return "patient/patient-form";
         } else {
+
 
             patientService.addPatient(patient);
 

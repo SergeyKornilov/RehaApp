@@ -17,7 +17,26 @@
                 </a>
             </div>
 
-            <div class="col-xl-5 col-md-4">
+<#--            <#if user.roles = "ROLE_ADMIN">3</#if>-->
+
+            <#list user.roles as role>
+                <#if role = "ROLE_ADMIN">
+                    <#assign x = 4>
+                    <#assign userRole = role>
+                </#if>
+                <#if role = "ROLE_DOCTOR">
+                    <#assign x = 5>
+                    <#assign userRole = role>
+                </#if>
+                <#if role = "ROLE_NURSE">
+                    <#assign x = 6>
+                    <#assign userRole = role>
+                </#if>
+
+            </#list>
+
+
+            <div class="col-xl-${x} col-md-4">
 
                 <div class="title">
                     <a class="titleText" href="/">
@@ -30,20 +49,31 @@
 
             </div>
 
+            <#if userRole = "ROLE_ADMIN">
+            <a href="/admin">
+                <div class="col-1 btn-events">
+                    <img class="eventsImg" src="/img/admin.png">
+                    <p style="margin-top: 4px">Admin</p>
+                </div>
+            </a>
+            </#if>
+            <#if userRole = "ROLE_ADMIN" || userRole = "ROLE_NURSE" || userRole = "ROLE_DOCTOR">
             <a href="/event-list">
-            <div class="col-1 btn-events">
+            <div class="col-2 btn-events">
                 <img class="eventsImg" src="/img/events.png">
                 <p style="margin-top: 4px">Events</p>
             </div>
             </a>
+            </#if>
 
+            <#if userRole = "ROLE_ADMIN" || userRole = "ROLE_DOCTOR">
             <a href="/patient-list">
                 <div class="col-2 btn-my-patients">
                     <img src="/img/patients.png">
                     <p class="my-patients-lable">My Patients</p>
                 </div>
             </a>
-
+            </#if>
                 <div class="col-2 btn-profile">
                     <a href="/profile">
                     <img src="/img/profile.png">
@@ -53,11 +83,12 @@
                         ${user.fullName}</#if></lable>
                     </a>
                 </div>
-
+            <div class = "col-1">
             <form action="/logout" method="post">
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 <input class="btn-logout" type="submit" value="LoGout"/>
             </form>
+            </div>
         </div>
     </div>
 </div>

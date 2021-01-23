@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.entities.User;
@@ -43,7 +44,6 @@ public class PrecribingController {
         return "redirect:"+ referer;
     }
 
-
     @PostMapping(path = "patient/card/{idPatient}", params = {"action=addPrescribing"})
     public String addPrescribing(@PathVariable("idPatient") int idPatient,
                                  @ModelAttribute@Valid Prescribing prescribing,
@@ -66,12 +66,27 @@ public class PrecribingController {
             model.addAttribute("patient", patient);
             model.addAttribute("prescribings", prescribings);
 
+            return "patient/patient-card";
+
+        }
+
+        prescribingService.setPatient(prescribing, idPatient);
+
+        String existingProcedureErrorMessage = eventService.validateEvents(prescribing);
+
+        if (existingProcedureErrorMessage.length() != 0){
+
+            System.out.println(prescribing.toString());
+
+            model.addAttribute("existingProcedureErrorMessage", existingProcedureErrorMessage);
+
+            model.addAttribute("user", user);
+            model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
+            model.addAttribute("patient", patientService.getPatientById(idPatient));
 
             return "patient/patient-card";
         }
 
-
-        prescribingService.setPatient(prescribing, idPatient);
         prescribingService.addPrescribing(prescribing);
 
         eventService.createEvents(prescribing);
@@ -97,7 +112,6 @@ public class PrecribingController {
 
             model.addAttribute("errors", bindingResult.getAllErrors());
 
-
             Patient patient = patientService.getPatientById(idPatient);
 
             Set<Prescribing> prescribings = patient.getPrescribings();
@@ -109,6 +123,22 @@ public class PrecribingController {
 
             return "patient/patient-card";
         }
+
+        String existingProcedureErrorMessage = eventService.validateEvents(prescribing);
+
+        if (existingProcedureErrorMessage.length() != 0){
+
+            System.out.println(prescribing.toString());
+
+            model.addAttribute("existingProcedureErrorMessage", existingProcedureErrorMessage);
+
+            model.addAttribute("user", user);
+            model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
+            model.addAttribute("patient", patientService.getPatientById(idPatient));
+
+            return "patient/patient-card";
+        }
+
         Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
         prescribingService.deleteChildEvents(oldPrescribing);
 

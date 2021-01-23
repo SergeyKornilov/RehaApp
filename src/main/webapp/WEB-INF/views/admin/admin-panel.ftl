@@ -19,7 +19,6 @@
 
             <h3 style="padding-bottom: 15px; margin-top: 15px">Add user:</h3>
 
-
 <#--                <form method="post">-->
 
 <#--                    <div><label>User name: <input class="form-control" type="text" name="username"/> </label></div>-->

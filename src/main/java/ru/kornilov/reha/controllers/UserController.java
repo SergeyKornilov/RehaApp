@@ -26,8 +26,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/admin")
-    public String addUser(@ModelAttribute @Valid User user,
+    public String addUser(@ModelAttribute @Valid User newUser,
                         BindingResult bindingResult,
+                          @AuthenticationPrincipal User user,
                           Map<String, Object> model) {
 
 
@@ -40,19 +41,23 @@ public class UserController {
             }
             model.put("users", userService.allUsers());
             model.put("errors", errors);
+            model.put("user", user);
             return "admin/admin-panel";
         }
 
 
  //     logger.debug("running method addUser, on PostMapping /registration");
-        User userFromDb = userService.findByUsername(user.getUsername());
+        User userFromDb = userService.findByUsername(newUser.getUsername());
 
         if(userFromDb != null){
             model.put("message", "User exists!");
             return "admin/admin-panel";
         }
 
-        userService.addUser(user);
+
+        userService.addUser(newUser);
+        model.put("user", user);
+        model.put("users", userService.allUsers());
 
         return "admin/admin-panel";
     }

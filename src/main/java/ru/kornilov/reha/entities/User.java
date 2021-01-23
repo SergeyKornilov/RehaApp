@@ -38,7 +38,6 @@ public class User implements UserDetails {
 //    @NotBlank(message = "Email cannot be empty")
 //    private String email;
 
-    @NotBlank(message = "Role cannot be empty")
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;

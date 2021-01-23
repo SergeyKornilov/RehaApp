@@ -3,6 +3,7 @@ package ru.kornilov.reha.entities;
         import javax.persistence.*;
         import javax.validation.constraints.NotBlank;
         import java.util.Date;
+        import java.util.Objects;
 
 @Entity
 @Table(name = "event")
@@ -105,5 +106,23 @@ public class Event {
                 ", reason='" + reason + '\'' +
                 ", prescribing=" + prescribing +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return id == event.id &&
+                date.equals(event.date) &&
+                status.equals(event.status) &&
+                time.equals(event.time) &&
+                Objects.equals(reason, event.reason) &&
+                prescribing.equals(event.prescribing);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, date, status, time, reason, prescribing);
     }
 }
