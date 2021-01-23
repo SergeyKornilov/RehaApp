@@ -17,21 +17,21 @@ function checkBtn() {
 
 }
 
-function checkFullName() {
-    var el = document.getElementById("fullNameInput");
+    function checkFullName() {
+        var el = document.getElementById("fullNameInput");
 
-    var str = el.value;
+        var str = el.value;
 
-    var error1 = document.getElementById("errorsFullName").querySelector("li:nth-child(1)");
-    var error2 = document.getElementById("errorsFullName").querySelector("li:nth-child(2)");
+        var error1 = document.getElementById("errorsFullName").querySelector("li:nth-child(1)");
+        var error2 = document.getElementById("errorsFullName").querySelector("li:nth-child(2)");
 
-    if (str.length < 5 || str.length > 50) {
-        error1.classList.add('invalid');
-        error1.classList.remove('valid');
-    } else{
-        error1.classList.add('valid');
-        error1.classList.remove('invalid');
-    }
+        if (str.length < 5 || str.length > 50) {
+            error1.classList.add('invalid');
+            error1.classList.remove('valid');
+        } else{
+            error1.classList.add('valid');
+            error1.classList.remove('invalid');
+        }
 
 
 

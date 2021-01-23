@@ -1,4 +1,5 @@
 
+
 var countTimeInputs = 2;
 
 function clearPrescribingForm(){
@@ -125,6 +126,7 @@ function setWeek(el) {
 
 
 function selectProcedure() {
+    doseValidFlag = true;
 
     document.getElementById("btnProcedure").classList.add("active");
     document.getElementById("btnMedicines").classList.remove("active");
@@ -158,6 +160,13 @@ function selectProcedure() {
     document.getElementById("saturday").classList.remove("active");
 }
 function selectMedicines() {
+
+    doseValidFlag = false;
+
+    checkBtn();
+
+    document.getElementById("prescribingDose").value = "";
+
     document.getElementById("btnMedicines").classList.add("active");
     document.getElementById("btnProcedure").classList.remove("active");
     document.getElementsByName("type")[0].setAttribute("value", "medicines");
@@ -249,10 +258,17 @@ function addPrescribingInput() {
 
 <!-- Datepair script-->
 
+var date = new Date();
+var startDate = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+
+
 $('#dateInput .date').datepicker({
     'format': 'dd.mm.yyyy',
-    'autoclose': true
+    'autoclose': true,
+    startDate: startDate
 });
+
+
 
 // initialize datepair
 var basicExampleEl = document.getElementById('dateInput');

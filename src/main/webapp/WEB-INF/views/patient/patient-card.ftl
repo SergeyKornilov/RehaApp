@@ -32,24 +32,109 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.16/jquery.timepicker.js" integrity="sha512-znJmsCnj1pyv7QN2fn4UYqXw3Bp2KXMYPPbphEOkhGP8RQbePNSLUfZWd733MXIQsyaszx4PhVq9jadWa1fq5w==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/style-patient-card.css">
 
+    <style>
+        .patient-info-table{
+            border: none;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .patient-info-table-col1{
+            width: 250px;
+        }
+        .patient-info-table-col2{
+            width: 170px;
+            font-weight: 600;
 
+        }
+        .patient-info-back{
+            margin-right: auto;
+            margin-left: auto;
+            background: rgba(135, 234, 254, 0.3);
+            border-radius: 10px;
+            padding-top: 50px;
+            padding-right: 90px;
+            padding-left: 90px;
+            padding-bottom: 50px;
+            vertical-align: auto;
+            position:relative;
+        }
+        .user-avatar-back{
+            background: #FFFFFF;
+            box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 40px;
+            vertical-align: auto;
+        }
+        .btn-edit-patient-card{
+            vertical-align: top;
+            horiz-align: right;
+            padding-top: -50px;
+        }
+        .form-control{
+            box-shadow: none!important;
+        }
+
+    </style>
 </head>
 <#include "../parts/head.ftl">
 <body>
 
 <div class="container">
-    <div class="row">
-        <h2>Patient cart #${patient.id}</h2>
-
+    <div class="row center-block">
+        <div class="col-12">
+            <h1 style="text-align: center; margin-top: 30px; margin-bottom: 30px" class="display-4">Patient card #${patient.id}</h1>
+        </div>
 
     </div>
     <div class="row">
-        <div class="col-6">
-            <h3>${patient.surname} ${patient.name} ${patient.secondname}</h3>
+        <div class="patient-info-back">
+            <a href="/patient/edit/${patient.id}" style="position: absolute; right: 20px;top:25px"><img src="/img/edit-patient-card.png"></a>
+        <table class="patient-info-table">
+            <tr>
+                <td class="patient-info-table-col1">Name:</td>
+                <td class="patient-info-table-col2" >${(patient.name)!}</td>
+                <td rowspan="8"><div class="user-avatar-back"><img src="/img/userdefault.png"></div></td>
+                <td rowspan="8" class="btn-edit-patient-card"></td>
+            </tr>
+            <tr>
+                <td>Secondname:</td>
+                <td class="patient-info-table-col2">${(patient.secondname)!}</td>
+            </tr>
+            <tr>
+                <td>Surname:</td>
+                <td class="patient-info-table-col2">${(patient.surname)!}</td>
+            </tr>
+            <tr>
+                <td>Date of birth:</td>
+                <td class="patient-info-table-col2">${(patient.dateOfBirth?string('dd.MM.yyyy'))!}</td>
+            </tr>
+            <tr>
+                <td>Diagnosis:</td>
+                <td class="patient-info-table-col2">${(patient.diagnosis)!}</td>
+            </tr>
+            <tr>
+                <td>Insurance number:</td>
+                <td class="patient-info-table-col2">${(patient.insuranceNumber)!}</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td class="patient-info-table-col2">${(patient.status)!}</td>
+            </tr>
+            <tr>
+                <td>Attending doctor</td>
+                <td class="patient-info-table-col2">${(patient.attendingDoctor)!}</td>
+            </tr>
+
+        </table>
+
         </div>
-        <div class="col-6">
-            <p>${patient.dateOfBirth} ${patient.dateOfBirth} ${patient.dateOfBirth} ${patient.status} ${patient.attendingDoctor}</p>
-        </div>
+
+<#--        <div class="col-6">-->
+<#--            <h3>${patient.surname} ${patient.name} ${patient.secondname}</h3>-->
+<#--        </div>-->
+<#--        <div class="col-6">-->
+<#--            <p>${patient.dateOfBirth} ${patient.dateOfBirth} ${patient.dateOfBirth} ${patient.status} ${patient.attendingDoctor}</p>-->
+<#--        </div>-->
 
     </div>
 
@@ -94,41 +179,19 @@
                     <#if prescribing.dayOfWeeks?seq_contains("Friday")>Friday</#if>
                     <#if prescribing.dayOfWeeks?seq_contains("Saturday")>Saturday</#if>
 
-<#--           <#list prescribing.dayOfWeeks?sort as day>-->
-<#--               <#if day?contains("Sunday")>Sunday</#if>-->
-<#--               <#if day?contains("Monday")>Monday</#if>-->
-<#--               <#if day?contains("Tuesday")>Tuesday</#if>-->
-<#--               <#if day?contains("Wednesday")>Wednesday</#if>-->
-<#--               <#if day?contains("Thursday")>Thursday</#if>-->
-<#--               <#if day?contains("Friday")>Friday</#if>-->
-<#--               <#if day?contains("Saturday")>Saturday</#if>-->
-<#--            </#list>-->
+
 
                 </p>
             </td>
                <td></td>
-                 <td><a href="/prescribing/delete/${(prescribing.id)!}">Delete</a></td>
-                 <td><button type="button" onclick="editPrescribing(${(prescribing.id)!}, '${(prescribing.type)!}' , '${(prescribing.name)!}',
-                             '${(prescribing.dose)!}', '${(prescribing.dateStart)!}', '${(prescribing.dateEnd)!}')">Edit</button>
+                 <td><a href="/prescribing/delete/${(prescribing.id)!}"><img src="/img/delete.png"></a></td>
+
+
+            <td>
+                     <img style="cursor: pointer" src="/img/edit.png" onclick="editPrescribing(${(prescribing.id)!}, '${(prescribing.type)!}' , '${(prescribing.name)!}',
+                             '${(prescribing.dose)!}', '${(prescribing.dateStart)!}', '${(prescribing.dateEnd)!}')">
                  </td>
-              <#--              <form method="post">
-                      <input type="hidden" name="action" value="edit">
 
-                      <input type="hidden" name="id" value="${(prescribing.id)!}">
-
-
-                      <td><input type="text" name="type" placeholder="type" value="${(prescribing.type)!}"></td>
-                      <td><input type="text" name="name" placeholder="name" value="${(prescribing.name)!}"></td>
-                      <td><input type="text" name="time" placeholder="time" value="${(prescribing.time)!}"></td>
-                      <td><input type="text" name="dose" placeholder="dose" value="${(prescribing.dose)!}"></td>
-                      <td><input type="text" name="date_start" placeholder="date start" value="${(prescribing.dateStart)!}"></td>
-                      <td><input type="text" name="date_end" placeholder="date end" value="${(prescribing.dateEnd)!}"></td>
-
-                      <td>input for days of week</td>
-
-                      <td><button type="submit">Save</button></td>
-                      </form>
-                      -->
         </tr>
     </#list>
     </table>
@@ -137,23 +200,20 @@
 </#if>
     </div>
     <div class="row">
-
-<button type="button" class="" onclick="openAddPrescribing()">Add prescribing</button>
+        <button type="button" class="active" onclick="openAddPrescribing()">Add prescribing</button>
     </div>
-    <div class="row">
-        <h3 id="prescribingTitle"></h3>
-        <#if existingProcedureErrorMessage??>
-             <p class="errorText">${existingProcedureErrorMessage}</p>
-        </#if>
 
-
-    </div>
     <div class="row">
-<div id="prescribingForm" hidden="true">
+        <div id="prescribingForm" hidden="true">
+            <div class="row">
+                <h3 id="prescribingTitle"></h3>
+                <#if existingProcedureErrorMessage??>
+                    <p class="errorText">${existingProcedureErrorMessage}</p>
+                </#if>
+            </div>
 
 <form method="post" onsubmit="setTime()">
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
-
 
 
     <input id="postTypeAddPrescribing" type="hidden" name="action" value="addPrescribing">
@@ -174,12 +234,27 @@
         </#list>
     </#if>
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label id="btnProcedure" class="btn btn-secondary active " onclick="selectProcedure()">
-            <input type="radio" name="options" id="option1" autocomplete="off" checked> Procedure
-        </label>
-        <label id="btnMedicines" class="btn btn-secondary ml-1" onclick="selectMedicines()">
-            <input type="radio" name="options" id="option2" autocomplete="off"> Medicines
-        </label>
+
+
+
+
+        <button id="btnProcedure" onclick="selectProcedure()" class="active">Procedure</button>
+        <button id="btnMedicines" onclick="selectMedicines()" class="">Medicines</button>
+
+
+<#--        <label id="btnProcedure" class="btn btn-secondary active " onclick="selectProcedure()">-->
+<#--            <input type="radio" name="options" id="option1" autocomplete="off" checked> Procedure-->
+<#--        </label>-->
+<#--        <label id="btnMedicines" class="btn btn-secondary ml-1" onclick="selectMedicines()">-->
+<#--            <input type="radio" name="options" id="option2" autocomplete="off"> Medicines-->
+<#--        </label>-->
+
+
+
+
+
+
+
     </div>
     <p></p>
 
@@ -197,7 +272,11 @@
     </#if>
 <p>
     <label>Name</label>
-    <input id="prescribingName" type="text" name="name">
+    <input  onblur="checkName()" class="form-control" id="prescribingName" type="text" name="name">
+    <ul id = "errorsUsername" class="input-requirements">
+        <li>Name cannot be empty and max long 25</li>
+        <li>Must only contain letters</li>
+    </ul>
 </p>
     <#if errors??>
         <#list errors as error>
@@ -216,8 +295,8 @@
         </#list>
     </#if>
     <p id="dateInput">
-        Date start <input id="inputDateStart" type="text" class="date start" name="dateStart"/>
-        Date end <input type="text" class="date end" name="dateEnd"/>
+        Date start <input id="inputDateStart" type="text" class="date start form-control" name="dateStart" autocomplete="off"/>
+        Date end <input type="text" class="date end form-control" name="dateEnd" autocomplete="off"/>
     </p>
 
     <#if errors??>
@@ -230,44 +309,44 @@
     <div id="daysOfWeek" class="row">
         <div class="col-12">
         <button id="sunday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
-            Sunday
+            Sun
         </button>
         <input id="dayOfWeek-sunday" name="dayOfWeeks" disabled="true" value="Sunday" hidden>
 
         <button id="monday" onclick="setWeek(this)" type="button" class=""  data-toggle="button" aria-pressed="false" autocomplete="off">
-            Monday
+            Mon
         </button>
         <input id="dayOfWeek-monday" name="dayOfWeeks" disabled="true" value="Monday" hidden>
 
         <button id="tuesday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
-            Tuesday
+            Tue
         </button>
         <input id="dayOfWeek-tuesday" name="dayOfWeeks" disabled="true" value="Tuesday" hidden>
 
         <button id="wednesday" onclick="setWeek(this)" type="button" class=" " data-toggle="button" aria-pressed="false" autocomplete="off">
-            Wednesday
+            Wen
         </button>
         <input id="dayOfWeek-wednesday" name="dayOfWeeks" disabled="true" value="Wednesday" hidden>
 
         <button id="thursday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
-            Thursday
+            Thu
         </button>
         <input id="dayOfWeek-thursday" name="dayOfWeeks" disabled="true" value="Thursday" hidden>
 
         <button id="friday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
-            Friday
+            Fri
         </button>
         <input id="dayOfWeek-friday" name="dayOfWeeks" disabled="true" value="Friday" hidden>
 
         <button id="saturday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
-            Saturday
+            Sat
         </button>
         <input id="dayOfWeek-saturday" name="dayOfWeeks" disabled="true" value="Saturday" hidden>
         </div>
     </div>
 
         <div class="row">
-
+            <div class="col">
             <#if errors??>
                 <#list errors as error>
                     <#if error.defaultMessage == "Dose cannot be empty">
@@ -280,13 +359,22 @@
             </#if>
     <div id="doseInput" hidden>
         <label>dose</label>
-        <input id="prescribingDose" type="text" name="dose" value="1">
+
+
+
+
+
+        <input onblur="checkDose()" id="prescribingDose" class="form-control" type="text" name="dose" value="1">
+        <ul id = "errorsDose" class="input-requirements">
+            <li>Dose cannot be empty and max long 25</li>
+        </ul>
     </div>
+        </div>
         </div>
     <div class="row">
         <div class="col-12">
-        <button type="button" class="" onclick="addProcedureTimeInput()">+ times per day</button>
-        <button type="button" class="" onclick="deleteProcedureTimeInput()">- times per day</button>
+        <button style="margin-bottom: 20px; margin-top: 20px"  type="button" class="active" onclick="addProcedureTimeInput()">+ times per day</button>
+        <button type="button" class="active" onclick="deleteProcedureTimeInput()">- times per day</button>
     </div></div>
     <div class="row">
         <div class="col-12">
@@ -417,10 +505,10 @@
 
 
 
-    <button type="submit" class="">Add</button>
+    <button id="addPrescribingBtn" type="submit" class="" disabled>Add</button>
 </form>
     <p></p>
-    <button type="button" class="" onclick="clearPrescribingForm()">Clear</button>
+    <button type="button" class="active" onclick="clearPrescribingForm()">Clear</button>
 
 
 
@@ -436,6 +524,7 @@
 </div>
 <script src="/js/patient-card.js" type="text/javascript"></script>
 
+<script src="/js/validatePrescribingsOn-Patient-card.js" type="text/javascript"></script>
 
 </body>
 </html>
