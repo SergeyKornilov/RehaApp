@@ -85,7 +85,7 @@ public class PatientService {
                         events) {
 
                     dateOfEvent.setTime(event.getDate());
-                    if (dateOfEvent.after(today)) {
+                    if (dateOfEvent.after(today) && event.getStatus().equals("open")) {
                         event.setStatus("Cancel");
                         event.setReason("Patient was issued");
                         eventService.updateEvent(event);
@@ -110,8 +110,8 @@ public class PatientService {
         Calendar today = new GregorianCalendar();
 
         if (patientBirthDay.after(minDateBirthDay) && patientBirthDay.before(today)) errors
-                .rejectValue("dateOfBirth", "", "Patient is too young");
-        if (patientBirthDay.before(maxDateBirthDay)) errors.rejectValue("dateOfBirth", "", "Patient is too old");
+                .rejectValue("dateOfBirth", "", "Patient must be over 18 years of age");
+        if (patientBirthDay.before(maxDateBirthDay)) errors.rejectValue("dateOfBirth", "", "Age can`t be more than 200 years");
         if (patientBirthDay.after(today)) errors.rejectValue("dateOfBirth", "", "Date in the future");
     } else {
         errors.rejectValue("dateOfBirth", "", "Empty date of birth");

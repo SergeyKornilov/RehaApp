@@ -16,6 +16,7 @@ import ru.kornilov.reha.service.PatientService;
 import ru.kornilov.reha.service.PrescribingService;
 import ru.kornilov.reha.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Set;
 
@@ -119,13 +120,13 @@ public class PatientController {
     }
 
     @GetMapping("/patient/delete/{id}")
-    public String patientDelete(@PathVariable("id") int id, Model model) {
+    public String patientDelete(@PathVariable("id") int id, Model model, HttpServletRequest request) {
 //        logger.debug("running method patientDelete, on GetMapping /patient/delete/{id}");
 
         patientService.deletePatient(patientService.getPatientById(id));
         model.addAttribute("patients", patientService.allPatients());
-
-        return "patient/patient-list";
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 
     @GetMapping("/patient/card/{id}")

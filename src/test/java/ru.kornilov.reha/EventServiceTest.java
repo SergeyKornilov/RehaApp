@@ -28,10 +28,10 @@ public class EventServiceTest {
     EventDAO eventDAO;
 
     @Test
-    public void whenCreateEventsDateStartTodayAndDayEndAheadOneWeekAndAllWeekdaysShouldAddSevenEvents(){
+    public void whenCreateEventsDateStartTodayAndDayEndAheadOneWeekAndAllWeekdaysThenAddedSevenEvents(){
         Map<Integer, String> dayOfWeeksAll = new HashMap<>();
 
-        dayOfWeeksAll.put(1, "Sunday");
+        dayOfWeeksAll.put(1, "Sunday");   //выносим всю подготовку в отдельный метод
         dayOfWeeksAll.put(2, "Monday");
         dayOfWeeksAll.put(3, "Tuesday");
         dayOfWeeksAll.put(4, "Wednesday");

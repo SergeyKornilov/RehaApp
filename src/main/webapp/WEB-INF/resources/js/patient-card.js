@@ -259,7 +259,7 @@ function addPrescribingInput() {
 <!-- Datepair script-->
 
 var date = new Date();
-var startDate = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+ var startDate = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
 
 
 $('#dateInput .date').datepicker({

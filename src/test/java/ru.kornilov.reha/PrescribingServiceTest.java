@@ -40,6 +40,7 @@ public class PrescribingServiceTest {
 
     @Test
     public void whenDeleteChildEventsSelectChildEventsLengthIsZero(){
+
         Prescribing prescribing = new Prescribing();
         prescribing.setId(idPrescribing);
 

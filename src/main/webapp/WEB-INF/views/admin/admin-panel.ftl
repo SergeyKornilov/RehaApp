@@ -18,6 +18,7 @@
         <div class="col-6">
 
             <h3 style="padding-bottom: 15px; margin-top: 15px">Add user:</h3>
+            <p>${(message)!}</p>
 
 <#--                <form method="post">-->
 
@@ -38,10 +39,12 @@
                 <div hidden><label>ROLE: <input id="role" type="text" name="roles"/></label></div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
 
+                <input id="postTypeAddUser" type="hidden" name="action" value="addUser">
+
                 <div class="group">
                     <input id="usernameInput" onblur="checkName()" class="dynamic" type="text" required name="username" autocomplete="off">
                     <span class="bar"></span>
-                    <label>Username</label>
+                    <label id="placeholderUsernameInput">Username</label>
                 <ul id = "errorsUsername" class="input-requirements">
                     <li>At least 3 characters long and max 25</li>
                     <li>Must only contain letters</li>
@@ -121,19 +124,40 @@
 <#--</#if>-->
 
 <script>
+
     function clearUserForm() {
         document.getElementById("usernameInput").value = "";
         document.getElementById("fullNameInput").value = "";
         document.getElementById("passwordInput").value = "";
+        document.getElementById("role").value = "";
+        roleValidFlag = false;
+        nameValidFlag = false;
+        passwordValidFlag = false;
+        fullNameValidFlag = false;
+
+
+
 
         document.getElementById("inputGroupSelect01").value = 1;
         addUserBtn.setAttribute("disabled", "true");
+        addUserBtn.value = "Add user";
+        document.getElementById("placeholderUsernameInput").innerText = "Username";
+
+        document.getElementById("usernameInput").removeAttribute("disabled");
+        document.getElementById("postTypeAddUser").value = "addUser";
 
     }
 
     function editUser(username, fullName, password) {
+
+
         var role = document.getElementById("role" + username).innerText;
 
+        document.getElementById("usernameInput").setAttribute("disabled", "true");
+        document.getElementById("placeholderUsernameInput").innerText = "";
+        document.getElementById("postTypeAddUser").value = "editUser";
+
+        addUserBtn.value = "editUser";
 
         switch (role) {
             case "Doctor" : document.getElementById("inputGroupSelect01").value = 2;
@@ -157,6 +181,13 @@
         checkRole();
     }
 
+
+    function setRequired(el) {
+        el.setAttribute("required", "true");
+    }
+    function removeRequired(el) {
+        el.removeAttribute("required");
+    }
     function setRole(el) {
         switch (el.innerText) {
             case "Set Role": document.getElementById("role").value = "";
@@ -168,12 +199,8 @@
             case "Admin": document.getElementById("role").value = "ROLE_ADMIN";
         }
     }
-    function setRequired(el) {
-        el.setAttribute("required", "true");
-    }
-    function removeRequired(el) {
-        el.removeAttribute("required");
-    }
+
+
 </script>
 <script>
 <#if errors??>

@@ -22,7 +22,7 @@
 </head>
 <#include "../parts/head.ftl">
 
-<body <#if !add>onload="validWhenEditLoad()"</#if>>
+<body <#if !add>onload="validWhenEditLoad()" <#else> onload="setRoleWhenErrorValidationOnBackend()"</#if>>
 <div class="container">
     <div class="row">
         <div style="text-align: center" class="col ">
@@ -106,16 +106,17 @@
 
     <#if errors??>
         <#list errors as error>
-            <#if error.defaultMessage == "Patient is too young">
+            <#if error.defaultMessage == "Patient must be over 18 years of age">
                 <p class="errorText">${error.defaultMessage}</p>
             </#if>
-            <#if error.defaultMessage == "Patient is too old">
+            <#if error.defaultMessage == "Age can`t be more than 200 years">
                 <p class="errorText">${error.defaultMessage}</p>
             </#if>
             <#if error.defaultMessage == "Date in the future">
                 <p class="errorText">${error.defaultMessage}</p>
             </#if>
             <#if error.defaultMessage == "Empty date of birth">
+
                 <p class="errorText">${error.defaultMessage}</p>
             </#if>
         </#list>
@@ -158,6 +159,9 @@
                 <p class="errorText">${error.defaultMessage}</p>
             </#if>
             <#if error.defaultMessage == "Insurance Number length: min 8 characters, max - 25">
+                <p class="errorText">${error.defaultMessage}</p>
+            </#if>
+            <#if error.defaultMessage == "Duplicate insurance number">
                 <p class="errorText">${error.defaultMessage}</p>
             </#if>
         </#list>
@@ -210,7 +214,7 @@
         </#list>
     </#if>
     <p hidden>
-        <input id="status" type="text" name="status" placeholder="status" value="${(patient.status)!}"/>
+        <input onchange="setRoleWhenErrorValidationOnBackend()" id="status" type="text" name="status" placeholder="status" value="${(patient.status)!}"/>
     </p>
     <div class="input-group mb-3 " style="width: 300px">
         <select onclick="checkStatus()" class="custom-select removeShadow" id="inputGroupSelect01">
@@ -234,19 +238,56 @@
 
 <script src="/js/validatorPatient.js" type="text/javascript"></script>
 <script>
+
+    function checkAllValid() {
+        checkSurname();
+        checkName();
+        checkSecondname();
+        checkDiagnosis();
+        checkInsuranceNumber();
+        checkAttendingDoctor();
+        checkStatus();
+    }
+
+
+    function setRoleWhenErrorValidationOnBackend() {
+
+        var status = document.getElementById("status").value;
+        switch (status){
+            case "Inpatient" : document.getElementById("inputGroupSelect01").value = 2;
+                checkAllValid();
+                break;
+            case "Outpatient" : document.getElementById("inputGroupSelect01").value = 3;
+                checkAllValid();
+                break;
+            case "Issued" : document.getElementById("inputGroupSelect01").value = 4;
+                checkAllValid();
+                break;
+        }
+
+    }
+
+
+
     function setStatus(el) {
         switch (el.innerText) {
             case "Set Status": document.getElementById("status").value = "";
                 break;
             case "Inpatient": document.getElementById("status").value = "Inpatient";
+
                 break;
             case "Outpatient": document.getElementById("status").value = "Outpatient";
+
                 break;
             case "Issued": document.getElementById("status").value = "Issued";
+
+                break;
         }
     }
 
     function validWhenEditLoad() {
+
+        setRoleWhenErrorValidationOnBackend();
         checkSurname();
         checkName();
         checkSecondname();

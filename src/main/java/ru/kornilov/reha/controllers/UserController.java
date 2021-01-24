@@ -25,7 +25,38 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/admin")
+    @PostMapping(path = "/admin", params = {"action=editUser"})
+    public String editUser(@ModelAttribute @Valid User newUser,
+                           BindingResult bindingResult,
+                           @AuthenticationPrincipal User user,
+                           Map<String, Object> model) {
+
+        if (bindingResult.hasErrors() ) {
+            Set<String> errors = new HashSet<>();
+
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                String fieldError = ((FieldError) error).getField();
+                errors.add(fieldError);
+            }
+
+
+            model.put("users", userService.allUsers());
+            model.put("errors", errors);
+            model.put("user", user);
+
+            return "admin/admin-panel";
+        }
+
+        userService.updateUser(newUser);
+        model.put("user", user);
+        model.put("users", userService.allUsers());
+
+        return "admin/admin-panel";
+
+
+    }
+
+    @PostMapping(path = "/admin", params = {"action=addUser"})
     public String addUser(@ModelAttribute @Valid User newUser,
                         BindingResult bindingResult,
                           @AuthenticationPrincipal User user,
@@ -35,22 +66,26 @@ public class UserController {
         if (bindingResult.hasErrors() ) {
             Set<String> errors = new HashSet<>();
 
-            for (ObjectError error : bindingResult.getAllErrors()) { // 1.
-                String fieldError = ((FieldError) error).getField(); // 2.
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                String fieldError = ((FieldError) error).getField();
                 errors.add(fieldError);
             }
+
+
             model.put("users", userService.allUsers());
             model.put("errors", errors);
             model.put("user", user);
+
             return "admin/admin-panel";
         }
-
 
  //     logger.debug("running method addUser, on PostMapping /registration");
         User userFromDb = userService.findByUsername(newUser.getUsername());
 
         if(userFromDb != null){
-            model.put("message", "User exists!");
+            model.put("message", "User with the same username exists!");
+            model.put("users", userService.allUsers());
+            model.put("user", user);
             return "admin/admin-panel";
         }
 
