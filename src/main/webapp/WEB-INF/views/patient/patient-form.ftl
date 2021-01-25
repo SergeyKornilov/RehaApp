@@ -184,33 +184,16 @@
 
 
 
-<#--    <#if errors??>-->
-<#--        <#list errors as error>-->
-<#--            <#if error.defaultMessage == "Attending doctor name cannot be empty">-->
-<#--                <p class="errorText">${error.defaultMessage}</p>-->
-<#--            </#if>-->
-<#--            <#if error.defaultMessage == "Attending doctor length: min 5 characters, max - 50">-->
-<#--                <p class="errorText">${error.defaultMessage}</p>-->
-<#--            </#if>-->
-<#--        </#list>-->
-<#--    </#if>-->
 
-<#--    <div class="group">-->
-<#--        <input id="attendingDoctorInput" onblur="checkAttendingDoctor()" class="dynamic" type="text" required name="attendingDoctor" autocomplete="off" value="${(patient.attendingDoctor)!}">-->
-<#--        <span class="bar"></span>-->
-<#--        <label>AttendingDoctor</label>-->
-<#--        <ul id = "errorsAttendingDoctor" class="input-requirements">-->
-<#--            <li>At least 5 characters long and max 50</li>-->
-<#--            <li>Must only contain letters</li>-->
-<#--        </ul>-->
-<#--    </div>-->
 
 
     <div id="attendingDoctorInput" class="bfh-selectbox" data-name="attendingDoctor" data-value="${(patient.attendingDoctor)!}" data-filter="true">
             <div data-value="Select attending doctor">Select attending doctor</div>
+        <#if users??>
         <#list users as user>
             <div data-value="${user.fullName}">${user.fullName}</div>
         </#list>
+        </#if>
     </div>
 
 
@@ -237,19 +220,14 @@
     </div>
     <p>
     <#if add>
-        <button disabled id="addPatientBtn" type="submit">add</button>
+        <button class="btn btn-lg btn-primary" disabled id="addPatientBtn" type="submit">Add</button>
     <#else>
-        <button disabled id="addPatientBtn"  type="submit">save</button>
+        <button class="btn btn-lg btn-primary" disabled id="addPatientBtn"  type="submit">Save</button>
     </#if>
     </p>
 </form>
     </div>
 </div>
-
-
-
-
-
 
 <#--<script>-->
 <#--    function test(el) {-->
@@ -289,6 +267,19 @@
 
 
 <script src="/js/validatorPatient.js" type="text/javascript"></script>
+<script>
+
+
+
+
+
+
+
+
+
+
+
+</script>
 <script>
 
 

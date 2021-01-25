@@ -5,17 +5,10 @@
     <title>Title</title>
 
     <!-- Jquery -->
-
-
     <script
             src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
             crossorigin="anonymous"></script>
-
-<#--    <!-- tablesorter &ndash;&gt;-->
-<#--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js" integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg==" crossorigin="anonymous"></script>-->
-
-
 
     <!-- dateFormat -->
     <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
@@ -76,13 +69,6 @@
 
     </style>
 
-
-
-
-
-
-
-
 </head>
 <#include "../parts/head.ftl">
 <body onload="hideClosed()">
@@ -124,12 +110,10 @@
         <td></td>
     </tr>
     </thead>
-<#--    <#assign ls = events?sort>-->
 
-<#--    <#list ls as event>-->
     <tbody>
 
-<#--<#list events as event>-->
+
     <#list events?sort_by("date") as event>
 
         <tr>
@@ -184,210 +168,8 @@
 
 <div class="backpopup"></div>
 
+<script src="/js/event-list.js"></script>
 
-<script type="text/javascript">
-    $.fn.popup = function() { 	//функция для открытия всплывающего окна:
-        this.css('position', 'absolute').fadeIn();	//задаем абсолютное позиционирование и эффект открытия
-        //махинации с положением сверху:учитывается высота самого блока, экрана и позиции на странице:
-        this.css('top', ($(window).height() - this.height()) / 2 + $(window).scrollTop() + 'px');
-        //слева задается отступ, учитывается ширина самого блока и половина ширины экрана
-        this.css('left', ($(window).width() - this.width()) / 2  + 'px');
-        //открываем тень с эффектом:
-        $('.backpopup').fadeIn();
-    }
-    $(document).ready(function(){	//при загрузке страницы:
-        $('.open').click(function(){	//событие клик на нашу ссылку
-            $('.popup-window').popup();	//запускаем функцию на наш блок с формой
-        });
-        $('.backpopup,.close').click(function(){ //событие клик на тень и крестик - закрываем окно и тень:
-            $('.popup-window').fadeOut();
-            $('.backpopup').fadeOut();
-        });
-    });
-</script>
-
-
-
-
-
-
-<script>
- //   var date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
-
-    function setEventIdPostForm(id) {
-        document.getElementById("postInputId").value = id;
-    }
-    function hideClosed() {
-
-        var table = document.getElementById("tableListEvents");
-      //  var date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
-
-
-        for(var x = 1; x < table.rows.length; x ++){
-
-            document.getElementById("btn-hideClosed").setAttribute("hidden", "true");
-            document.getElementById("btn-displayClosed").removeAttribute("hidden");
-
-
-            if (document.getElementById("inputDateOfBirth").value.length === 0) {
-
-                if (table.rows[x].cells[5].innerText === "close" ||
-                    table.rows[x].cells[5].innerText.includes("Cancel")) {
-
-                    table.rows[x].style.display = "none";
-
-                    //       table.rows[x].style.removeProperty("visibility");
-                    //   style.visibility = "inherit";
-                }
-            } else {
-
-                date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
-                if (table.rows[x].cells[5].innerText === "close" &&
-                    table.rows[x].cells[0].innerText === date
-                    ||
-                    table.rows[x].cells[5].innerText.includes("Cancel") &&
-                    table.rows[x].cells[0].innerText === date
-                ) {
-                    table.rows[x].style.display = "none";
-
-                    //       table.rows[x].style.removeProperty("visibility");
-                    //   style.visibility = "inherit";
-                }
-            }
-
-        }
-    }
-
-    function displayClosed() {
-      //  var date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
-        var table = document.getElementById("tableListEvents");
-
-
-        for(var x = 1; x < table.rows.length; x ++) {
-            document.getElementById("btn-displayClosed").setAttribute("hidden", "true");
-            document.getElementById("btn-hideClosed").removeAttribute("hidden");
-
-            if (document.getElementById("inputDateOfBirth").value.length === 0) {
-
-                if (table.rows[x].cells[5].innerText === "close  " ||
-                    table.rows[x].cells[5].innerText.includes("Cancel")) {
-
-                    table.rows[x].style.display = "";
-                    //        table.rows[x].style.visibility = "collapse";
-                }
-            } else{
-                date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
-
-                if (table.rows[x].cells[5].innerText === "close  " &&
-                    table.rows[x].cells[0].innerText === date
-
-                    ||
-                    table.rows[x].cells[5].innerText.includes("cancel") &&
-                    table.rows[x].cells[0].innerText === date
-
-                ) {
-
-                    table.rows[x].style.display = "";
-                    //        table.rows[x].style.visibility = "collapse";
-                }
-
-
-            }
-
-
-
-
-        }
-
-    }
-
-    function eventsTableSearch() {
-
-
-        var phrase = document.getElementById('search-text');
-        var table = document.getElementById('tableListEvents');
-        var regPhrase = new RegExp(phrase.value, 'i');
-        var flag = false;
-        for (var i = 1; i < table.rows.length; i++) {
-            flag = false;
-            for (var j = table.rows[i].cells.length - 1; j >= 0; j--) {
-                flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
-                if (flag) break;
-            }
-            if (flag) {
-               // table.rows[i].style.display = "";
-                table.rows[i].style.visibility = " visible";
-            } else {
-             //   table.rows[i].style.display = "none";
-                table.rows[i].style.visibility = "collapse";
-            }
-
-        }
-    }
-
-    function filterDate() {
-        var table = document.getElementById("tableListEvents");
-        var closedDisplay = document.getElementById("btn-displayClosed").hidden;
-
-
-        if (document.getElementById("inputDateOfBirth").value.length != 0) {
-
-
-
-            date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
-
-                for(var x = 1; x < table.rows.length; x ++){
-
-                    table.rows[x].style.display = "";
-
-                document.getElementById("btn-hideClosed").setAttribute("hidden", "true");
-                document.getElementById("btn-displayClosed").removeAttribute("hidden");
-
-                if (table.rows[x].cells[0].innerText === date &&
-                    table.rows[x].cells[5].innerText === "open"
-                    // table.rows[x].cells[0].innerText === date &&
-                    // table.rows[x].cells[5].innerText.includes("cancel")
-
-                ){
-
-                    table.rows[x].style.display = "";
-
-                    //       table.rows[x].style.removeProperty("visibility");
-                    //   style.visibility = "inherit";
-                } else {
-                    table.rows[x].style.display = "none";
-                }
-            }
-        } else{
-
-            for(var h = 1; h < table.rows.length; h ++) {
-
-                if (closedDisplay){
-                    table.rows[h].style.display = "";
-                } else {
-                    if (table.rows[h].cells[5].innerText.trim() === "open") table.rows[h].style.display ="";
-                }
-
-
-
-            }
-
-
-        }
-    }
-
-
-
-
-
-
-</script>
-
-<#--<script>-->
-<#--    $(document).ready(function() {-->
-<#--        $("#tableListEvents").tablesorter();-->
-<#--    });-->
-<#--</script>-->
 
 </body>
 </html>

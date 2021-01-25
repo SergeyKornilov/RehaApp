@@ -26,21 +26,6 @@
             <h3 style="padding-bottom: 15px; margin-top: 15px">Add user:</h3>
             <p style="color: #e74c3c">${(message)!}</p>
 
-<#--                <form method="post">-->
-
-<#--                    <div><label>User name: <input class="form-control" type="text" name="username"/> </label></div>-->
-<#--                    <div><label>Password: <input class="form-control" type="password" name="password"/> </label></div>-->
-<#--                    <div><label>Full name: <input type="text" name="fullName"/> </label></div>-->
-<#--                    <div><label>ROLE: <input id="role" type="text" name="roles"/></label></div>-->
-
-
-<#--                    <input type="hidden" name="_csrf" value="${_csrf.token}" />-->
-
-<#--                    <div><input type="submit" value="Add user"></div>-->
-
-<#--                </form>-->
-
-
             <form method="post">
                 <div hidden><label>ROLE: <input id="role" type="text" name="roles"/></label></div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
@@ -121,13 +106,6 @@
     </div>
 </div>
 
-<#--<#if errors??>-->
-<#--    <#list errors as er>-->
-<#--        <#if er.defaultMessage == "Full name cannot be empty">-->
-<#--            <div>Full name cannot be empty</div>-->
-<#--        </#if>-->
-<#--    </#list>-->
-<#--</#if>-->
 
 <script>
 

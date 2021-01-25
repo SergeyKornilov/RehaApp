@@ -124,3 +124,6 @@ a {
     width: 25px;
     margin-right: 15px;
 }
+.form-control {
+    box-shadow: none !important;
+}

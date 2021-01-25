@@ -6,6 +6,7 @@ var diagnosisValidFlag;
 var insuranceNumberValidFlag;
 var attendingDoctorValidFlag;
 var statusValidFlag;
+var dateOfBirthdayValidFlag;
 
 var addPatientBtn = document.getElementById("addPatientBtn");
 
@@ -13,7 +14,7 @@ var addPatientBtn = document.getElementById("addPatientBtn");
 function checkBtn() {
     console.log(addPatientBtn);
     if (surnameValidFlag && nameValidFlag && secondnameValidFlag && diagnosisValidFlag && insuranceNumberValidFlag &&
-        attendingDoctorValidFlag && statusValidFlag){
+        attendingDoctorValidFlag && statusValidFlag && dateOfBirthdayValidFlag){
         addPatientBtn.removeAttribute("disabled");
     } else {
         addPatientBtn.setAttribute("disabled", "true");
@@ -161,36 +162,6 @@ function checkInsuranceNumber(){
 
 }
 
-// function checkAttendingDoctor(){
-//
-//     var el = document.getElementById("attendingDoctorInput");
-//
-//     el.value = el.value.trim();
-//     var str = el.value;
-//
-//     var error1 = document.getElementById("errorsAttendingDoctor").querySelector("li:nth-child(1)");
-//     var error2 = document.getElementById("errorsAttendingDoctor").querySelector("li:nth-child(2)");
-//
-//     if (str.length < 5 || str.length > 50) {
-//         error1.classList.add('invalid');
-//         error1.classList.remove('valid');
-//     } else{
-//         error1.classList.add('valid');
-//         error1.classList.remove('invalid');
-//     }
-//
-//     if (/[^a-zA-Zа-яА-я/]+/.test(str)){
-//         error2.classList.add('invalid');
-//         error2.classList.remove('valid');
-//     } else{
-//         error2.classList.add('valid');
-//         error2.classList.remove('invalid');
-//     }
-//
-//     if (error1.classList.contains("valid") && error2.classList.contains("valid")) attendingDoctorValidFlag = true;
-//     else attendingDoctorValidFlag = false;
-// }
-
 function checkStatus(){
     var role = document.getElementById("status");
 
@@ -205,13 +176,22 @@ function checkStatus(){
     checkBtn();
 }
 
+function checkDate(){
+    var dateOfBirthInput = document.getElementById("inputDateOfBirth");
 
+    if (dateOfBirthInput.value === ""){
+        dateOfBirthInput.classList.add("invalidInput");
+        dateOfBirthdayValidFlag = false;
+        checkBtn();
+    } else{
+        dateOfBirthInput.classList.remove("invalidInput");
+        dateOfBirthdayValidFlag = true;
+        checkBtn();
+    }
+}
 
-
-
-
-
-
+document.getElementById("inputDateOfBirth").addEventListener("keyup", checkDate);
+document.getElementById("inputDateOfBirth").addEventListener("change", checkDate);
 
 
 document.getElementById("surnameInput").addEventListener('keyup', checkSurname);
@@ -234,6 +214,5 @@ document.getElementById("insuranceNumberInput").addEventListener('keyup', checkI
 document.getElementById("insuranceNumberInput").addEventListener('keyup', checkBtn);
 
 
-document.getElementById("attendingDoctorInput").addEventListener('keyup', checkAttendingDoctor);
 document.getElementById("attendingDoctorInput").addEventListener('keyup', checkBtn);
 

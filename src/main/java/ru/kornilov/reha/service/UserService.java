@@ -48,10 +48,10 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> findUsersByRole (String role){
+    public List<User> findAllUsersRolDoctor(){
 
         List<User> users = allUsers().stream()
                 .filter(user -> user.getRoles().contains(Role.ROLE_DOCTOR)).collect(Collectors.toList());
-        return users.size() > 0 ? users : null;
+        return users.isEmpty() ? users : null;
     }
 }

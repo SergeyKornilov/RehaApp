@@ -74,6 +74,18 @@
             box-shadow: none!important;
         }
 
+        .btn-add-prescribing{
+            width: 150px;
+            height: 35px;
+            color: white;
+            box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
+            -webkit-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
+            -moz-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
+            background: linear-gradient(103.31deg, #0C8AFE -20.48%, #F806FD 118.31%);
+            border-radius: 4.9359px;
+            border: none;
+        }
+
     </style>
 </head>
 <#include "../parts/head.ftl">
@@ -142,7 +154,7 @@
 
 
     <div class="row">
-<p>Prescribings:</p>
+<h4 style="margin-top: 30px">Prescribings:</h4>
 
 
 <#if prescribings??>
@@ -200,19 +212,21 @@
 </#if>
     </div>
     <div class="row">
-        <button type="button" class="active" onclick="openAddPrescribing()">Add prescribing</button>
+        <button type="button" class="btn-add-prescribing" onclick="openAddPrescribing()">Add prescribing</button>
     </div>
 
     <div class="row">
         <div id="prescribingForm" hidden="true">
             <div class="row">
-                <h3 id="prescribingTitle"></h3>
-                <#if existingProcedureErrorMessage??>
-                    <p class="errorText">${existingProcedureErrorMessage}</p>
-                </#if>
+                <div class="col">
+                    <h3 id="prescribingTitle"></h3>
+                    <#if existingProcedureErrorMessage??>
+                        <p class="errorText">${existingProcedureErrorMessage}</p>
+                    </#if>
+                </div>
             </div>
 
-<form method="post" onsubmit="setTime()">
+<form method="post" style="width: 330px" onsubmit="setTime()">
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
 
 
@@ -520,6 +534,8 @@
 
 </div>
 </div>
+
+
 <script src="/js/patient-card.js" type="text/javascript"></script>
 
 <script src="/js/validatePrescribingsOn-Patient-card.js" type="text/javascript"></script>
