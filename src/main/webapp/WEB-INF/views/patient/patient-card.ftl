@@ -250,11 +250,6 @@
 <#--        </label>-->
 
 
-
-
-
-
-
     </div>
     <p></p>
 
@@ -295,8 +290,8 @@
         </#list>
     </#if>
     <p id="dateInput">
-        Date start <input id="inputDateStart" type="text" class="date start form-control" name="dateStart" autocomplete="off"/>
-        Date end <input type="text" class="date end form-control" name="dateEnd" autocomplete="off"/>
+        Date start <input onchange="checkDateStart()" id="inputDateStart" type="text" class="date start form-control" name="dateStart" autocomplete="off"/>
+        Date end <input onchange="checkDateEnd()" id="inputDateEnd" type="text" class="date end form-control" name="dateEnd" autocomplete="off"/>
     </p>
 
     <#if errors??>
@@ -308,37 +303,40 @@
     </#if>
     <div id="daysOfWeek" class="row">
         <div class="col-12">
-        <button id="sunday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <ul id = "daysOfWeekError" class="input-requirements">
+                <li>At least one day of the week must be selected</li>
+            </ul>
+        <button id="sunday" onclick="setWeek(this); checkDaysOfWeek()"  type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Sun
         </button>
         <input id="dayOfWeek-sunday" name="dayOfWeeks" disabled="true" value="Sunday" hidden>
 
-        <button id="monday" onclick="setWeek(this)" type="button" class=""  data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="monday" onclick="setWeek(this); checkDaysOfWeek()" type="button" class=""  data-toggle="button" aria-pressed="false" autocomplete="off">
             Mon
         </button>
         <input id="dayOfWeek-monday" name="dayOfWeeks" disabled="true" value="Monday" hidden>
 
-        <button id="tuesday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="tuesday" onclick="setWeek(this); checkDaysOfWeek();" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Tue
         </button>
         <input id="dayOfWeek-tuesday" name="dayOfWeeks" disabled="true" value="Tuesday" hidden>
 
-        <button id="wednesday" onclick="setWeek(this)" type="button" class=" " data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="wednesday" onclick="setWeek(this); checkDaysOfWeek();" type="button" class=" " data-toggle="button" aria-pressed="false" autocomplete="off">
             Wen
         </button>
         <input id="dayOfWeek-wednesday" name="dayOfWeeks" disabled="true" value="Wednesday" hidden>
 
-        <button id="thursday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="thursday" onclick="setWeek(this); checkDaysOfWeek();" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Thu
         </button>
         <input id="dayOfWeek-thursday" name="dayOfWeeks" disabled="true" value="Thursday" hidden>
 
-        <button id="friday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="friday" onclick="setWeek(this); checkDaysOfWeek();" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Fri
         </button>
         <input id="dayOfWeek-friday" name="dayOfWeeks" disabled="true" value="Friday" hidden>
 
-        <button id="saturday" onclick="setWeek(this)" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <button id="saturday" onclick="setWeek(this); checkDaysOfWeek();" type="button" class="" data-toggle="button" aria-pressed="false" autocomplete="off">
             Sat
         </button>
         <input id="dayOfWeek-saturday" name="dayOfWeeks" disabled="true" value="Saturday" hidden>

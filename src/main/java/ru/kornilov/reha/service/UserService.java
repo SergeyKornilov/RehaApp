@@ -7,13 +7,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kornilov.reha.DAO.UserDAO;
+import ru.kornilov.reha.entities.Patient;
+import ru.kornilov.reha.entities.Role;
 import ru.kornilov.reha.entities.User;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
 
     @Autowired
     private UserDAO userDAO;
@@ -43,4 +47,11 @@ public class UserService {
         return userDAO.allUsers();
     }
 
+    @Transactional
+    public List<User> findUsersByRole (String role){
+
+        List<User> users = allUsers().stream()
+                .filter(user -> user.getRoles().contains(Role.ROLE_DOCTOR)).collect(Collectors.toList());
+        return users.size() > 0 ? users : null;
+    }
 }

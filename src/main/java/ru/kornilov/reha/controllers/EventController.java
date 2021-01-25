@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.EventService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class EventController {
@@ -25,8 +29,12 @@ public class EventController {
     public String allEventPage(Model model,@AuthenticationPrincipal User user) {
 //        logger.debug("running method allEventPage, on GetMapping /event-list");
 
+
+        List<Event> events = eventService.allEvents();
+        eventService.sortEventsByTime(events);
+
         model.addAttribute("user", user);
-        model.addAttribute("events", eventService.allEvents());
+        model.addAttribute("events", events);
         return "event/event-list";
     }
 

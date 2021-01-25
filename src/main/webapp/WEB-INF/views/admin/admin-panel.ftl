@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Control panel</title>
     <link rel="stylesheet" href="/css/styleAdmin-panel.css">
+
+    <style>
+        .readonlyInput{
+            background: #cccccc;
+        }
+    </style>
 </head>
 <#include "../parts/head.ftl">
 <body>
@@ -18,7 +24,7 @@
         <div class="col-6">
 
             <h3 style="padding-bottom: 15px; margin-top: 15px">Add user:</h3>
-            <p>${(message)!}</p>
+            <p style="color: #e74c3c">${(message)!}</p>
 
 <#--                <form method="post">-->
 
@@ -142,8 +148,9 @@
         addUserBtn.setAttribute("disabled", "true");
         addUserBtn.value = "Add user";
         document.getElementById("placeholderUsernameInput").innerText = "Username";
+        document.getElementById("usernameInput").classList.remove("readonlyInput");
 
-        document.getElementById("usernameInput").removeAttribute("disabled");
+        document.getElementById("usernameInput").removeAttribute("readonly");
         document.getElementById("postTypeAddUser").value = "addUser";
 
     }
@@ -153,8 +160,10 @@
 
         var role = document.getElementById("role" + username).innerText;
 
-        document.getElementById("usernameInput").setAttribute("disabled", "true");
+        document.getElementById("usernameInput").setAttribute("readonly", "true");
         document.getElementById("placeholderUsernameInput").innerText = "";
+        document.getElementById("usernameInput").classList.add("readonlyInput");
+
         document.getElementById("postTypeAddUser").value = "editUser";
 
         addUserBtn.value = "editUser";

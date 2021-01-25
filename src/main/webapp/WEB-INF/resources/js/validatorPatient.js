@@ -161,35 +161,35 @@ function checkInsuranceNumber(){
 
 }
 
-function checkAttendingDoctor(){
-
-    var el = document.getElementById("attendingDoctorInput");
-
-    el.value = el.value.trim();
-    var str = el.value;
-
-    var error1 = document.getElementById("errorsAttendingDoctor").querySelector("li:nth-child(1)");
-    var error2 = document.getElementById("errorsAttendingDoctor").querySelector("li:nth-child(2)");
-
-    if (str.length < 5 || str.length > 50) {
-        error1.classList.add('invalid');
-        error1.classList.remove('valid');
-    } else{
-        error1.classList.add('valid');
-        error1.classList.remove('invalid');
-    }
-
-    if (/[^a-zA-Zа-яА-я/]+/.test(str)){
-        error2.classList.add('invalid');
-        error2.classList.remove('valid');
-    } else{
-        error2.classList.add('valid');
-        error2.classList.remove('invalid');
-    }
-
-    if (error1.classList.contains("valid") && error2.classList.contains("valid")) attendingDoctorValidFlag = true;
-    else attendingDoctorValidFlag = false;
-}
+// function checkAttendingDoctor(){
+//
+//     var el = document.getElementById("attendingDoctorInput");
+//
+//     el.value = el.value.trim();
+//     var str = el.value;
+//
+//     var error1 = document.getElementById("errorsAttendingDoctor").querySelector("li:nth-child(1)");
+//     var error2 = document.getElementById("errorsAttendingDoctor").querySelector("li:nth-child(2)");
+//
+//     if (str.length < 5 || str.length > 50) {
+//         error1.classList.add('invalid');
+//         error1.classList.remove('valid');
+//     } else{
+//         error1.classList.add('valid');
+//         error1.classList.remove('invalid');
+//     }
+//
+//     if (/[^a-zA-Zа-яА-я/]+/.test(str)){
+//         error2.classList.add('invalid');
+//         error2.classList.remove('valid');
+//     } else{
+//         error2.classList.add('valid');
+//         error2.classList.remove('invalid');
+//     }
+//
+//     if (error1.classList.contains("valid") && error2.classList.contains("valid")) attendingDoctorValidFlag = true;
+//     else attendingDoctorValidFlag = false;
+// }
 
 function checkStatus(){
     var role = document.getElementById("status");

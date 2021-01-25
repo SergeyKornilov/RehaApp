@@ -46,9 +46,15 @@ public class PatientController {
     public String addPatientPage(Model model, @AuthenticationPrincipal User user) {
   //      logger.debug("running method addPatientPage, on GetMapping /addPatientPage");
 
+
+
+
+        model.addAttribute("users", userService.findUsersByRole("ROLE_DOCTOR"));
+
         model.addAttribute("user", user);
         model.addAttribute("add", true);
         return "patient/patient-form";
+
     }
 
 
@@ -87,6 +93,8 @@ public class PatientController {
     public String editPatientPage(@PathVariable("id") int id,  @AuthenticationPrincipal User user, Model model) {
 //        logger.debug("running method editPatientPage, on GetMapping /patient/edit/{id}");
 
+        model.addAttribute("users", userService.allUsers());
+
         Patient patient = patientService.getPatientById(id);
         model.addAttribute(patient);
         model.addAttribute("add", false);
@@ -104,6 +112,8 @@ public class PatientController {
         patientService.patientValidateForEdit(patient, bindingResult);
 
         if(bindingResult.hasErrors()){
+
+            model.addAttribute("users", userService.allUsers());
             model.addAttribute("errors", bindingResult.getAllErrors());
             model.addAttribute("add", false);
             model.addAttribute("user", user);

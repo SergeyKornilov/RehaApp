@@ -57,6 +57,10 @@ button:active {
     background: #4AA8FF;
 }
 
+.errorInput{
+    border: solid 1px #e74c3c !important;
+}
+
 .errorText{
     color: #e74c3c;
 }

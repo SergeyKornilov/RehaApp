@@ -2,12 +2,14 @@ package ru.kornilov.reha.entities;
 
         import javax.persistence.*;
         import javax.validation.constraints.NotBlank;
+        import java.util.Comparator;
         import java.util.Date;
         import java.util.Objects;
 
 @Entity
 @Table(name = "event")
-public class Event {
+public class Event implements Comparable<Event>{
+
 
     @Id
     @Column(name="id")
@@ -125,4 +127,28 @@ public class Event {
     public int hashCode() {
         return Objects.hash(id, date, status, time, reason, prescribing);
     }
+
+    @Override
+    public int compareTo(Event o) {
+
+        return time.compareTo(o.getTime());
+
+    }
+
+
+
+//    public static Comparator<Event> EventTimeComparator = new Comparator<Event>() {
+//
+//        public int compare(Event event1, Event event2) {
+//
+//            String fruitName1 = event1.getTime().toUpperCase();
+//            String fruitName2 = event2.getTime().toUpperCase();
+//
+//            //ascending order
+//            return fruitName1.compareTo(fruitName2);
+//
+//
+//        }
+//
+//    };
 }

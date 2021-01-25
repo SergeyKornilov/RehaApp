@@ -5,10 +5,20 @@
     <title>Title</title>
 
     <!-- Jquery -->
+
+
     <script
-            src="https://code.jquery.com/jquery-2.2.4.min.js"
-            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
             crossorigin="anonymous"></script>
+
+<#--    <!-- tablesorter &ndash;&gt;-->
+<#--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js" integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg==" crossorigin="anonymous"></script>-->
+
+
+
+    <!-- dateFormat -->
+    <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -65,18 +75,33 @@
 
 
     </style>
+
+
+
+
+
+
+
+
 </head>
 <#include "../parts/head.ftl">
 <body onload="hideClosed()">
+
+
+
+
 <div class="container">
     <div class="row">
         <div class="col"> <h1 style="text-align: center" class="display-4">Events</h1></div>
     </div>
     <div class="row">
-        <div class="col-10">
+        <div class="col-8">
             <input class="form-control" style="margin-bottom: 30px" type="text" placeholder="Search" id="search-text" onkeyup="eventsTableSearch()">
         </div>
-        <div class="col">
+        <div class="col-2">
+            <input onchange="filterDate()" class="form-control" id="inputDateOfBirth" type="date" name="dateOfBirth" placeholder="age" value="${(patient.dateOfBirth?string('yyyy-MM-dd'))!}"/>
+        </div>
+        <div class="col-1">
             <button id="btn-hideClosed" class="btn-hide-close" hidden type="button" onclick="hideClosed()">Hide closed</button>
             <button id="btn-displayClosed" class = "btn-hide-close" type="button" onclick="displayClosed()">Display closed</button>
         </div>
@@ -86,7 +111,8 @@
 
 <div class="row">
     <div class="col-12">
-<table id="tableListEvents" class="table" style="background: #E0FDFF;">
+<table id="tableListEvents" class="table sortable" style="background: #E0FDFF;">
+    <thead>
     <tr>
         <td>Date</td>
         <td>Time</td>
@@ -97,8 +123,15 @@
 
         <td></td>
     </tr>
+    </thead>
+<#--    <#assign ls = events?sort>-->
 
-<#list events?sort_by("date") as event>
+<#--    <#list ls as event>-->
+    <tbody>
+
+<#--<#list events as event>-->
+    <#list events?sort_by("date") as event>
+
         <tr>
             <td>${(event.date?datetime?string('dd.MM.yyyy'))!}</td>
             <td>${(event.time)!}</td>
@@ -112,6 +145,7 @@
             </td>
         </tr>
 </#list>
+    </tbody>
 </table>
 
 </div>
@@ -178,39 +212,98 @@
 
 
 <script>
+ //   var date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
 
     function setEventIdPostForm(id) {
         document.getElementById("postInputId").value = id;
     }
     function hideClosed() {
+
         var table = document.getElementById("tableListEvents");
+      //  var date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
+
+
         for(var x = 1; x < table.rows.length; x ++){
 
             document.getElementById("btn-hideClosed").setAttribute("hidden", "true");
             document.getElementById("btn-displayClosed").removeAttribute("hidden");
 
-            if (table.rows[x].cells[1].innerText === "close" ||
-                table.rows[x].cells[1].innerText === "cancel"){
-                table.rows[x].style.display = "none";
+
+            if (document.getElementById("inputDateOfBirth").value.length === 0) {
+
+                if (table.rows[x].cells[5].innerText === "close" ||
+                    table.rows[x].cells[5].innerText.includes("Cancel")) {
+
+                    table.rows[x].style.display = "none";
+
+                    //       table.rows[x].style.removeProperty("visibility");
+                    //   style.visibility = "inherit";
+                }
+            } else {
+
+                date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
+                if (table.rows[x].cells[5].innerText === "close" &&
+                    table.rows[x].cells[0].innerText === date
+                    ||
+                    table.rows[x].cells[5].innerText.includes("Cancel") &&
+                    table.rows[x].cells[0].innerText === date
+                ) {
+                    table.rows[x].style.display = "none";
+
+                    //       table.rows[x].style.removeProperty("visibility");
+                    //   style.visibility = "inherit";
+                }
             }
+
         }
     }
 
     function displayClosed() {
+      //  var date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
         var table = document.getElementById("tableListEvents");
-        for(var x = 1; x < table.rows.length; x ++){
+
+
+        for(var x = 1; x < table.rows.length; x ++) {
             document.getElementById("btn-displayClosed").setAttribute("hidden", "true");
             document.getElementById("btn-hideClosed").removeAttribute("hidden");
-            if (table.rows[x].cells[1].innerText === "close" ||
-                table.rows[x].cells[1].innerText === "cancel"){
-                table.rows[x].style.display = "";
-            }
-        }
 
+            if (document.getElementById("inputDateOfBirth").value.length === 0) {
+
+                if (table.rows[x].cells[5].innerText === "close  " ||
+                    table.rows[x].cells[5].innerText.includes("Cancel")) {
+
+                    table.rows[x].style.display = "";
+                    //        table.rows[x].style.visibility = "collapse";
+                }
+            } else{
+                date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
+
+                if (table.rows[x].cells[5].innerText === "close  " &&
+                    table.rows[x].cells[0].innerText === date
+
+                    ||
+                    table.rows[x].cells[5].innerText.includes("cancel") &&
+                    table.rows[x].cells[0].innerText === date
+
+                ) {
+
+                    table.rows[x].style.display = "";
+                    //        table.rows[x].style.visibility = "collapse";
+                }
+
+
+            }
+
+
+
+
+        }
 
     }
 
     function eventsTableSearch() {
+
+
         var phrase = document.getElementById('search-text');
         var table = document.getElementById('tableListEvents');
         var regPhrase = new RegExp(phrase.value, 'i');
@@ -222,13 +315,79 @@
                 if (flag) break;
             }
             if (flag) {
-                table.rows[i].style.display = "";
+               // table.rows[i].style.display = "";
+                table.rows[i].style.visibility = " visible";
             } else {
-                table.rows[i].style.display = "none";
+             //   table.rows[i].style.display = "none";
+                table.rows[i].style.visibility = "collapse";
             }
 
         }
     }
+
+    function filterDate() {
+        var table = document.getElementById("tableListEvents");
+        var closedDisplay = document.getElementById("btn-displayClosed").hidden;
+
+
+        if (document.getElementById("inputDateOfBirth").value.length != 0) {
+
+
+
+            date = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("DD.MM.YYYY");
+
+                for(var x = 1; x < table.rows.length; x ++){
+
+                    table.rows[x].style.display = "";
+
+                document.getElementById("btn-hideClosed").setAttribute("hidden", "true");
+                document.getElementById("btn-displayClosed").removeAttribute("hidden");
+
+                if (table.rows[x].cells[0].innerText === date &&
+                    table.rows[x].cells[5].innerText === "open"
+                    // table.rows[x].cells[0].innerText === date &&
+                    // table.rows[x].cells[5].innerText.includes("cancel")
+
+                ){
+
+                    table.rows[x].style.display = "";
+
+                    //       table.rows[x].style.removeProperty("visibility");
+                    //   style.visibility = "inherit";
+                } else {
+                    table.rows[x].style.display = "none";
+                }
+            }
+        } else{
+
+            for(var h = 1; h < table.rows.length; h ++) {
+
+                if (closedDisplay){
+                    table.rows[h].style.display = "";
+                } else {
+                    if (table.rows[h].cells[5].innerText.trim() === "open") table.rows[h].style.display ="";
+                }
+
+
+
+            }
+
+
+        }
+    }
+
+
+
+
+
+
 </script>
+
+<#--<script>-->
+<#--    $(document).ready(function() {-->
+<#--        $("#tableListEvents").tablesorter();-->
+<#--    });-->
+<#--</script>-->
+
 </body>
 </html>

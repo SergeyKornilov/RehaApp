@@ -30,6 +30,16 @@ function clearPrescribingForm(){
         deleteProcedureTimeInput();
 
     }
+
+    document.getElementById("daysOfWeekError").querySelector("li:nth-child(1)").classList.remove("valid");
+    document.getElementById("daysOfWeekError").querySelector("li:nth-child(1)").classList.remove("invalid");
+
+
+
+    document.getElementById("inputDateEnd").classList.remove("errorInput");
+    document.getElementById("inputDateStart").classList.remove("errorInput");
+
+
 }
 
 function addProcedureTimeInput() {
@@ -60,6 +70,8 @@ function deleteProcedureTimeInput() {
 
 function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на вход принимаем значения из списка назначений
     clearPrescribingForm();
+
+
 
     document.getElementById("prescribingTitle").innerText="Edit prescribing";
     document.getElementById("prescribingForm").removeAttribute("hidden");
@@ -110,6 +122,13 @@ function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на 
     for(x=0; x < strTime.length; x++){
         document.getElementsByClassName("bfh-selectbox-option")[x].textContent=strTime[x];
     }
+
+    document.getElementById("addPrescribingBtn").removeAttribute("disabled")
+    document.getElementById("addPrescribingBtn").classList.add("active");
+    nameValidFlag = true;
+    doseValidFlag = true;
+    dateStartValidFlag = true;
+    dateEndValidFlag = true;
 }
 
 function setWeek(el) {
@@ -126,6 +145,7 @@ function setWeek(el) {
 
 
 function selectProcedure() {
+    daysOfWeekValidFlag = false;
     doseValidFlag = true;
 
     document.getElementById("btnProcedure").classList.add("active");
@@ -158,9 +178,12 @@ function selectProcedure() {
 
     document.getElementById("dayOfWeek-saturday").setAttribute("disabled", "true");
     document.getElementById("saturday").classList.remove("active");
+
+    document.getElementById("prescribingDose").value = 1;
 }
 function selectMedicines() {
 
+    daysOfWeekValidFlag = true;
     doseValidFlag = false;
 
     checkBtn();

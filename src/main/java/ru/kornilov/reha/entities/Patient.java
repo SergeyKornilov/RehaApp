@@ -50,7 +50,7 @@ public class Patient {
 
 
     @Column(name="attending_doctor")
-    @Size(min = 2, max = 25, message = "Attending doctor length: min 5 characters, max - 50")
+    @Size(min = 2, max = 50, message = "Attending doctor length: min 5 characters, max - 50")
     @NotBlank(message = "Attending doctor name cannot be empty")
     private String attendingDoctor;
 

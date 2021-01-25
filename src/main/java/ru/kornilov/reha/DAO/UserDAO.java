@@ -45,4 +45,12 @@ public class UserDAO {
         return session.createQuery("from User").list();
     }
 
+//    public List<User> findUsersByRole(String role) {
+//
+//        Session session = sessionFactory.getCurrentSession();
+//        return (List<User>) session.get(User.class, role);
+//
+//    }
+
+
 }

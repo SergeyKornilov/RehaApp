@@ -19,6 +19,9 @@
     <!--  js for Date Start/End-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/js/bootstrap-formhelpers.min.js" integrity="sha512-m4xvGpNhCfricSMGJF5c99JBI8UqWdIlSmybVLRPo+LSiB9FHYH73aHzYZ8EdlzKA+s5qyv0yefvkqjU2ErLMg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/css/bootstrap-formhelpers.css" integrity="sha512-UPFdMcy+35cR5gyOgX+1vkDEzlMa3ZkZJUdaI1JoqWbH7ubiS/mhGrcM5C72QYouc2EascN3UtUrYnPoUpk+Pg==" crossorigin="anonymous" />
+
 </head>
 <#include "../parts/head.ftl">
 
@@ -54,6 +57,10 @@
                 </#if>
             </#list>
         </#if>
+
+
+
+
 
     <div class="group">
         <input id="surnameInput" onblur="checkSurname()" class="dynamic" type="text" required name="surname" autocomplete="off" value="${(patient.surname)!}">
@@ -175,33 +182,37 @@
         </ul>
     </div>
 
-<#--    <p>-->
-<#--        <input type="text" name="insuranceNumber" placeholder="insurance Number" value="${(patient.insuranceNumber)!}"/>-->
-<#--    </p>-->
 
-    <#if errors??>
-        <#list errors as error>
-            <#if error.defaultMessage == "Attending doctor name cannot be empty">
-                <p class="errorText">${error.defaultMessage}</p>
-            </#if>
-            <#if error.defaultMessage == "Attending doctor length: min 5 characters, max - 50">
-                <p class="errorText">${error.defaultMessage}</p>
-            </#if>
+
+<#--    <#if errors??>-->
+<#--        <#list errors as error>-->
+<#--            <#if error.defaultMessage == "Attending doctor name cannot be empty">-->
+<#--                <p class="errorText">${error.defaultMessage}</p>-->
+<#--            </#if>-->
+<#--            <#if error.defaultMessage == "Attending doctor length: min 5 characters, max - 50">-->
+<#--                <p class="errorText">${error.defaultMessage}</p>-->
+<#--            </#if>-->
+<#--        </#list>-->
+<#--    </#if>-->
+
+<#--    <div class="group">-->
+<#--        <input id="attendingDoctorInput" onblur="checkAttendingDoctor()" class="dynamic" type="text" required name="attendingDoctor" autocomplete="off" value="${(patient.attendingDoctor)!}">-->
+<#--        <span class="bar"></span>-->
+<#--        <label>AttendingDoctor</label>-->
+<#--        <ul id = "errorsAttendingDoctor" class="input-requirements">-->
+<#--            <li>At least 5 characters long and max 50</li>-->
+<#--            <li>Must only contain letters</li>-->
+<#--        </ul>-->
+<#--    </div>-->
+
+
+    <div id="attendingDoctorInput" class="bfh-selectbox" data-name="attendingDoctor" data-value="${(patient.attendingDoctor)!}" data-filter="true">
+            <div data-value="Select attending doctor">Select attending doctor</div>
+        <#list users as user>
+            <div data-value="${user.fullName}">${user.fullName}</div>
         </#list>
-    </#if>
-
-    <div class="group">
-        <input id="attendingDoctorInput" onblur="checkAttendingDoctor()" class="dynamic" type="text" required name="attendingDoctor" autocomplete="off" value="${(patient.attendingDoctor)!}">
-        <span class="bar"></span>
-        <label>AttendingDoctor</label>
-        <ul id = "errorsAttendingDoctor" class="input-requirements">
-            <li>At least 5 characters long and max 50</li>
-            <li>Must only contain letters</li>
-        </ul>
     </div>
-<#--    <p>-->
-<#--        <input type="text" name="attendingDoctor" placeholder="attending Doctor" value="${(patient.attendingDoctor)!}"/>-->
-<#--    </p>-->
+
 
     <#if errors??>
         <#list errors as error>
@@ -236,21 +247,92 @@
 </div>
 
 
+
+
+
+
+<#--<script>-->
+<#--    function test(el) {-->
+<#--        console.log(el);-->
+<#--    }-->
+
+<#--    <#assign i = users?size>-->
+
+<#--    function setDoctor() {-->
+
+<#--        for (var x = 1; x <= #{i}; x++){-->
+<#--            if (document.getElementById("procedureTimeInput" + x).getAttribute("hidden") === "true") break;-->
+<#--            var text = document.getElementById("procedureTimeInput" + x).getElementsByClassName("bfh-selectbox-option")[0].textContent;-->
+<#--            document.getElementById("time" + x).removeAttribute("disabled");-->
+<#--            document.getElementById("time" + x).setAttribute("value", text);-->
+<#--        }-->
+
+<#--    }-->
+<#--</script>-->
+
+<#if patient??>
+    <script>
+        $(document).ready(function() {
+
+                checkSurname();
+                checkName();
+                checkSecondname();
+                checkDiagnosis();
+                checkInsuranceNumber();
+                checkDoctorsList();
+                checkStatus();
+
+        });
+    </script>
+</#if>
+
+
+
 <script src="/js/validatorPatient.js" type="text/javascript"></script>
 <script>
 
-    function checkAllValid() {
-        checkSurname();
-        checkName();
-        checkSecondname();
-        checkDiagnosis();
-        checkInsuranceNumber();
-        checkAttendingDoctor();
-        checkStatus();
+
+    function checkDoctorsList() {
+
+
+        var attendingDoctor = document.getElementsByName("attendingDoctor")[0].value;
+        if(attendingDoctor === "Select attending doctor" || attendingDoctor.length === 0) {
+            document.getElementsByClassName("bfh-selectbox-toggle form-control")[0].classList.add("invalidInput");
+            attendingDoctorValidFlag = false;
+            console.log("set invalid doctors list");
+            checkBtn();
+        }
+        else {
+            document.getElementsByClassName("bfh-selectbox-toggle form-control")[0].classList.remove("invalidInput");
+            attendingDoctorValidFlag = true;
+            console.log("set valid doctors list");
+            checkBtn();
+        }
+
     }
+
+    //при открытии списка врачей
+    $(document).ready(function(){
+        $('.bfh-selectbox').on('show.bfhselectbox', function () {
+            checkDoctorsList();
+        });
+
+    });
+    //при изменениии значения списка врачей
+    $(document).ready(function(){
+        $('.bfh-selectbox').on('change.bfhselectbox', function () {
+            checkDoctorsList();
+        });
+
+    });
+
+
+
 
 
     function setRoleWhenErrorValidationOnBackend() {
+
+
 
         var status = document.getElementById("status").value;
         switch (status){
@@ -293,7 +375,7 @@
         checkSecondname();
         checkDiagnosis();
         checkInsuranceNumber();
-        checkAttendingDoctor();
+        checkDoctorsList();
 
         var status;
 
