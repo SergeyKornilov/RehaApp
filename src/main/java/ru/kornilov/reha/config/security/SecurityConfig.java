@@ -38,15 +38,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/patient-list/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
+                .antMatchers("/patient/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
+                .antMatchers("/add-patient-page/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
+                .antMatchers("/prescribing/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/event-list/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/main/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/profile/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
                     .and()
                 .formLogin()
-//                .failureHandler(authenticationFailureHandler())
                 .loginPage("/login")
                 .successHandler(myAuthenticationSuccessHandler())
                 .permitAll()
+                .failureUrl("/login-error")
                     .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -62,8 +65,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomUrlAuthenticationSuccessHandler();
     }
 
-//    @Bean
-//    public AuthenticationFailureHandler authenticationFailureHandler() {
-//        return new CustomAuthenticationFailureHandler();
-//    }
 }
