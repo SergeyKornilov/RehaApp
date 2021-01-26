@@ -1,37 +1,41 @@
 
-.footer{
+.footer {
     height: 300px;
 }
-.hide{
+
+.hide {
     display: none;
 }
 
-  button {
-      color: #FFFFFF;
-      background: #A4D3FF;
-      box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
-      border-radius: 5px!important;
-      border: none;
-  }
+button {
+    color: #FFFFFF;
+    background: #A4D3FF;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 5px !important;
+    border: none;
+}
+
 .active {
 
     background: #4AA8FF;
 }
+
 .active {
 
     background: #4AA8FF;
 
 }
+
 button:active {
 
     background: #4AA8FF;
 }
 
-.errorInput{
+.errorInput {
     border: solid 1px #e74c3c !important;
 }
 
-.errorText{
+.errorText {
     color: #e74c3c;
 }
 
@@ -42,18 +46,80 @@ button:active {
     list-style: disc;
     list-style-position: inside;
     max-width: 400px;
-    margin-left: -35px ;
-    color: rgb(150,150,150);
+    margin-left: -35px;
+    color: rgb(150, 150, 150);
 
 }
+
 .input-requirements li {
     display: none;
 }
+
 .input-requirements li.invalid {
     color: #e74c3c;
     display: block;
 }
+
 .input-requirements li.valid {
     color: #2ecc71;
     display: none;
+}
+
+.patient-info-table {
+    border: none;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.patient-info-table-col1 {
+    width: 250px;
+}
+
+.patient-info-table-col2 {
+    width: 170px;
+    font-weight: 600;
+
+}
+
+.patient-info-back {
+    margin-right: auto;
+    margin-left: auto;
+    background: rgba(135, 234, 254, 0.3);
+    border-radius: 10px;
+    padding-top: 50px;
+    padding-right: 90px;
+    padding-left: 90px;
+    padding-bottom: 50px;
+    vertical-align: auto;
+    position: relative;
+}
+
+.user-avatar-back {
+    background: #FFFFFF;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 40px;
+    vertical-align: auto;
+}
+
+.btn-edit-patient-card {
+    vertical-align: top;
+    horiz-align: right;
+    padding-top: -50px;
+}
+
+.form-control {
+    box-shadow: none !important;
+}
+
+.btn-add-prescribing {
+    width: 150px;
+    height: 35px;
+    color: white;
+    box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
+    -webkit-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
+    -moz-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
+    background: linear-gradient(103.31deg, #0C8AFE -20.48%, #F806FD 118.31%);
+    border-radius: 4.9359px;
+    border: none;
 }

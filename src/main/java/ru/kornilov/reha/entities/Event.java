@@ -1,18 +1,16 @@
 package ru.kornilov.reha.entities;
 
-        import javax.persistence.*;
-        import javax.validation.constraints.NotBlank;
-        import java.util.Comparator;
-        import java.util.Date;
-        import java.util.Objects;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "event")
-public class Event implements Comparable<Event>{
+public class Event implements Comparable<Event> {
 
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -134,7 +132,6 @@ public class Event implements Comparable<Event>{
         return time.compareTo(o.getTime());
 
     }
-
 
 
 //    public static Comparator<Event> EventTimeComparator = new Comparator<Event>() {

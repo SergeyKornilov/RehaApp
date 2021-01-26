@@ -1,4 +1,3 @@
-
 var surnameValidFlag;
 var nameValidFlag;
 var secondnameValidFlag;
@@ -10,7 +9,6 @@ var dateOfBirthdayValidFlag;
 
 var addPatientBtn = document.getElementById("addPatientBtn");
 
-
 function checkBtn() {
     console.log(addPatientBtn);
     if (surnameValidFlag && nameValidFlag && secondnameValidFlag && diagnosisValidFlag && insuranceNumberValidFlag &&
@@ -19,7 +17,6 @@ function checkBtn() {
     } else {
         addPatientBtn.setAttribute("disabled", "true");
     }
-
 }
 
 
@@ -189,6 +186,84 @@ function checkDate(){
         checkBtn();
     }
 }
+
+function checkAllValid() {
+
+}
+
+function checkDoctorsList() {
+
+
+    var attendingDoctor = document.getElementsByName("attendingDoctor")[0].value;
+    if (attendingDoctor === "Select attending doctor" || attendingDoctor.length === 0) {
+        document.getElementsByClassName("bfh-selectbox-toggle form-control")[0].classList.add("invalidInput");
+        attendingDoctorValidFlag = false;
+        console.log("set invalid doctors list");
+        checkBtn();
+    } else {
+        document.getElementsByClassName("bfh-selectbox-toggle form-control")[0].classList.remove("invalidInput");
+        attendingDoctorValidFlag = true;
+        console.log("set valid doctors list");
+        checkBtn();
+    }
+
+}
+
+//when open list of doctors
+$(document).ready(function () {
+    $('.bfh-selectbox').on('show.bfhselectbox', function () {
+        checkDoctorsList();
+    });
+
+});
+
+$(document).ready(function () {
+    $('.bfh-selectbox').on('change.bfhselectbox', function () {
+        checkDoctorsList();
+    });
+
+});
+
+function setRoleWhenErrorValidationOnBackend() {
+
+    var status = document.getElementById("status").value;
+    switch (status) {
+        case "Inpatient" :
+            document.getElementById("inputGroupSelect01").value = 2;
+            break;
+        case "Outpatient" :
+            document.getElementById("inputGroupSelect01").value = 3;
+            break;
+        case "Issued" :
+            document.getElementById("inputGroupSelect01").value = 4;
+            break;
+    }
+
+}
+
+function setStatus(el) {
+    switch (el.innerText) {
+        case "Set Status":
+            document.getElementById("status").value = "";
+
+            break;
+        case "Inpatient":
+            document.getElementById("status").value = "Inpatient";
+
+            break;
+        case "Outpatient":
+            document.getElementById("status").value = "Outpatient";
+
+            break;
+        case "Issued":
+            document.getElementById("status").value = "Issued";
+
+            break;
+    }
+}
+
+
+
 
 document.getElementById("inputDateOfBirth").addEventListener("keyup", checkDate);
 document.getElementById("inputDateOfBirth").addEventListener("change", checkDate);

@@ -1,5 +1,3 @@
-
-
 var nameValidFlag;
 var passwordValidFlag;
 var roleValidFlag;
@@ -9,7 +7,7 @@ var addUserBtn = document.getElementById("addUserBtn");
 
 function checkBtn() {
 
-    if (nameValidFlag && passwordValidFlag && roleValidFlag && fullNameValidFlag){
+    if (nameValidFlag && passwordValidFlag && roleValidFlag && fullNameValidFlag) {
         addUserBtn.removeAttribute("disabled");
     } else {
         addUserBtn.setAttribute("disabled", "true");
@@ -17,28 +15,27 @@ function checkBtn() {
 
 }
 
-    function checkFullName() {
-        var el = document.getElementById("fullNameInput");
+function checkFullName() {
+    var el = document.getElementById("fullNameInput");
 
-        var str = el.value;
+    var str = el.value;
 
-        var error1 = document.getElementById("errorsFullName").querySelector("li:nth-child(1)");
-        var error2 = document.getElementById("errorsFullName").querySelector("li:nth-child(2)");
+    var error1 = document.getElementById("errorsFullName").querySelector("li:nth-child(1)");
+    var error2 = document.getElementById("errorsFullName").querySelector("li:nth-child(2)");
 
-        if (str.length < 5 || str.length > 50) {
-            error1.classList.add('invalid');
-            error1.classList.remove('valid');
-        } else{
-            error1.classList.add('valid');
-            error1.classList.remove('invalid');
-        }
+    if (str.length < 5 || str.length > 50) {
+        error1.classList.add('invalid');
+        error1.classList.remove('valid');
+    } else {
+        error1.classList.add('valid');
+        error1.classList.remove('invalid');
+    }
 
 
-
-    if (/[^a-zA-Zа-яА-я /]+/.test(str)){
+    if (/[^a-zA-Zа-яА-я /]+/.test(str)) {
         error2.classList.add('invalid');
         error2.classList.remove('valid');
-    } else{
+    } else {
         error2.classList.add('valid');
         error2.classList.remove('invalid');
     }
@@ -56,14 +53,14 @@ function checkPassword() {
     if (str.length < 8) {
         error1.classList.add('invalid');
         error1.classList.remove('valid');
-    } else{
+    } else {
         error1.classList.add('valid');
         error1.classList.remove('invalid');
     }
     if (str.length > 30) {
         error2.classList.add('invalid');
         error2.classList.remove('valid');
-    } else{
+    } else {
         error2.classList.add('valid');
         error2.classList.remove('invalid');
     }
@@ -84,15 +81,15 @@ function checkName() {
     if (str.length < 3 || str.length > 25) {
         error1.classList.add('invalid');
         error1.classList.remove('valid');
-    } else{
+    } else {
         error1.classList.add('valid');
         error1.classList.remove('invalid');
     }
 
-    if (/[^a-zA-Zа-яА-я/]+/.test(str)){
+    if (/[^a-zA-Zа-яА-я/]+/.test(str)) {
         error2.classList.add('invalid');
         error2.classList.remove('valid');
-    } else{
+    } else {
         error2.classList.add('valid');
         error2.classList.remove('invalid');
     }
@@ -102,13 +99,13 @@ function checkName() {
 
 }
 
-function checkRole(){
+function checkRole() {
     var role = document.getElementById("role");
 
-    if (role.value === "ROLE_DOCTOR" || role.value === "ROLE_ADMIN" || role.value === "ROLE_NURSE"){
+    if (role.value === "ROLE_DOCTOR" || role.value === "ROLE_ADMIN" || role.value === "ROLE_NURSE") {
         document.getElementById("inputGroupSelect01").classList.remove("invalidInput");
         roleValidFlag = true;
-    }else {
+    } else {
         document.getElementById("inputGroupSelect01").classList.add("invalidInput");
         roleValidFlag = false;
     }

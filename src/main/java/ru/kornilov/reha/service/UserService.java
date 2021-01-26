@@ -1,13 +1,8 @@
 package ru.kornilov.reha.service;
 
-import org.hibernate.validator.constraints.EAN;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kornilov.reha.DAO.UserDAO;
-import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Role;
 import ru.kornilov.reha.entities.User;
 
@@ -23,7 +18,7 @@ public class UserService {
     private UserDAO userDAO;
 
     @Transactional
-    public User findByUsername(String name){
+    public User findByUsername(String name) {
         return userDAO.findByUsername(name);
     }
 
@@ -43,15 +38,16 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> allUsers(){
+    public List<User> allUsers() {
         return userDAO.allUsers();
     }
 
     @Transactional
-    public List<User> findAllUsersRolDoctor(){
+    public List<User> findAllUsersRolDoctor() {
 
         List<User> users = allUsers().stream()
                 .filter(user -> user.getRoles().contains(Role.ROLE_DOCTOR)).collect(Collectors.toList());
-        return users.isEmpty() ? users : null;
+        return users.size() > 0 ? users : null;
+
     }
 }

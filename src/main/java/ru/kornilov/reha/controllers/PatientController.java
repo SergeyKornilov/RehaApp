@@ -35,7 +35,7 @@ public class PatientController {
 
     @GetMapping("/patient-list")
     public String allPatientsPage(Model model, @AuthenticationPrincipal User user) {
- //       logger.debug("running method allPatientsPage, on GetMapping /patient-list");
+        //       logger.debug("running method allPatientsPage, on GetMapping /patient-list");
 
         model.addAttribute("user", user);
         model.addAttribute("patients", patientService.allPatients());
@@ -44,9 +44,7 @@ public class PatientController {
 
     @GetMapping("/add-patient-page")
     public String addPatientPage(Model model, @AuthenticationPrincipal User user) {
-  //      logger.debug("running method addPatientPage, on GetMapping /addPatientPage");
-
-
+        //      logger.debug("running method addPatientPage, on GetMapping /addPatientPage");
 
 
         model.addAttribute("users", userService.findAllUsersRolDoctor());
@@ -59,18 +57,18 @@ public class PatientController {
 
 
     @PostMapping("/add-patient-page")
-    public String patientSave(@ModelAttribute@Valid Patient patient,
+    public String patientSave(@ModelAttribute @Valid Patient patient,
                               BindingResult bindingResult,
                               Model model,
-                              @AuthenticationPrincipal User user){
- //       logger.debug("running method patientSave, on PostMapping /patient-add");
+                              @AuthenticationPrincipal User user) {
+        //       logger.debug("running method patientSave, on PostMapping /patient-add");
 
 
         patientService.patientValidate(patient, bindingResult);
 
-        if(bindingResult.hasErrors()){
-            if(bindingResult.hasFieldErrors("insuranceNumber")){
-                if(bindingResult.getFieldError("insuranceNumber").getDefaultMessage().equals("Duplicate insurance number")){
+        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasFieldErrors("insuranceNumber")) {
+                if (bindingResult.getFieldError("insuranceNumber").getDefaultMessage().equals("Duplicate insurance number")) {
                     model.addAttribute("duplicatePatient", patientService.selectPatientByInsurance(patient.getInsuranceNumber()));
                 }
             }
@@ -91,7 +89,7 @@ public class PatientController {
     }
 
     @GetMapping("/patient/edit/{id}")
-    public String editPatientPage(@PathVariable("id") int id,  @AuthenticationPrincipal User user, Model model) {
+    public String editPatientPage(@PathVariable("id") int id, @AuthenticationPrincipal User user, Model model) {
 //        logger.debug("running method editPatientPage, on GetMapping /patient/edit/{id}");
 
         model.addAttribute("users", userService.findAllUsersRolDoctor());
@@ -104,15 +102,15 @@ public class PatientController {
     }
 
     @PostMapping("/patient-edit")
-    public String patientUpdate(@ModelAttribute@Valid Patient patient,
+    public String patientUpdate(@ModelAttribute @Valid Patient patient,
                                 BindingResult bindingResult,
                                 Model model,
-                                @AuthenticationPrincipal User user){
- //       logger.debug("running method patientUpdate, on PostMapping /patient-edit");
+                                @AuthenticationPrincipal User user) {
+        //       logger.debug("running method patientUpdate, on PostMapping /patient-edit");
 
         patientService.patientValidateForEdit(patient, bindingResult);
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
 
             model.addAttribute("users", userService.findAllUsersRolDoctor());
             model.addAttribute("errors", bindingResult.getAllErrors());
@@ -137,14 +135,14 @@ public class PatientController {
         patientService.deletePatient(patientService.getPatientById(id));
         model.addAttribute("patients", patientService.allPatients());
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        return "redirect:" + referer;
     }
 
     @GetMapping("/patient/card/{id}")
     public String openPatientCart(@PathVariable("id") int id,
                                   @AuthenticationPrincipal User user,
                                   Model model) {
- //       logger.debug("running method openPatientCart, on GetMapping /patient/card/{id}");
+        //       logger.debug("running method openPatientCart, on GetMapping /patient/card/{id}");
 
         Patient patient = patientService.getPatientById(id);
         Set<Prescribing> prescribings = patient.getPrescribings();

@@ -24,22 +24,22 @@ public class PrescribingService {
     private PrescribingDAO prescribingDao;
 
     @Transactional
-    public List<Prescribing> allPrescribings(){
+    public List<Prescribing> allPrescribings() {
         return prescribingDao.allPrescribings();
     }
 
     @Transactional
-    public void addPrescribing (Prescribing prescribing) {
+    public void addPrescribing(Prescribing prescribing) {
         prescribingDao.addPrescribing(prescribing);
     }
 
     @Transactional
-    public void deletePrescribing (Prescribing prescribing) {
+    public void deletePrescribing(Prescribing prescribing) {
         prescribingDao.deletePrescribing(prescribing);
     }
 
     @Transactional
-    public void updatePrescribing (Prescribing prescribing) {
+    public void updatePrescribing(Prescribing prescribing) {
         prescribingDao.updatePrescribing(prescribing);
     }
 
@@ -49,9 +49,8 @@ public class PrescribingService {
     }
 
 
-
     @Transactional
-    public void deleteChildEvents(Prescribing prescribing){
+    public void deleteChildEvents(Prescribing prescribing) {
         List<Event> events = prescribing.getEvents();
         for (Event event :
                 events) {
@@ -61,12 +60,32 @@ public class PrescribingService {
 
     }
 
-    public void prescribingValidate(Prescribing prescribing, Errors errors){
-        //validate date
-        if(prescribing.getDateStart() == null) {
+    public void prescribingValidate(Prescribing prescribing, Errors errors) {
+
+        prescribingCheckDatesStartEnd(prescribing, errors);
+        prescribingCheckWeekdays(prescribing, errors);
+        prescribingCheckTime(prescribing, errors);
+
+
+    }
+
+    private void prescribingCheckTime(Prescribing prescribing, Errors errors) {
+        if (prescribing.getTime().size() == 0) {
+            errors.rejectValue("time", "", "Time cannot be empty");
+        }
+    }
+
+    private void prescribingCheckWeekdays(Prescribing prescribing, Errors errors) {
+        if (prescribing.getDayOfWeeks().size() == 0) {
+            errors.rejectValue("dayOfWeeks", "", "Day of the week cannot be empty");
+        }
+    }
+
+    private void prescribingCheckDatesStartEnd(Prescribing prescribing, Errors errors) {
+        if (prescribing.getDateStart() == null) {
             errors.rejectValue("dateStart", "", "Date start cannot be empty");
 
-        } else if(prescribing.getDateEnd() == null){
+        } else if (prescribing.getDateEnd() == null) {
             errors.rejectValue("dateEnd", "", "Date end cannot be empty");
         } else {
 
@@ -82,19 +101,10 @@ public class PrescribingService {
             if (dateOfStart.after(dateOfEnd)) errors.rejectValue("dateStart", "", "End day is earlier than start day");
             if (dateOfStart.before(today)) errors.rejectValue("dateEnd", "", "Start day in the past");
         }
-        //validate week days
-        if(prescribing.getDayOfWeeks().size() == 0){
-            errors.rejectValue("dayOfWeeks", "", "Day of the week cannot be empty");
-        }
-
-        //validate time
-        if(prescribing.getTime().size() == 0){
-            errors.rejectValue("time", "", "Time cannot be empty");
-        }
     }
 
 
-    public void setPatient(Prescribing prescribing, int idPatient){
+    public void setPatient(Prescribing prescribing, int idPatient) {
 
         prescribing.setPatient(patientService.getPatientById(idPatient));
 

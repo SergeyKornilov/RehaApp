@@ -1,8 +1,6 @@
-
-
 var countTimeInputs = 2;
 
-function clearPrescribingForm(){
+function clearPrescribingForm() {
 
     $('#dateInput .date').datepicker('setDate', null);
     $('#sunday').removeClass("active");
@@ -22,18 +20,17 @@ function clearPrescribingForm(){
     document.getElementById("dayOfWeek-" + "saturday").setAttribute("disabled", "true");
 
 
-    document.getElementById('prescribingDose').value="";
-    document.getElementById('prescribingName').value="";
+    document.getElementById('prescribingDose').value = "";
+    document.getElementById('prescribingName').value = "";
 
 
-    while(countTimeInputs > 2) {
+    while (countTimeInputs > 2) {
         deleteProcedureTimeInput();
 
     }
 
     document.getElementById("daysOfWeekError").querySelector("li:nth-child(1)").classList.remove("valid");
     document.getElementById("daysOfWeekError").querySelector("li:nth-child(1)").classList.remove("invalid");
-
 
 
     document.getElementById("inputDateEnd").classList.remove("errorInput");
@@ -49,37 +46,33 @@ function addProcedureTimeInput() {
         document.getElementById('procedureTimeInput' + countTimeInputs).removeAttribute("hidden");
 
         countTimeInputs++;
-    } else
-    {
+    } else {
         alert('Maximum!');
     }
 }
+
 function deleteProcedureTimeInput() {
     if (countTimeInputs > 2) {
         countTimeInputs--;
 
         document.getElementById('procedureTimeInput' + countTimeInputs).setAttribute("hidden", "true");
-    } else
-    {
+    } else {
         alert('Minimum!');
     }
 }
-
-
 
 
 function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на вход принимаем значения из списка назначений
     clearPrescribingForm();
 
 
-
-    document.getElementById("prescribingTitle").innerText="Edit prescribing";
+    document.getElementById("prescribingTitle").innerText = "Edit prescribing";
     document.getElementById("prescribingForm").removeAttribute("hidden");
 
     document.getElementById("postTypeAddPrescribing").setAttribute("value", "edit");
 
-    if(type==="procedure") selectProcedure();
-    if(type==="medicines") selectMedicines();
+    if (type === "procedure") selectProcedure();
+    if (type === "medicines") selectMedicines();
 
     document.getElementById("prescribingId").removeAttribute("disabled");
     document.getElementById("prescribingId").setAttribute("value", id);
@@ -87,19 +80,17 @@ function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на 
     // document.getElementById("prescribingName").setAttribute("value", name);
     // document.getElementById("prescribingDose").setAttribute("value", dose);
 
-    document.getElementById('prescribingDose').value=dose;
-    document.getElementById('prescribingName').value=name;
+    document.getElementById('prescribingDose').value = dose;
+    document.getElementById('prescribingName').value = name;
 
     // document.getElementsByName("dateStart")[0].setAttribute("value", dateStart);
     //document.getElementsByName("dateEnd")[0].setAttribute("value", dateEnd);
 
 
-    dateStart= dateStart.split(' ')[0]; //приводим время под формат для datepicker
+    dateStart = dateStart.split(' ')[0]; //приводим время под формат для datepicker
     dateEnd = dateEnd.split(' ')[0];
     $('#dateInput .date.start').datepicker('setDate', dateStart);
     $('#dateInput .date.end').datepicker('setDate', dateEnd);
-
-
 
 
     var strWeeks = document.getElementById("weeks" + id).innerText;
@@ -113,14 +104,13 @@ function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на 
     if (strWeeks.indexOf("Saturday") !== -1) document.getElementById("saturday").click();
 
 
-
 //подставляем время
-    var strTime = document.getElementById("timePrescribingList"+id).innerText.split(" ");
-    for(x = 1; x < strTime.length; x++){
+    var strTime = document.getElementById("timePrescribingList" + id).innerText.split(" ");
+    for (x = 1; x < strTime.length; x++) {
         addProcedureTimeInput();
     }
-    for(x=0; x < strTime.length; x++){
-        document.getElementsByClassName("bfh-selectbox-option")[x].textContent=strTime[x];
+    for (x = 0; x < strTime.length; x++) {
+        document.getElementsByClassName("bfh-selectbox-option")[x].textContent = strTime[x];
     }
 
     document.getElementById("addPrescribingBtn").removeAttribute("disabled")
@@ -134,7 +124,7 @@ function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на 
 function setWeek(el) {
     var day = el.getAttribute("id");
     // el.classList.add("active");
-    if(document.getElementById("dayOfWeek-" + day).getAttribute("disabled") === "true"){
+    if (document.getElementById("dayOfWeek-" + day).getAttribute("disabled") === "true") {
         document.getElementById("dayOfWeek-" + day).removeAttribute("disabled");
         el.classList.add("active");
     } else {
@@ -181,6 +171,7 @@ function selectProcedure() {
 
     document.getElementById("prescribingDose").value = 1;
 }
+
 function selectMedicines() {
 
     daysOfWeekValidFlag = true;
@@ -221,31 +212,32 @@ function selectMedicines() {
     document.getElementById("saturday").classList.add("active");
 
 
-
-
 }
 
 
 document.getElementById("timeInputForm").addEventListener("DOMSubtreeModified", switchTime);
+
 function switchTime() {
     var elements = document.getElementsByClassName("bfh-selectbox-option");
-    for (var i = 0; i < elements.length; i ++){
+    for (var i = 0; i < elements.length; i++) {
         switch (document.getElementsByClassName("bfh-selectbox-option")[i].textContent) {
-            case "Morning": document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "08:00";
+            case "Morning":
+                document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "08:00";
                 break;
-            case "Afternoon": document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "14:00";
+            case "Afternoon":
+                document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "14:00";
                 break;
-            case "Evening": document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "20:00";
+            case "Evening":
+                document.getElementsByClassName("bfh-selectbox-option")[i].textContent = "20:00";
                 break;
         }
     }
 }
 
 
-
 //перед отправкой в скрытые input подставляем введенное время из spans
 function setTime() {
-    for (x = 1; x <= 5; x++){
+    for (x = 1; x <= 5; x++) {
         if (document.getElementById("procedureTimeInput" + x).getAttribute("hidden") === "true") break;
         var text = document.getElementById("procedureTimeInput" + x).getElementsByClassName("bfh-selectbox-option")[0].textContent;
         document.getElementById("time" + x).removeAttribute("disabled");
@@ -253,27 +245,25 @@ function setTime() {
     }
 }
 
-
-
 function openAddPrescribing() {
-    document.getElementById("prescribingTitle").innerText="Add prescribing";
-    if (document.getElementById("prescribingForm").getAttribute("hidden")==="true")
-    {document.getElementById("prescribingForm").removeAttribute("hidden");
+    document.getElementById("prescribingTitle").innerText = "Add prescribing";
+    if (document.getElementById("prescribingForm").getAttribute("hidden") === "true") {
+        document.getElementById("prescribingForm").removeAttribute("hidden");
         document.getElementById("postTypeAddPrescribing").setAttribute("value", "addPrescribing");
         document.getElementById("prescribingId").setAttribute("disabled", 'true');
+    } else {
+        document.getElementById("prescribingForm").setAttribute("hidden", "true")
     }
-    else {document.getElementById("prescribingForm").setAttribute("hidden", "true")}
 }
 
-
 var x = 0;
+
 function addPrescribingInput() {
     if (x < 10) {
         var str = '<input type="text" class="link" placeholder="Time"> <div id="input' + (x + 1) + '"></div>';
         document.getElementById('input' + x).innerHTML = str;
         x++;
-    } else
-    {
+    } else {
         alert('STOP it!');
     }
 }
@@ -282,7 +272,7 @@ function addPrescribingInput() {
 <!-- Datepair script-->
 
 var date = new Date();
- var startDate = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+var startDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
 
 
 $('#dateInput .date').datepicker({
@@ -291,6 +281,11 @@ $('#dateInput .date').datepicker({
     startDate: startDate
 });
 
+$(document).ready(function () {
+    if (document.getElementById("errorMessageP") != null) {
+        openAddPrescribing();
+    }
+});
 
 
 // initialize datepair

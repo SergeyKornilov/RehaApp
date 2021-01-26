@@ -3,7 +3,7 @@ package ru.kornilov.reha.entities;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-     ROLE_ADMIN,
+    ROLE_ADMIN,
     ROLE_DOCTOR,
     ROLE_NURSE;
 

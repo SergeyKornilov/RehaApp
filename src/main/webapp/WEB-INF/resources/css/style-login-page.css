@@ -1,4 +1,4 @@
-.login-form{
+.login-form {
     margin-top: 200px;
     padding-top: 37px;
     width: 520px;
@@ -8,7 +8,8 @@
     background: rgba(255, 255, 255, 0.85);
     border-radius: 20px;
 }
-.login-page-title{
+
+.login-page-title {
     flex-direction: row;
     display: flex;
     width: 200px;
@@ -31,50 +32,55 @@
     linear-gradient(0deg, rgba(248, 6, 253, 0.55), rgba(248, 6, 253, 0.55));
 
 }
-.inputs-login-form{
+
+.inputs-login-form {
     width: 300px;
     margin-right: auto;
     margin-left: auto;
 
 }
+
 ::-webkit-input-placeholder {
-    text-align:center;
+    text-align: center;
     color: white;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-    text-align:center;
+    text-align: center;
     color: white;
 }
 
-::-moz-placeholder {  /* Firefox 19+ */
-    text-align:center;
+::-moz-placeholder { /* Firefox 19+ */
+    text-align: center;
     color: white;
 }
 
 :-ms-input-placeholder {
-    text-align:center;
+    text-align: center;
     color: white;
 }
 
-.input-username-password{
+.input-username-password {
     margin-top: 15px;
-    text-align:center !important;
+    text-align: center !important;
     background: #C4C4C4;
     border: none;
     color: white;
 }
-.form-control{
-    box-shadow: none!important;
+
+.form-control {
+    box-shadow: none !important;
 }
-.btn-login{
+
+.btn-login {
     margin-top: 15px;
     background: #30BC79;
     color: white;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)!important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
     border: none;
 }
-.error-login-field{
+
+.error-login-field {
     color: #e74c3c;
     margin-left: auto;
     margin-right: auto;

@@ -1,10 +1,8 @@
-
 var nameValidFlag;
 var doseValidFlag = true;
 var dateStartValidFlag;
 var dateEndValidFlag;
 var daysOfWeekValidFlag;
-
 
 
 var addPrescribingBtn = document.getElementById("addPrescribingBtn");
@@ -13,7 +11,7 @@ var addPrescribingBtn = document.getElementById("addPrescribingBtn");
 function checkBtn() {
 
 
-    if (nameValidFlag && doseValidFlag && dateEndValidFlag && dateStartValidFlag && daysOfWeekValidFlag){
+    if (nameValidFlag && doseValidFlag && dateEndValidFlag && dateStartValidFlag && daysOfWeekValidFlag) {
         addPrescribingBtn.removeAttribute("disabled");
         addPrescribingBtn.classList.add("active");
     } else {
@@ -38,7 +36,7 @@ function checkName() {
     if (str.length < 1 || str.length > 25) {
         error1.classList.add('invalid');
         error1.classList.remove('valid');
-    } else{
+    } else {
         error1.classList.add('valid');
         error1.classList.remove('invalid');
     }
@@ -49,7 +47,7 @@ function checkName() {
 
 }
 
-function checkDose(){
+function checkDose() {
     var el = document.getElementById("prescribingDose");
 
     var str = el.value;
@@ -60,7 +58,7 @@ function checkDose(){
         error1.classList.add('invalid');
         error1.classList.remove('valid');
 
-    } else{
+    } else {
         error1.classList.add('valid');
         error1.classList.remove('invalid');
     }
@@ -73,33 +71,31 @@ function checkDose(){
 
 }
 
-function checkDateStart(){
-    if(document.getElementById("inputDateStart").value.length != 0){
+function checkDateStart() {
+    if (document.getElementById("inputDateStart").value.length != 0) {
         dateStartValidFlag = true;
         document.getElementById("inputDateStart").classList.remove("errorInput");
         checkBtn();
-    }
-    else {
+    } else {
         document.getElementById("inputDateStart").classList.add("errorInput");
         dateStartValidFlag = false;
         checkBtn();
     }
 }
 
-function checkDateEnd(){
-    if(document.getElementById("inputDateEnd").value.length != 0){
+function checkDateEnd() {
+    if (document.getElementById("inputDateEnd").value.length != 0) {
         dateEndValidFlag = true;
         document.getElementById("inputDateEnd").classList.remove("errorInput");
         checkBtn();
-    }
-    else {
+    } else {
         document.getElementById("inputDateEnd").classList.add("errorInput");
         dateEndValidFlag = false;
         checkBtn();
     }
 }
 
-function checkDaysOfWeek(){
+function checkDaysOfWeek() {
     var er = document.getElementById("daysOfWeekError").querySelector("li:nth-child(1)");
 
     if (document.getElementById("sunday").classList.contains("active") ||
@@ -108,7 +104,7 @@ function checkDaysOfWeek(){
         document.getElementById("wednesday").classList.contains("active") ||
         document.getElementById("thursday").classList.contains("active") ||
         document.getElementById("friday").classList.contains("active") ||
-        document.getElementById("saturday").classList.contains("active")){
+        document.getElementById("saturday").classList.contains("active")) {
 
         daysOfWeekValidFlag = true;
         er.classList.add("valid");
@@ -124,9 +120,6 @@ function checkDaysOfWeek(){
 
     }
 }
-
-
-
 
 
 document.getElementById("prescribingName").addEventListener('keyup', checkName);

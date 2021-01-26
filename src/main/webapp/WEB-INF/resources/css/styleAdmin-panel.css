@@ -5,29 +5,34 @@
     list-style: disc;
     list-style-position: inside;
     max-width: 400px;
-    margin-left: -35px ;
-    color: rgb(150,150,150);
+    margin-left: -35px;
+    color: rgb(150, 150, 150);
 
 }
+
 .input-requirements li {
     display: none;
 }
+
 .input-requirements li.invalid {
     color: #e74c3c;
     display: block;
 }
+
 .input-requirements li.valid {
     color: #2ecc71;
     display: none;
 }
 
 .invalidInput {
-    border: 2px solid #e74c3c!important;
+    border: 2px solid #e74c3c !important;
 }
-.removeShadow{
-    box-shadow: none!important;
+
+.removeShadow {
+    box-shadow: none !important;
 }
-.btn-add-clear-user{
+
+.btn-add-clear-user {
     width: 150px;
     height: 35px;
     color: white;
@@ -38,14 +43,15 @@
     border-radius: 4.9359px;
     border: none;
 }
-.btn-add-clear-user:disabled{
-    background: #A4D3FF!important;
+
+.btn-add-clear-user:disabled {
+    background: #A4D3FF !important;
 }
 
 .group {
-     position: relative;
-     margin-bottom: 30px;
- }
+    position: relative;
+    margin-bottom: 30px;
+}
 
 input.dynamic {
     font-size: 16px;
@@ -55,9 +61,11 @@ input.dynamic {
     border: none;
     border-bottom: 1px solid #ccc;
 }
+
 input:focus {
     outline: none;
 }
+
 label {
     color: #999;
     font-size: 18px;
@@ -84,6 +92,7 @@ input:focus ~ label, input:valid ~ label {
     display: block;
     width: 320px;
 }
+
 .bar:before, .bar:after {
     content: "";
     height: 2px;
@@ -95,9 +104,11 @@ input:focus ~ label, input:valid ~ label {
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
 }
+
 .bar:before {
     left: 50%;
 }
+
 .bar:after {
     right: 50%;
 }
@@ -110,4 +121,8 @@ input:focus ~ .bar:after {
 
 :invalid {
     box-shadow: none;
+}
+
+.readonlyInput {
+    background: #cccccc;
 }

@@ -16,7 +16,9 @@ import ru.kornilov.reha.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -31,7 +33,7 @@ public class UserController {
                            @AuthenticationPrincipal User user,
                            Map<String, Object> model) {
 
-        if (bindingResult.hasErrors() ) {
+        if (bindingResult.hasErrors()) {
             Set<String> errors = new HashSet<>();
 
             for (ObjectError error : bindingResult.getAllErrors()) {
@@ -58,12 +60,12 @@ public class UserController {
 
     @PostMapping(path = "/admin", params = {"action=addUser"})
     public String addUser(@ModelAttribute @Valid User newUser,
-                        BindingResult bindingResult,
+                          BindingResult bindingResult,
                           @AuthenticationPrincipal User user,
                           Map<String, Object> model) {
 
 
-        if (bindingResult.hasErrors() ) {
+        if (bindingResult.hasErrors()) {
             Set<String> errors = new HashSet<>();
 
             for (ObjectError error : bindingResult.getAllErrors()) {
@@ -79,10 +81,10 @@ public class UserController {
             return "admin/admin-panel";
         }
 
- //     logger.debug("running method addUser, on PostMapping /registration");
+        //     logger.debug("running method addUser, on PostMapping /registration");
         User userFromDb = userService.findByUsername(newUser.getUsername());
 
-        if(userFromDb != null){
+        if (userFromDb != null) {
             model.put("message", "User with the same username exists!");
             model.put("users", userService.allUsers());
             model.put("user", user);
@@ -98,15 +100,14 @@ public class UserController {
     }
 
     @GetMapping("/access-denied")
-    public String accessDenied(){
- //       logger.debug("running method accessDenied, on GetMapping /access-denied")
+    public String accessDenied() {
+        //       logger.debug("running method accessDenied, on GetMapping /access-denied")
         return "main/access-denied";
     }
 
 
-
     @GetMapping("/profile")
-    public String openProfile(@AuthenticationPrincipal User user, Model model){
+    public String openProfile(@AuthenticationPrincipal User user, Model model) {
 //        logger.debug("running method openProfile, on GetMapping /profile");
         model.addAttribute("user", user);
         return "main/profile";
@@ -116,6 +117,6 @@ public class UserController {
     public String prescribingDelete(@PathVariable("username") String username, Model model, HttpServletRequest request) {
         userService.deleteUser(userService.findByUsername(username));
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        return "redirect:" + referer;
     }
 }

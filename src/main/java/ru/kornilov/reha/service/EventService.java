@@ -64,7 +64,7 @@ public class EventService {
     }
 
     @Transactional
-    public String validateEvents(Prescribing prescribing, Patient patient) {
+    public String validationMatchesDateAndTimeEventsTypeProcedure(Prescribing prescribing, Patient patient) {
 
         //валидация совпадения даты и времени нужна только для процедур
 

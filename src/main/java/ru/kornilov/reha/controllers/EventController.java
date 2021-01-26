@@ -13,8 +13,6 @@ import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.EventService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -26,7 +24,7 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/event-list")
-    public String allEventPage(Model model,@AuthenticationPrincipal User user) {
+    public String allEventPage(Model model, @AuthenticationPrincipal User user) {
 //        logger.debug("running method allEventPage, on GetMapping /event-list");
 
 
@@ -40,27 +38,26 @@ public class EventController {
 
 
     @PostMapping("/event-list")
-    public String setEventCancel (@RequestParam int id,
-                                  HttpServletRequest request,
-                                  @RequestParam String reason){
+    public String setEventCancel(@RequestParam int id,
+                                 HttpServletRequest request,
+                                 @RequestParam String reason) {
 
         eventService.setStatusCancel(id, reason);
 
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        return "redirect:" + referer;
     }
 
     @GetMapping("/event/done/{id}")
-    public String setEventDone (@PathVariable("id") int id, HttpServletRequest request){
+    public String setEventDone(@PathVariable("id") int id, HttpServletRequest request) {
 //        logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
 
         eventService.setStatusClose(id);
-      //  model.addAttribute("events", eventService.allEvents());
+        //  model.addAttribute("events", eventService.allEvents());
 
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        return "redirect:" + referer;
     }
-
 
 
 }

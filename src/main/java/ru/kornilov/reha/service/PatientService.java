@@ -21,22 +21,22 @@ public class PatientService {
     private EventService eventService;
 
     @Transactional
-    public List<Patient> allPatients(){
+    public List<Patient> allPatients() {
         return patientDAO.allPatients();
     }
 
     @Transactional
-    public void addPatient (Patient patient) {
+    public void addPatient(Patient patient) {
         patientDAO.addPatient(patient);
     }
 
     @Transactional
-    public void deletePatient (Patient patient) {
+    public void deletePatient(Patient patient) {
         patientDAO.deletePatient(patient);
     }
 
     @Transactional
-    public void updatePatient (Patient patient) {
+    public void updatePatient(Patient patient) {
         patientDAO.updatePatient(patient);
     }
 
@@ -53,7 +53,7 @@ public class PatientService {
 
     @Transactional
     public void patientValidateForEdit(Patient patient, Errors errors) {
-        if(selectPatientByInsurance(patient.getInsuranceNumber()) != null &&
+        if (selectPatientByInsurance(patient.getInsuranceNumber()) != null &&
                 selectPatientByInsurance(patient.getInsuranceNumber()).getId() != patient.getId())
             errors.rejectValue("insuranceNumber", "", "Duplicate insurance number");
         checkAge(patient, errors);
@@ -61,15 +61,15 @@ public class PatientService {
 
 
     @Transactional
-    public void patientValidate(Patient patient, Errors errors){
-        if (selectPatientByInsurance(patient.getInsuranceNumber()) != null ){
+    public void patientValidate(Patient patient, Errors errors) {
+        if (selectPatientByInsurance(patient.getInsuranceNumber()) != null) {
             errors.rejectValue("insuranceNumber", "", "Duplicate insurance number");
         }
         checkAge(patient, errors);
     }
 
     @Transactional
-    public void cancelAllEventsWhenIssued(Patient patient){
+    public void cancelAllEventsWhenIssued(Patient patient) {
         Set<Prescribing> prescribings = patient.getPrescribings();
 
         Calendar today = Calendar.getInstance();
@@ -77,8 +77,8 @@ public class PatientService {
 
         Calendar dateOfEvent = new GregorianCalendar();
 
-        for (Prescribing prescribing:
-             prescribings) {
+        for (Prescribing prescribing :
+                prescribings) {
             Set<Event> events = new HashSet<>(prescribing.getEvents());
             if (events.size() != 0) {
                 for (Event event :
@@ -96,25 +96,26 @@ public class PatientService {
     }
 
     public void checkAge(Patient patient, Errors errors) {
-        if(patient.getDateOfBirth() != null){
-        Calendar patientBirthDay = new GregorianCalendar();
-        patientBirthDay.setTime(patient.getDateOfBirth());
+        if (patient.getDateOfBirth() != null) {
+            Calendar patientBirthDay = new GregorianCalendar();
+            patientBirthDay.setTime(patient.getDateOfBirth());
 
 
-        Calendar minDateBirthDay = Calendar.getInstance();
-        minDateBirthDay.roll(Calendar.YEAR, -18);
+            Calendar minDateBirthDay = Calendar.getInstance();
+            minDateBirthDay.roll(Calendar.YEAR, -18);
 
-        Calendar maxDateBirthDay = Calendar.getInstance();
-        maxDateBirthDay.roll(Calendar.YEAR, -200);
+            Calendar maxDateBirthDay = Calendar.getInstance();
+            maxDateBirthDay.roll(Calendar.YEAR, -200);
 
-        Calendar today = new GregorianCalendar();
+            Calendar today = new GregorianCalendar();
 
-        if (patientBirthDay.after(minDateBirthDay) && patientBirthDay.before(today)) errors
-                .rejectValue("dateOfBirth", "", "Patient must be over 18 years of age");
-        if (patientBirthDay.before(maxDateBirthDay)) errors.rejectValue("dateOfBirth", "", "Age can`t be more than 200 years");
-        if (patientBirthDay.after(today)) errors.rejectValue("dateOfBirth", "", "Date in the future");
-    } else {
-        errors.rejectValue("dateOfBirth", "", "Empty date of birth");
-    }
+            if (patientBirthDay.after(minDateBirthDay) && patientBirthDay.before(today)) errors
+                    .rejectValue("dateOfBirth", "", "Patient must be over 18 years of age");
+            if (patientBirthDay.before(maxDateBirthDay))
+                errors.rejectValue("dateOfBirth", "", "Age can`t be more than 200 years");
+            if (patientBirthDay.after(today)) errors.rejectValue("dateOfBirth", "", "Date in the future");
+        } else {
+            errors.rejectValue("dateOfBirth", "", "Empty date of birth");
+        }
     }
 }

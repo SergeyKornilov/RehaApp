@@ -7,14 +7,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import ru.kornilov.reha.service.LoginService;
-import ru.kornilov.reha.service.UserService;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +17,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private LoginService loginService;
-
 
 
     @Override
@@ -44,24 +38,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/event-list/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/main/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/profile/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_NURSE') or hasRole('ROLE_DOCTOR')")
-                    .and()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .successHandler(myAuthenticationSuccessHandler())
                 .permitAll()
                 .failureUrl("/login-error")
-                    .and()
+                .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                 .permitAll()
-                    .and()
+                .and()
                 .exceptionHandling()
                 .accessDeniedPage("/access-denied");
     }
 
     @Bean
-    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
         return new CustomUrlAuthenticationSuccessHandler();
     }
 

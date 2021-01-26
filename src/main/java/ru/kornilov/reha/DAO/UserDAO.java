@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.entities.User;
 
 import java.util.List;
@@ -39,6 +38,7 @@ public class UserDAO {
         Session session = sessionFactory.getCurrentSession();
         session.delete(user);
     }
+
     public List<User> allUsers() {
 
         Session session = sessionFactory.getCurrentSession();

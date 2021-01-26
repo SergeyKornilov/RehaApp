@@ -10,10 +10,8 @@
 <p><a href="/patient-list">Patients list</a></p>
 <p><a href="/event-list">Events list</a></p>
 
-
-
 <form action="/logout" method="post">
-    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <input type="submit" value="Sign Out"/>
 </form>
 

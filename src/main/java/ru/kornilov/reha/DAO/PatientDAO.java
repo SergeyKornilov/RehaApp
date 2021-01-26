@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class PatientDAO  {
+public class PatientDAO {
 
     private SessionFactory sessionFactory;
 
@@ -47,7 +47,7 @@ public class PatientDAO  {
         return session.get(Patient.class, id);
     }
 
-    public Patient getByInsuranceNumber(String insuranceNumber){
+    public Patient getByInsuranceNumber(String insuranceNumber) {
 
         List<Patient> patients = allPatients().stream()
                 .filter(patient -> patient.getInsuranceNumber().equals(insuranceNumber))

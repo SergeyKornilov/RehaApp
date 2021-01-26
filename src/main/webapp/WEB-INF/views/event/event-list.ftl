@@ -13,156 +13,111 @@
     <!-- dateFormat -->
     <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="/css/styleEvent-list.css">
-    <style type="text/css">
-        .popup-window{
-            display: none;
-            box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
-            -webkit-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
-            -moz-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
-            padding: 20px;
-            background: white;
-            z-index: 500;
-            -webkit-border-radius: 5px!important;
-            -moz-border-radius: 5px!important;
-            border-radius: 5px!important;
-        }
-        .open{
-
-            cursor: pointer;
-        }
-        .backpopup{
-            display:none;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            background: rgb(105, 105, 105);
-            opacity: 0.7;
-            top: 0;
-            left: 0;
-            z-index: 400;
-            cursor: pointer;
-        }
-        .close{
-        float: right;
-            cursor: pointer;
-            right: 5px;
-            top: 0px;
-            position: absolute;
-            padding: 4px;
-        }
-        .btn-hide-close{
-            width: 150px;
-            height: 35px;
-            color: white;
-            box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
-            -webkit-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
-            -moz-box-shadow: 0px 0px 4px 0px rgb(70, 70, 70);
-            background: linear-gradient(103.31deg, #0C8AFE -20.48%, #F806FD 118.31%);
-            border-radius: 4.9359px;
-            border: none;
-        }
-
-
-    </style>
 
 </head>
 <#include "../parts/head.ftl">
 <body onload="hideClosed()">
 
 
-
-
 <div class="container">
     <div class="row">
-        <div class="col"> <h1 style="text-align: center" class="display-4">Events</h1></div>
+        <div class="col"><h1 style="text-align: center" class="display-4">Events</h1></div>
     </div>
     <div class="row">
         <div class="col-8">
-            <input class="form-control" style="margin-bottom: 30px" type="text" placeholder="Search" id="search-text" onkeyup="eventsTableSearch()">
+            <input class="form-control" style="margin-bottom: 30px" type="text" placeholder="Search" id="search-text"
+                   onkeyup="eventsTableSearch()">
         </div>
         <div class="col-2">
-            <input onchange="filterDate()" class="form-control" id="inputDateOfBirth" type="date" name="dateOfBirth" placeholder="age" value="${(patient.dateOfBirth?string('yyyy-MM-dd'))!}"/>
+            <input onchange="filterDate()" class="form-control" id="inputDateOfBirth" type="date" name="dateOfBirth"
+                   placeholder="age" value="${(patient.dateOfBirth?string('yyyy-MM-dd'))!}"/>
         </div>
         <div class="col-1">
-            <button id="btn-hideClosed" class="btn-hide-close" hidden type="button" onclick="hideClosed()">Hide closed</button>
-            <button id="btn-displayClosed" class = "btn-hide-close" type="button" onclick="displayClosed()">Display closed</button>
+            <button id="btn-hideClosed" class="btn-hide-close" hidden type="button" onclick="hideClosed()">Hide closed
+            </button>
+            <button id="btn-displayClosed" class="btn-hide-close" type="button" onclick="displayClosed()">Display
+                closed
+            </button>
         </div>
 
 
     </div>
 
-<div class="row">
-    <div class="col-12">
-<table id="tableListEvents" class="table sortable" style="background: #E0FDFF;">
-    <thead>
-    <tr>
-        <td>Date</td>
-        <td>Time</td>
-        <td>Type</td>
-        <td>Patient Name</td>
-        <td>Prescribing description</td>
-        <td>Status</td>
+    <div class="row">
+        <div class="col-12">
+            <table id="tableListEvents" class="table sortable" style="background: #E0FDFF;">
+                <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Time</td>
+                    <td>Type</td>
+                    <td>Patient Name</td>
+                    <td>Prescribing description</td>
+                    <td>Status</td>
 
-        <td></td>
-    </tr>
-    </thead>
+                    <td></td>
+                </tr>
+                </thead>
 
-    <tbody>
+                <tbody>
+                <#list events?sort_by("date") as event>
+                    <tr>
+                        <td>${(event.date?datetime?string('dd.MM.yyyy'))!}</td>
+                        <td>${(event.time)!}</td>
+                        <td>${(event.prescribing.type)!}</td>
+                        <td>${(event.prescribing.patient.name)!}</td>
+                        <td>${(event.prescribing.name)!}</td>
+                        <td>${(event.status)!} <#if event.reason??>-</#if> ${(event.reason)!}</td>
 
+                        <td><#if event.status = "open"><a href="/event/done/${event.id}">
+                                    <button class="btn-done" type="button">Done</button> </a></#if>
+                            <#if event.status = "open">
+                                <button onclick="setEventIdPostForm(${(event.id)!})" class="btn-done open"
+                                        style="background: #e74c3c" type="button">Cancel</button></#if>
+                        </td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
 
-    <#list events?sort_by("date") as event>
+        </div>
 
-        <tr>
-            <td>${(event.date?datetime?string('dd.MM.yyyy'))!}</td>
-            <td>${(event.time)!}</td>
-            <td>${(event.prescribing.type)!}</td>
-            <td>${(event.prescribing.patient.name)!}</td>
-            <td>${(event.prescribing.name)!}</td>
-            <td>${(event.status)!} <#if event.reason??>-</#if> ${(event.reason)!}</td>
-
-            <td><#if event.status = "open"><a href="/event/done/${event.id}"><button class="btn-done" type="button">Done</button> </a></#if>
-                <#if event.status = "open"><button onclick="setEventIdPostForm(${(event.id)!})" class="btn-done open" style="background: #e74c3c" type="button">Cancel</button></#if>
-            </td>
-        </tr>
-</#list>
-    </tbody>
-</table>
+    </div>
 
 </div>
-
-</div>
-
-</div>
-
 
 
 <div class="popup-window">
     <p class="close">x</p>
 
     <form method="post">
-    <table>
-        <tr>
-            <td>
-                <p style="margin-left:  100px; margin-right: 100px;">Enter the reason for canceling the event</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input name="reason" style="margin-top: 20px" class="form-control" type="text"/>
-                <input id="postInputId" name="id" hidden type="text">
-                <input type="hidden" name="_csrf" value="${_csrf.token}" />
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" class="btn-done" value="Event cancel" style="background: #e74c3c; margin-top: 20px">
-            </td>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <td>
+                    <p style="margin-left:  100px; margin-right: 100px;">Enter the reason for canceling the event</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input name="reason" style="margin-top: 20px" class="form-control" type="text"/>
+                    <input id="postInputId" name="id" hidden type="text">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" class="btn-done" value="Event cancel"
+                           style="background: #e74c3c; margin-top: 20px">
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
 

@@ -8,53 +8,52 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="patients")
+@Table(name = "patients")
 public class Patient {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 
-    @Column(name="surname")
+    @Column(name = "surname")
     @NotBlank(message = "Surname cannot be empty")
     @Size(min = 2, max = 25, message = "Surname length: min 2 characters, max - 25")
     private String surname;
 
-    @Column(name="name")
+    @Column(name = "name")
     @NotBlank(message = "Name cannot be empty")
     @Size(min = 2, max = 25, message = "Name length: min 2 characters, max - 25")
     private String name;
 
-    @Column(name="second_name")
+    @Column(name = "second_name")
     private String secondname;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name="date_of_birth")
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(name="diagnosis")
+    @Column(name = "diagnosis")
     @Size(min = 2, max = 25, message = "Diagnosis length: min 2 characters, max - 25")
     @NotBlank(message = "Diagnosis name cannot be empty")
     private String diagnosis;
 
-    @Column(name="insurance_number")
+    @Column(name = "insurance_number")
     @Size(min = 2, max = 25, message = "Insurance Number length: min 8 characters, max - 25")
     @NotBlank(message = "InsuranceNumber name cannot be empty")
     private String insuranceNumber;
 
 
-    @Column(name="attending_doctor")
+    @Column(name = "attending_doctor")
     @Size(min = 2, max = 50, message = "Attending doctor length: min 5 characters, max - 50")
     @NotBlank(message = "Attending doctor name cannot be empty")
     private String attendingDoctor;
 
-    @Column(name="status")
+    @Column(name = "status")
     @Size(min = 2, max = 15, message = "Status length: min 2 characters, max - 15")
     @NotBlank(message = "Status cannot be empty")
     private String status;

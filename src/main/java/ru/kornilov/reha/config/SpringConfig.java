@@ -8,13 +8,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import ru.kornilov.reha.config.security.SecurityConfig;
 
 
-@Import({ SecurityConfig.class })
+@Import({SecurityConfig.class})
 @Configuration
 @ComponentScan("ru.kornilov.reha")
 @EnableWebMvc

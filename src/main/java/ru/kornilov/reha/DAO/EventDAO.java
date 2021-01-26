@@ -5,8 +5,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.kornilov.reha.entities.Event;
-import ru.kornilov.reha.entities.Patient;
-import ru.kornilov.reha.entities.Prescribing;
 
 import java.util.List;
 
