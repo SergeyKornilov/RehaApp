@@ -39,7 +39,7 @@ public class PrescribingServiceTest {
     private final static int idPrescribing = 0;
 
     @Test
-    public void whenDeleteChildEventsSelectChildEventsLengthIsZero(){
+    public void whenDeleteChildEventsSelectChildEventsLengthIsZero() {
 
         Prescribing prescribing = new Prescribing();
         prescribing.setId(idPrescribing);

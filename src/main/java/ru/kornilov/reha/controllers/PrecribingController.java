@@ -1,5 +1,6 @@
 package ru.kornilov.reha.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ import java.util.Set;
 
 @Controller
 public class PrecribingController {
-//    private static final Logger logger = Logger.getLogger(PrecribingController.class);
+    private static final Logger logger = Logger.getLogger(PrecribingController.class);
 
 
     @Autowired
@@ -36,7 +37,7 @@ public class PrecribingController {
     @GetMapping("/prescribing/delete/{id}")
     public String prescribingDelete(@PathVariable("id") int id, HttpServletRequest request) {
 
-        //     logger.debug("running method prescribingDelete, on GetMapping /prescribing/delete/{id}");
+             logger.debug("running method prescribingDelete, on GetMapping /prescribing/delete/{id}");
 
         prescribingService.deletePrescribing(prescribingService.getPrescribingById(id));
         String referer = request.getHeader("Referer");
@@ -49,11 +50,9 @@ public class PrecribingController {
                                  BindingResult bindingResult,
                                  @AuthenticationPrincipal User user,
                                  Model model) {
-        //     logger.debug("running method addPrescribing, on PostMapping patient/card/{idPatient}");
+             logger.debug("running method addPrescribing, on PostMapping patient/card/{idPatient}");
 
-        //Валидация по аннотациям Hibernate в сущностях
         prescribingService.prescribingValidate(prescribing, bindingResult);
-        //Если в полях ошибки ничего не создаем, валидировать дальше нельзя и нет смысла могут быть Null поля и тд
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             model.addAttribute("user", user);
@@ -61,11 +60,9 @@ public class PrecribingController {
             model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
             return "patient/patient-card";
         }
-        //Если все ок, связываем назначение с пациентом, что бы проверить даты и время уже существующих назначений
         prescribingService.setPatient(prescribing, idPatient);
         String existingProcedureErrorMessage =
                 eventService.validationMatchesDateAndTimeEventsTypeProcedure(prescribing, patientService.getPatientById(idPatient));
-        //снова если ошибки наполняем модель
         if (existingProcedureErrorMessage.length() != 0) {
             model.addAttribute("existingProcedureErrorMessage", existingProcedureErrorMessage);
             model.addAttribute("user", user);
@@ -73,7 +70,6 @@ public class PrecribingController {
             model.addAttribute("patient", patientService.getPatientById(idPatient));
             return "patient/patient-card";
         }
-        //если ошибок не было то добавляем назначение и вызываем создание событий и наполняем модель
         prescribingService.addPrescribing(prescribing);
         eventService.createEvents(prescribing);
         model.addAttribute("user", user);
@@ -88,22 +84,18 @@ public class PrecribingController {
                                   BindingResult bindingResult,
                                   @AuthenticationPrincipal User user,
                                   Model model) {
-        //     logger.debug("running method editPrescribing, on PostMapping patient/card/{idPatient}");
+             logger.debug("running method editPrescribing, on PostMapping patient/card/{idPatient}");
 
         prescribingService.prescribingValidate(prescribing, bindingResult);
 
         if (bindingResult.hasErrors()) {
-
             model.addAttribute("errors", bindingResult.getAllErrors());
-
             Patient patient = patientService.getPatientById(idPatient);
-
             Set<Prescribing> prescribings = patient.getPrescribings();
 
             model.addAttribute("user", user);
             model.addAttribute("patient", patient);
             model.addAttribute("prescribings", prescribings);
-
 
             return "patient/patient-card";
         }
@@ -111,13 +103,9 @@ public class PrecribingController {
         String existingProcedureErrorMessage =
                 eventService.validationMatchesDateAndTimeEventsTypeProcedure(prescribing, patientService.getPatientById(idPatient));
 
-
         if (existingProcedureErrorMessage.length() != 0) {
 
-            System.out.println(prescribing.toString());
-
             model.addAttribute("existingProcedureErrorMessage", existingProcedureErrorMessage);
-
             model.addAttribute("user", user);
             model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
             model.addAttribute("patient", patientService.getPatientById(idPatient));
@@ -127,11 +115,8 @@ public class PrecribingController {
 
         Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
         prescribingService.deleteChildEvents(oldPrescribing);
-
-
         prescribingService.setPatient(prescribing, idPatient);
         prescribingService.updatePrescribing(prescribing);
-
         eventService.createEvents(prescribing);
 
         model.addAttribute("user", user);

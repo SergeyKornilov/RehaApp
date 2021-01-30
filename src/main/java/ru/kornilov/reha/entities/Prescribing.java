@@ -38,27 +38,20 @@ public class Prescribing {
     @Size(max = 25, message = "Dose length: max - 25")
     private String dose;
 
-    //    @NotBlank(message = "Date start cannot be empty")
-//    @Size(min = 8, max = 25, message = "Date start length: min 2 characters, max - 25")
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @Column(name = "date_start")
     private Date dateStart;
 
-    //    @NotBlank(message = "Date end be empty")
-//    @Size(min = 8, max = 25, message = "Date end length: min 2 characters, max - 25")
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @Column(name = "date_end")
     private Date dateEnd;
 
-    //    @NotBlank(message = "DayOfWeeks cannot be empty")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> dayOfWeeks = new LinkedHashSet<>();
 
-    //    @NotBlank(message = "Time cannot be empty")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> time;
 
-    //    @NotBlank(message = "Patient cannot be empty")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
     private Patient patient;

@@ -1,5 +1,6 @@
 package ru.kornilov.reha.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,21 +15,20 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
-    //   private static final Logger logger = Logger.getLogger(MainController.class);
+       private static final Logger logger = Logger.getLogger(MainController.class);
 
 
     @GetMapping("/main")
     public String main() {
-//        logger.debug("running method main, on GetMapping /main");
+        logger.debug("running method main, on GetMapping /main");
 
         return "main/main";
     }
 
     @GetMapping("/")
     public String loginPage() {
-        //       logger.debug("running method loginPage, on GetMapping /");
+               logger.debug("running method loginPage, on GetMapping /");
 
-        //redirect from login page to home page for ROLE
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         switch (auth.getAuthorities().toString()) {
             case ("[ROLE_ANONYMOUS]"):

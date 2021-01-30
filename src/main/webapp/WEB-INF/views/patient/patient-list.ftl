@@ -58,15 +58,15 @@
         <div class="col-12">
             <table id="tableListPatients" class="table patient-list-back">
                 <tr>
-                    <td>id</td>
-                    <td>surname</td>
-                    <td>name</td>
-                    <td>secondname</td>
-                    <td>dateOfBirth</td>
-                    <td>diagnosis</td>
-                    <td>insuranceNumber</td>
-                    <td>attendingDoctor</td>
-                    <td>status</td>
+                    <td>Id</td>
+                    <td>Surname</td>
+                    <td>Name</td>
+                    <td>Secondname</td>
+                    <td>Date of birth</td>
+                    <td>Diagnosis</td>
+                    <td>Insurance number</td>
+                    <td>Attending doctor</td>
+                    <td>Status</td>
                     <td></td>
                     <td></td>
                     <td></td>

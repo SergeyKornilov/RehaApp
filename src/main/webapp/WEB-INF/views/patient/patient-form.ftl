@@ -105,7 +105,7 @@
             </div>
 
             <div class="group">
-                <input id="secondnameInput" onblur="checkSecondname()" class="dynamic" type="text" name="secondname"
+                <input id="secondnameInput" onblur="checkSecondname()" class="dynamic" required type="text" name="secondname"
                        autocomplete="off" value="${(patient.secondname)!}">
                 <span class="bar"></span>
                 <label>Secondname</label>
@@ -221,9 +221,9 @@
             </div>
             <p>
                 <#if add>
-                    <button class="btn btn-lg btn-primary" disabled id="addPatientBtn" type="submit">Add</button>
+                    <button onclick="removeRequeredSecondnameInput()" class="btn btn-lg btn-primary" disabled id="addPatientBtn" type="submit">Add</button>
                 <#else>
-                    <button class="btn btn-lg btn-primary" disabled id="addPatientBtn" type="submit">Save</button>
+                    <button onclick="removeRequeredSecondnameInput()" class="btn btn-lg btn-primary" disabled id="addPatientBtn" type="submit">Save</button>
                 </#if>
             </p>
         </form>
@@ -288,6 +288,10 @@
                 break;
         }
         checkStatus();
+    }
+
+    function removeRequeredSecondnameInput(){
+        document.getElementById("secondnameInput").removeAttribute("required");
     }
 
 </script>

@@ -133,19 +133,4 @@ public class Event implements Comparable<Event> {
 
     }
 
-
-//    public static Comparator<Event> EventTimeComparator = new Comparator<Event>() {
-//
-//        public int compare(Event event1, Event event2) {
-//
-//            String fruitName1 = event1.getTime().toUpperCase();
-//            String fruitName2 = event2.getTime().toUpperCase();
-//
-//            //ascending order
-//            return fruitName1.compareTo(fruitName2);
-//
-//
-//        }
-//
-//    };
 }

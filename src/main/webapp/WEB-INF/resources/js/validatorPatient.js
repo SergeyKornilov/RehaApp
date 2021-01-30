@@ -1,6 +1,6 @@
 var surnameValidFlag;
 var nameValidFlag;
-var secondnameValidFlag;
+var secondnameValidFlag = true;
 var diagnosisValidFlag;
 var insuranceNumberValidFlag;
 var attendingDoctorValidFlag;

@@ -1,5 +1,6 @@
 package ru.kornilov.reha.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Controller
 public class EventController {
-//    private static final Logger logger = Logger.getLogger(EventController.class);
+    private static final Logger logger = Logger.getLogger(EventController.class);
 
 
     @Autowired
@@ -25,14 +26,10 @@ public class EventController {
 
     @GetMapping("/event-list")
     public String allEventPage(Model model, @AuthenticationPrincipal User user) {
-//        logger.debug("running method allEventPage, on GetMapping /event-list");
-
-
-        List<Event> events = eventService.allEvents();
-        eventService.sortEventsByTime(events);
+        logger.debug("running method allEventPage, on GetMapping /event-list");
 
         model.addAttribute("user", user);
-        model.addAttribute("events", events);
+        model.addAttribute("events", eventService.getAllEventsSortedByTime());
         return "event/event-list";
     }
 
@@ -50,10 +47,9 @@ public class EventController {
 
     @GetMapping("/event/done/{id}")
     public String setEventDone(@PathVariable("id") int id, HttpServletRequest request) {
-//        logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
+        logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
 
         eventService.setStatusClose(id);
-        //  model.addAttribute("events", eventService.allEvents());
 
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;

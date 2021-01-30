@@ -120,11 +120,11 @@
       <version>5.3.6.RELEASE</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/log4j/log4j -->
-<!--    <dependency>-->
-<!--      <groupId>log4j</groupId>-->
-<!--      <artifactId>log4j</artifactId>-->
-<!--      <version>1.2.17</version>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
     <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
     <dependency>
@@ -163,6 +163,42 @@
       <version>5.6.3</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jms</artifactId>
+      <version>5.2.6.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.wildfly</groupId>
+      <artifactId>wildfly-jms-client-bom</artifactId>
+      <version>10.1.0.Final</version>
+      <type>pom</type>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/javax.faces/javax.faces-api -->
+    <dependency>
+      <groupId>javax.faces</groupId>
+      <artifactId>javax.faces-api</artifactId>
+      <version>2.3</version>
+    </dependency>
+
+      <!-- https://mvnrepository.com/artifact/javax/javaee-api -->
+      <dependency>
+          <groupId>javax</groupId>
+          <artifactId>javaee-api</artifactId>
+          <version>7.0</version>
+          <scope>provided</scope>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.12.1</version>
+      </dependency>
 
 
   </dependencies>

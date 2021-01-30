@@ -31,9 +31,6 @@ public class User implements UserDetails {
     @Size(min = 2, max = 50, message = "FullName length: min 8 characters, max - 50")
     private String fullName;
 
-//    @Email(message = "Email is not correct")
-//    @NotBlank(message = "Email cannot be empty")
-//    private String email;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)

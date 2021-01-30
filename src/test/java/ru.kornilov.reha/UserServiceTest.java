@@ -23,7 +23,6 @@ public class UserServiceTest {
     UserDAO userDAO;
 
     private static final String name = "Name";
-//    private static final String password = "password";
 
 
     @Test
