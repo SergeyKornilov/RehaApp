@@ -2,6 +2,7 @@ package ru.kornilov.reha.entities.dto;
 
 public class EventJsonDTO {
 
+    private String id;
     private String date;
     private String status;
     private String time;
@@ -14,7 +15,8 @@ public class EventJsonDTO {
     public EventJsonDTO() {
     }
 
-    public EventJsonDTO(String date, String status, String time, String reason, String type, String name, String dose, String patient) {
+    public EventJsonDTO(String id, String date, String status, String time, String reason, String type, String name, String dose, String patient) {
+        this.id = id;
         this.date = date;
         this.status = status;
         this.time = time;
@@ -89,10 +91,19 @@ public class EventJsonDTO {
         this.patient = patient;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "EventJsonDTO{" +
-                "date='" + date + '\'' +
+                "id='" + id + '\'' +
+                ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
                 ", time='" + time + '\'' +
                 ", reason='" + reason + '\'' +

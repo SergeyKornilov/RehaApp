@@ -2,6 +2,8 @@ var countTimeInputs = 2;
 
 function clearPrescribingForm() {
 
+    console.log("clearPrescribingForm()");
+
     $('#dateInput .date').datepicker('setDate', null);
     $('#sunday').removeClass("active");
     $('#monday').removeClass("active");
@@ -40,6 +42,8 @@ function clearPrescribingForm() {
 }
 
 function addProcedureTimeInput() {
+
+
     while (countTimeInputs < 2) countTimeInputs++;                   // ???
     if (countTimeInputs <= 5) {
 
@@ -63,6 +67,8 @@ function deleteProcedureTimeInput() {
 
 
 function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на вход принимаем значения из списка назначений
+    console.log("editPrescribing()");
+
     clearPrescribingForm();
 
 
@@ -93,17 +99,18 @@ function editPrescribing(id, type, name, dose, dateStart, dateEnd) {     //на 
     $('#dateInput .date.end').datepicker('setDate', dateEnd);
 
 
-    var strWeeks = document.getElementById("weeks" + id).innerText;
+    if (type === "procedure") {
+        var strWeeks = document.getElementById("weeks" + id).innerText;
 
-    if (strWeeks.indexOf("Sunday") !== -1) document.getElementById("sunday").click();
-    if (strWeeks.indexOf("Monday") !== -1) document.getElementById("monday").click();
-    if (strWeeks.indexOf("Tuesday") !== -1) document.getElementById("tuesday").click();
-    if (strWeeks.indexOf("Wednesday") !== -1) document.getElementById("wednesday").click();
-    if (strWeeks.indexOf("Thursday") !== -1) document.getElementById("thursday").click();
-    if (strWeeks.indexOf("Friday") !== -1) document.getElementById("friday").click();
-    if (strWeeks.indexOf("Saturday") !== -1) document.getElementById("saturday").click();
+        if (strWeeks.indexOf("Sunday") !== -1) document.getElementById("sunday").click();
+        if (strWeeks.indexOf("Monday") !== -1) document.getElementById("monday").click();
+        if (strWeeks.indexOf("Tuesday") !== -1) document.getElementById("tuesday").click();
+        if (strWeeks.indexOf("Wednesday") !== -1) document.getElementById("wednesday").click();
+        if (strWeeks.indexOf("Thursday") !== -1) document.getElementById("thursday").click();
+        if (strWeeks.indexOf("Friday") !== -1) document.getElementById("friday").click();
+        if (strWeeks.indexOf("Saturday") !== -1) document.getElementById("saturday").click();
 
-
+    }
 //подставляем время
     var strTime = document.getElementById("timePrescribingList" + id).innerText.split(" ");
     for (x = 1; x < strTime.length; x++) {
@@ -135,8 +142,12 @@ function setWeek(el) {
 
 
 function selectProcedure() {
+    console.log("selectProcedure()");
+
     daysOfWeekValidFlag = false;
     doseValidFlag = true;
+
+
 
     document.getElementById("btnProcedure").classList.add("active");
     document.getElementById("btnMedicines").classList.remove("active");
@@ -174,10 +185,14 @@ function selectProcedure() {
 
 function selectMedicines() {
 
+    console.log("selectMedicines");
+
     daysOfWeekValidFlag = true;
     doseValidFlag = false;
 
     checkBtn();
+
+    console.log(daysOfWeekValidFlag);
 
     document.getElementById("prescribingDose").value = "";
 
@@ -210,7 +225,6 @@ function selectMedicines() {
 
     document.getElementById("dayOfWeek-saturday").removeAttribute("disabled");
     document.getElementById("saturday").classList.add("active");
-
 
 }
 

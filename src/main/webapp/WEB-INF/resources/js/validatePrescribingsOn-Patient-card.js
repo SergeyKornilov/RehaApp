@@ -67,7 +67,6 @@ function checkDose() {
     if (error1.classList.contains("valid")) doseValidFlag = true;
     else doseValidFlag = false;
 
-    console.log(doseValidFlag);
 
 }
 

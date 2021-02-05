@@ -33,7 +33,6 @@ public class EventController {
         return "event/event-list";
     }
 
-
     @PostMapping("/event-list")
     public String setEventCancel(@RequestParam int id,
                                  HttpServletRequest request,
@@ -46,10 +45,14 @@ public class EventController {
     }
 
     @GetMapping("/event/done/{id}")
-    public String setEventDone(@PathVariable("id") int id, HttpServletRequest request) {
+    public String setEventDone(@PathVariable("id") int id, HttpServletRequest request)  {
         logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
 
-        eventService.setStatusClose(id);
+        try {
+            eventService.setStatusClose(id);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;

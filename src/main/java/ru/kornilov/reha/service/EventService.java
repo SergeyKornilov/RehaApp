@@ -1,13 +1,21 @@
 package ru.kornilov.reha.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import ru.kornilov.reha.DAO.EventDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
-import ru.kornilov.reha.service.message.MessageSender;
+import ru.kornilov.reha.service.message.UpdateEventsService;
 
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import javax.jms.Session;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -16,8 +24,13 @@ import java.util.*;
 
 @Service
 public class EventService {
+
     @Autowired
-    private MessageSender messageSender;
+    MessageService messageService;
+
+    @Autowired
+    UpdateEventsService updateEventsService;
+
 
     @Autowired
     private EventDAO eventDAO;
@@ -47,12 +60,27 @@ public class EventService {
         return eventDAO.getById(id);
     }
 
+    @Transactional
+    public List<Event> getEventsByDate(Date date){
+        return eventDAO.findAllEventsByDate(date);
+    }
+
 
     @Transactional
-    public void setStatusClose(int id) {
+    public void setStatusClose(int id) throws InterruptedException {
         Event event = getEventById(id);
         if (event.getStatus().equals("open")) {
             event.setStatus("close");
+            System.out.println( getEventById(id));
+            try {
+                updateEventsService.updateEventList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            messageService.sendMessage();
+
+
+
         }
     }
 
@@ -62,6 +90,14 @@ public class EventService {
         if (event.getStatus().equals("open")) {
             event.setStatus("Cancel");
             event.setReason(reason);
+            try {
+                updateEventsService.updateEventList();
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
+            messageService.sendMessage();
+
+
         }
 
     }
@@ -137,8 +173,12 @@ public class EventService {
                         prescribing.getTime()) {
                     Event event = new Event(date, "open", time, prescribing);
                     addEvent(event);
-                    //ToDo
-                    messageSender.eventMessageSender(prescribing, event);
+                    messageService.sendMessage();
+                    try {
+                        updateEventsService.updateEventList();
+                    } catch (JMSException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             eventsDateStart = eventsDateStart.plusDays(1);
@@ -148,4 +188,7 @@ public class EventService {
     public void sortEventsByTime(List<Event> events) {
         Collections.sort(events);
     }
+
+
+
 }

@@ -104,7 +104,6 @@ public class Event implements Comparable<Event> {
                 ", status='" + status + '\'' +
                 ", time='" + time + '\'' +
                 ", reason='" + reason + '\'' +
-                ", prescribing=" + prescribing +
                 '}';
     }
 

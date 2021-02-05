@@ -1,19 +1,19 @@
-$.fn.popup = function () { 	//pop-up window open function
-    this.css('position', 'absolute').fadeIn();
-    this.css('top', ($(window).height() - this.height()) / 2 + $(window).scrollTop() + 'px');
-    this.css('left', ($(window).width() - this.width()) / 2 + 'px');
-    $('.backpopup').fadeIn();
-};
-
-$(document).ready(function () {	//popup init
-    $('.open').click(function () {
-        $('.popup-window').popup();
-    });
-    $('.backpopup,.close').click(function () { //click on shadow or X
-        $('.popup-window').fadeOut();
-        $('.backpopup').fadeOut();
-    });
-});
+// $.fn.popup = function () { 	//pop-up window open function
+//     this.css('position', 'absolute').fadeIn();
+//     this.css('top', ($(window).height() - this.height()) / 2 + $(window).scrollTop() + 'px');
+//     this.css('left', ($(window).width() - this.width()) / 2 + 'px');
+//     $('.backpopup').fadeIn();
+// };
+//
+// $(document).ready(function () {	//popup init
+//     $('.open').click(function () {
+//         $('.popup-window').popup();
+//     });
+//     $('.backpopup,.close').click(function () { //click on shadow or X
+//         $('.popup-window').fadeOut();
+//         $('.backpopup').fadeOut();
+//     });
+// });
 
 function setEventIdPostForm(id) {
     document.getElementById("postInputId").value = id;

@@ -167,7 +167,6 @@ public class Prescribing {
                 ", dayOfWeeks=" + dayOfWeeks +
                 ", time=" + time +
                 ", patient=" + patient +
-                ", events=" + events +
                 '}';
     }
 }
