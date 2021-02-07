@@ -30,6 +30,7 @@ public class EventController {
 
         model.addAttribute("user", user);
         model.addAttribute("events", eventService.getAllEventsSortedByTime());
+
         return "event/event-list";
     }
 

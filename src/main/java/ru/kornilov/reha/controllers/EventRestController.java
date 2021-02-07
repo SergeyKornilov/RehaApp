@@ -44,6 +44,17 @@ public class EventRestController {
 
     }
 
+    @RequestMapping("/get-all-events")
+    public List<EventJsonDTO> getAllEvents(){
+
+        //TODO  on first call - "eventJsonDTOService.getEventsJsonDtoOnCurrentDate()" return not updated event
+        eventJsonDTOService.getAllEventsJsonDto();
+        System.out.println(eventJsonDTOService.getAllEventsJsonDto());
+
+        return eventJsonDTOService.getAllEventsJsonDto();
+
+    }
+
 
     @RequestMapping(value = "/rest/cancel", method = RequestMethod.POST)
         public String cancel(@RequestBody EventDTO data1){

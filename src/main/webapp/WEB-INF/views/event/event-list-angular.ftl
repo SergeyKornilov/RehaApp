@@ -32,18 +32,28 @@
 <script>
     var app = angular.module("eventList", []);
 
+    var statusFilterValue = ["open"];
+    var dateFilterValue = '';
+
     var a = "${_csrf.parameterName}";
     var b = "${_csrf.token}";
-    console.log(a);
-    console.log(b);
+
     app.controller("eventListController", mainCtrl);
 
 
 
-    // app.controller("MyCtrl", function ($scope) {
-    //     $scope.dt = '2015-09-21 18:30:00';
-    // });
-    //
+    app.filter('statusFilter', function () {
+        return function (events) {
+            var opened = [];
+            for(i = 0; i < events.length; i++){
+                if (statusFilterValue.indexOf(events[i].status) > -1){
+                    opened.push(events[i]);
+                }
+            }
+            return opened;
+        }
+    });
+
     app.constant("moment", moment);
 
     app.filter('formatDate', function(dateFilter, moment) {
@@ -56,6 +66,25 @@
 
     });
 
+    app.filter('filterByDate', function() {
+        return function (events) {
+            for (i = 0; i < events.length; i++) {
+            }
+
+
+
+            if (dateFilterValue.length > 12) {
+                var eventsOnDate = [];
+                for (i = 0; i < events.length; i++) {
+                    if (events[i].date === dateFilterValue) {
+                        eventsOnDate.push(events[i]);
+                    }
+                }
+                return eventsOnDate;
+            } else return events;
+        }
+    });
+
 
 
     // app.controller("ctrl", function($scope, moment) {
@@ -66,18 +95,45 @@
 
 
     function mainCtrl ($scope, $http) {
-            console.log("test hello");
+
+
+
+
+            $scope.dateChangeAngular = function() {
+
+                dateFilterValue = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("YYYY-MM-DD 00:00:00.0");
+
+            };
+
+
+
+        $scope.displayClosedAngular = function () {
+            statusFilterValue.push('close');
+            document.getElementById('btn-displayClosed').setAttribute('hidden', 'true');
+            document.getElementById('btn-hideClosed').removeAttribute('hidden');
+        };
+        $scope.hideClosedAngular = function() {
+            for(var i = statusFilterValue.length - 1; i >= 0; i--) {
+                if(statusFilterValue[i] === 'close') {
+                    statusFilterValue.splice(i, 1);
+                }
+                document.getElementById('btn-displayClosed').removeAttribute('hidden');
+                document.getElementById('btn-hideClosed').setAttribute('hidden', 'true');
+            }
+        };
+
+
+
         var socket = new SockJS('/chat');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function(frame) {
             console.log('Connected: ' + frame);
 
+
             //отмена события
             $scope.setEventIdPostForm = function(eventId) {
-                console.log(eventId);
                 $scope.data.id = eventId;
                     $('.popup-window').popup();
-                    console.log("cliclclclcl");
 
 
                 $('.backpopup,.close').click(function () { //click on shadow or X
@@ -93,7 +149,6 @@
             $scope.submitForm = function (form) {
                 console.log(form);
 
-
                 // $http.post('/rest/cancel', $scope.message)
                 //
                 //     .success(function (data) {
@@ -104,8 +159,6 @@
                 //         console.log('Error:', data);
                 //     });
 
-                console.log(a);
-                console.log(b);
 
 
                 var request = $http({
@@ -115,17 +168,7 @@
                     transformRequest: function(){return a+"="+b;},
                     data: $scope.data
                     });
-
-
             };
-
-
-
-
-
-
-
-
 
             //event done
             $scope.setEventDone = function(eventId) {
@@ -141,10 +184,9 @@
                 }
             };
 
+            $scope.events = [];''
 
-            $scope.events = [];
-
-            $http.get('http://localhost:8080/test/get-events').then(function (data) {
+            $http.get('http://localhost:8080/get-all-events').then(function (data) {
                 $scope.events = data.data;
                 console.log($scope.events);
                 console.log("Hello from MainCtrl");
@@ -153,7 +195,7 @@
 
             stompClient.subscribe('/topic/messages', function(messageOutput) {
 
-            $http.get('http://localhost:8080/test/get-events').then(function (data) {
+            $http.get('http://localhost:8080/get-all-events').then(function (data) {
                 $scope.events = data.data;
                 console.log($scope.events);
                 console.log("Hello from MainCtrl");
@@ -164,7 +206,6 @@
     }
 
     $.fn.popup = function () { 	//pop-up window open function
-        console.log("pop-up window open function");
         this.css('position', 'absolute').fadeIn();
         this.css('top', ($(window).height() - this.height()) / 2 + $(window).scrollTop() + 'px');
         this.css('left', ($(window).width() - this.width()) / 2 + 'px');
@@ -176,7 +217,6 @@
 <body ng-app="eventList" ng-controller="eventListController">
 
 <#include "../parts/head.ftl">
-
 
 
 <div class="container">
@@ -191,13 +231,13 @@
                    >
         </div>
         <div class="col-2">
-            <input class="form-control" id="inputDateOfBirth" type="date" name="dateOfBirth"
+            <input ng-change="dateChangeAngular()" ng-model="inputDateValue" class="form-control" id="inputDateOfBirth" type="date" name="dateOfBirth"
                    placeholder="age" />
         </div>
         <div class="col-1">
-            <button id="btn-hideClosed" class="btn-hide-close" hidden type="button" >Hide closed
+            <button ng-click="hideClosedAngular()" id="btn-hideClosed" class="btn-hide-close" hidden type="button" >Hide closed
             </button>
-            <button id="btn-displayClosed" class="btn-hide-close" type="button">Display
+            <button ng-click="displayClosedAngular()" id="btn-displayClosed" class="btn-hide-close" type="button">Display
                 closed
             </button>
         </div>
@@ -224,7 +264,7 @@
 
                 <tbody>
 <#--                <#list events?sort_by("date") as event>-->
-                    <tr ng-repeat="ev in events | filter:search">
+                    <tr ng-repeat="ev in events | filter:search | statusFilter | filterByDate track by $index">
                         <td>{{ev.date | formatDate: ev.date:'dd.MM.yyyy'}}</td>
                         <td>{{ev.time}}</td>
                         <td>{{ev.type}}</td>
