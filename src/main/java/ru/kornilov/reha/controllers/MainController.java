@@ -57,6 +57,9 @@ public class MainController {
             }
         }
         model.addAttribute("errorMessage", errorMessage);
+
+        System.out.println(errorMessage);
+
         return "main/login";
     }
 }

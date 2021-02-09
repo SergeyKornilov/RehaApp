@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.kornilov.reha.entities.User;
+import ru.kornilov.reha.service.mail.MailSender;
 import ru.kornilov.reha.service.UserService;
 
 
@@ -15,8 +16,10 @@ public class AdminController {
     private static final Logger logger = Logger.getLogger(AdminController.class);
 
     @Autowired
-    UserService userService;
+    private MailSender mailSender;
 
+    @Autowired
+    UserService userService;
 
     @GetMapping("/admin")
     public String registration(@AuthenticationPrincipal User user, Model model) throws Exception {
@@ -24,7 +27,7 @@ public class AdminController {
         model.addAttribute("users", userService.allUsers());
         model.addAttribute("user", user);
 
+
         return "admin/admin-panel";
     }
-
 }

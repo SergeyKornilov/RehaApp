@@ -120,4 +120,12 @@ public class UserController {
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
+
+    @GetMapping("/user/activate/{code}")
+    public String activateUser(Model model, @PathVariable String code){
+        userService.activateUser(code);
+        model.addAttribute("successActivate","Your account has been successfully activated!");
+//        return "redirect:/";
+        return "main/login";
+    }
 }

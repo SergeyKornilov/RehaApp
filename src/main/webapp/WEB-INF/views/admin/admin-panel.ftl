@@ -16,7 +16,7 @@
         <div class="col"><h1 style="text-align: center; margin-top: 30px" class="display-4">Admin panel</h1></div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-5">
 
             <h3 style="padding-bottom: 15px; margin-top: 15px">Add user:</h3>
             <p style="color: #e74c3c">${(message)!}</p>
@@ -60,6 +60,17 @@
                     </ul>
                 </div>
 
+                <div class="group">
+                    <input id="emailInput" onblur="" class="dynamic" type="text" name="email"
+                           required autocomplete="off">
+                    <span class="bar"></span>
+                    <label>Email</label>
+                    <ul id="errorsEmail" class="input-requirements">
+                        <li>Enter correct address!</li>
+                        <li>Can`t be empty</li>
+                    </ul>
+                </div>
+
                 <div class="input-group mb-3 " style="width: 300px">
                     <select onclick="checkRole()" class="custom-select removeShadow" id="inputGroupSelect01">
                         <option id="selectOptionSetRole" value="1" onclick="setRole(this)">Set Role</option>
@@ -77,28 +88,29 @@
             </form>
 
         </div>
-        <div class="col-6" style="margin-top: 15px">
+        <div class="col-7" style="margin-top: 15px">
             <h3>Users:</h3>
             <table class="table" style="margin-top: 45px">
                 <tr>
                     <td>Username</td>
                     <td>Full name</td>
                     <td>Role</td>
+                    <td>Email</td>
                 </tr>
                 <#list users as usr>
                     <#if usr.username??>
                         <tr>
-                            <td>${usr.username}</td>
-                            <td>${usr.fullName}</td>
-                            <td id="role${usr.username}"><#if usr.roles?seq_contains("ROLE_DOCTOR")>Doctor</#if>
+                            <td>${(usr.username)!}</td>
+                            <td>${(usr.fullName)!}</td>
+                            <td id="role${(usr.username)!}"><#if usr.roles?seq_contains("ROLE_DOCTOR")>Doctor</#if>
                                 <#if usr.roles?seq_contains("ROLE_NURSE")>Nurse</#if>
                                 <#if usr.roles?seq_contains("ROLE_ADMIN")>Admin</#if>
                             </td>
-
-                            <td><a href="/user/delete/${usr.username}"><img src="/img/delete.png"></a></td>
+                            <td>${(usr.email)!}</td>
+                            <td><a href="/user/delete/${(usr.username)!}"><img src="/img/delete.png"></a></td>
                             <td>
                                 <img style="cursor: pointer;" src="/img/edit.png"
-                                     onclick="editUser('${usr.username}', '${usr.fullName}', '${usr.password}')">
+                                     onclick="editUser('${(usr.username)!}', '${(usr.fullName)!}', '${(usr.password)!}')">
                             </td>
                         </tr>
                     </#if>

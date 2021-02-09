@@ -87,3 +87,9 @@
     width: 300px;
     text-align: center;
 }
+.success-activate {
+    color: green;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

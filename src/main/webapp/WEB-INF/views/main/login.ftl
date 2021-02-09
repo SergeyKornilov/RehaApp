@@ -27,7 +27,14 @@
                     <p>Nazareth-Lazareth Israel Clinic</p>
                 </div>
                 <#if errorMessage??>
-                    <div class="error-login-field">Incorrect username or password.</div>
+                    <#if errorMessage == "User is disabled">
+                        <div class="error-login-field">User's account is not activated</div>
+                        <#else>
+                            <div class="error-login-field">Incorrect username or password.</div>
+                        </#if>
+                </#if>
+                <#if successActivate??>
+                    <div class="success-activate">${successActivate}</div>
                 </#if>
 
                 <div class="inputs-login-form">
