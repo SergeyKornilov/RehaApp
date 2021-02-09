@@ -7,6 +7,7 @@ import ru.kornilov.reha.DAO.EventDAO;
 import ru.kornilov.reha.DAO.PrescribingDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Prescribing;
+import ru.kornilov.reha.service.message.UpdateEventsService;
 
 import javax.transaction.Transactional;
 import java.util.Calendar;
@@ -15,10 +16,15 @@ import java.util.List;
 
 @Service
 public class PrescribingService {
+
     @Autowired
     PatientService patientService;
     @Autowired
     private EventDAO eventDAO;
+    @Autowired
+    MessageService messageService;
+    @Autowired
+    UpdateEventsService updateEventsService;
 
     @Autowired
     private PrescribingDAO prescribingDao;
@@ -36,6 +42,12 @@ public class PrescribingService {
     @Transactional
     public void deletePrescribing(Prescribing prescribing) {
         prescribingDao.deletePrescribing(prescribing);
+        messageService.sendMessage();
+        try {
+            updateEventsService.updateEventList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Transactional
@@ -57,6 +69,12 @@ public class PrescribingService {
             eventDAO.deleteEvent(event);
         }
         prescribing.getEvents().clear();
+        messageService.sendMessage();
+        try {
+            updateEventsService.updateEventList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kornilov.reha.entities.dto.EventDTO;
 import ru.kornilov.reha.entities.dto.EventJsonDTO;
 import ru.kornilov.reha.service.EventJsonDTOService;
+import ru.kornilov.reha.service.EventService;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 
@@ -19,6 +18,9 @@ public class EventRestController {
 
     @Autowired
     EventJsonDTOService eventJsonDTOService;
+
+    @Autowired
+    EventService eventService;
 
     @GetMapping("/rest/event")
     public List<EventJsonDTO> getEvent(){
@@ -29,7 +31,6 @@ public class EventRestController {
     @SendTo("/topic/messages")
     public String send(String message) throws Exception {
 
-        System.out.println("Hello from TestMessageController");
 
         return message;
     }
@@ -57,8 +58,10 @@ public class EventRestController {
 
 
     @RequestMapping(value = "/rest/cancel", method = RequestMethod.POST)
-        public String cancel(@RequestBody EventDTO data1){
-          System.out.println(data1);
+        public String cancel(@RequestBody EventDTO data){
+
+            eventService.setStatusCancel(Integer.parseInt(data.getId()), data.getReason());
+
         return "test";
     }
 

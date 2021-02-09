@@ -13,7 +13,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col"><h1 style="text-align: center" class="display-4">Admin panel</h1></div>
+        <div class="col"><h1 style="text-align: center; margin-top: 30px" class="display-4">Admin panel</h1></div>
     </div>
     <div class="row">
         <div class="col-6">

@@ -31,29 +31,25 @@ public class EventController {
         model.addAttribute("user", user);
         model.addAttribute("events", eventService.getAllEventsSortedByTime());
 
-        return "event/event-list";
+        return "event/event-list-angular";
     }
 
-    @PostMapping("/event-list")
-    public String setEventCancel(@RequestParam int id,
-                                 HttpServletRequest request,
-                                 @RequestParam String reason) {
-
-        eventService.setStatusCancel(id, reason);
-
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
-    }
+//    @PostMapping("/event-list")
+//    public String setEventCancel(@RequestParam int id,
+//                                 HttpServletRequest request,
+//                                 @RequestParam String reason) {
+//
+//        eventService.setStatusCancel(id, reason);
+//
+//        String referer = request.getHeader("Referer");
+//        return "redirect:" + referer;
+//    }
 
     @GetMapping("/event/done/{id}")
     public String setEventDone(@PathVariable("id") int id, HttpServletRequest request)  {
         logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
 
-        try {
             eventService.setStatusClose(id);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;

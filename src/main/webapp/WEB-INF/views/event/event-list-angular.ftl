@@ -23,13 +23,17 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
+
     <script src="https://momentjs.com/downloads/moment.js"></script>
+
 
 </head>
 <script>
+
     var app = angular.module("eventList", []);
 
     var statusFilterValue = ["open"];
@@ -39,8 +43,6 @@
     var b = "${_csrf.token}";
 
     app.controller("eventListController", mainCtrl);
-
-
 
     app.filter('statusFilter', function () {
         return function (events) {
@@ -71,8 +73,6 @@
             for (i = 0; i < events.length; i++) {
             }
 
-
-
             if (dateFilterValue.length > 12) {
                 var eventsOnDate = [];
                 for (i = 0; i < events.length; i++) {
@@ -85,13 +85,6 @@
         }
     });
 
-
-
-    // app.controller("ctrl", function($scope, moment) {
-    //     $scope.date = new moment().format("D/MMM/YYYY");
-    //     var dat1 = new moment("2021-02-04 00:00:00.0");
-    //     $scope.date3 = dat1.add('5', 'd').format('MMMM Do YYYY, h:mm:ss a');
-    // });
 
 
     function mainCtrl ($scope, $http) {
@@ -109,14 +102,16 @@
 
         $scope.displayClosedAngular = function () {
             statusFilterValue.push('close');
+            statusFilterValue.push('Cancel');
             document.getElementById('btn-displayClosed').setAttribute('hidden', 'true');
             document.getElementById('btn-hideClosed').removeAttribute('hidden');
         };
         $scope.hideClosedAngular = function() {
             for(var i = statusFilterValue.length - 1; i >= 0; i--) {
-                if(statusFilterValue[i] === 'close') {
+                if(statusFilterValue[i] === 'close' || statusFilterValue[i] === 'Cancel') {
                     statusFilterValue.splice(i, 1);
                 }
+
                 document.getElementById('btn-displayClosed').removeAttribute('hidden');
                 document.getElementById('btn-hideClosed').setAttribute('hidden', 'true');
             }
@@ -136,7 +131,7 @@
                     $('.popup-window').popup();
 
 
-                $('.backpopup,.close').click(function () { //click on shadow or X
+                $('.backpopup,.close, .cancelEvent').click(function () { //click on shadow or X
                     $('.popup-window').fadeOut();
                     $('.backpopup').fadeOut();
                 })
@@ -147,27 +142,16 @@
             $scope.data = {};
 
             $scope.submitForm = function (form) {
-                console.log(form);
-
-                // $http.post('/rest/cancel', $scope.message)
-                //
-                //     .success(function (data) {
-                //         console.log('data:', data);
-                //     })
-                //
-                //     .error(function (data) {
-                //         console.log('Error:', data);
-                //     });
-
 
 
                 var request = $http({
                     method: "post",
                     url: "http://localhost:8080/rest/cancel",
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    transformRequest: function(){return a+"="+b;},
+                    headers: {'Content-Type' : 'application/json',
+                                'X-CSRF-TOKEN' : b},
+
                     data: $scope.data
-                    });
+                });
             };
 
             //event done
@@ -183,14 +167,21 @@
                     return false;
                 }
             };
+            $scope.checkStatusCancel = function(eventStatus) {
+                if(eventStatus === "Cancel") {
+                    return true;
+                } else {
+                    return false;
+                }
+            };
 
-            $scope.events = [];''
+
+            $scope.events = [];
 
             $http.get('http://localhost:8080/get-all-events').then(function (data) {
                 $scope.events = data.data;
                 console.log($scope.events);
                 console.log("Hello from MainCtrl");
-
             });
 
             stompClient.subscribe('/topic/messages', function(messageOutput) {
@@ -198,11 +189,11 @@
             $http.get('http://localhost:8080/get-all-events').then(function (data) {
                 $scope.events = data.data;
                 console.log($scope.events);
-                console.log("Hello from MainCtrl");
-
+                console.log("Hello from MainCtrl!!!!!!");
             });
             });
         });
+
     }
 
     $.fn.popup = function () { 	//pop-up window open function
@@ -213,6 +204,7 @@
     };
 
 
+
 </script>
 <body ng-app="eventList" ng-controller="eventListController">
 
@@ -221,7 +213,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col"><h1 style="text-align: center" class="display-4">Events</h1></div>
+        <div class="col"><h1 style="text-align: center; margin-top: 30px" class="display-4">Events</h1></div>
     </div>
 
 
@@ -244,8 +236,6 @@
 
     </div>
 
-
-
     <div class="row">
         <div class="col-12">
             <table id="tableListEvents" class="table sortable" style="background: #E0FDFF;">
@@ -256,7 +246,7 @@
                     <td>Type</td>
                     <td>Patient Name</td>
                     <td>Prescribing description</td>
-                    <td>Status</td>
+                    <td style="min-width: 100px">Status</td>
 
                     <td></td>
                 </tr>
@@ -264,13 +254,14 @@
 
                 <tbody>
 <#--                <#list events?sort_by("date") as event>-->
-                    <tr ng-repeat="ev in events | filter:search | statusFilter | filterByDate track by $index">
+                    <tr ng-repeat="ev in events | orderBy: 'date' | filter:search | statusFilter | filterByDate track by $index">
                         <td>{{ev.date | formatDate: ev.date:'dd.MM.yyyy'}}</td>
                         <td>{{ev.time}}</td>
                         <td>{{ev.type}}</td>
                         <td>{{ev.patient}}</td>
                         <td>{{ev.name}}</td>
-                        <td>{{ev.status}}</td>
+                        <td>{{ev.status}} <label ng-if="checkStatusCancel(ev.status)"> - {{ev.reason}}</label>
+                        </td>
                      <td>
                         <#--<a href='/event/done/{{ev.id}}'>-->
                                     <button ng-if='checkStatusEvent(ev.status)' ng-click='setEventDone(ev.id)' class="btn-done" type="button">Done</button>
@@ -281,6 +272,7 @@
                     </tr>
 
                 </tbody>
+
             </table>
 
         </div>
@@ -306,14 +298,12 @@
                 <td>
                     <input ng-model="data.reason" style="margin-top: 20px" class="form-control" type="text"/>
                     <input ng-model="data.id" id="postInputId" hidden type="text">
-<#--                    <input type="hidden" ng-model="message._csrf" value="${_csrf.token}"/>-->
-                    <input name="${_csrf.parameterName}"
-                           value="${_csrf.token}" />
+
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" class="btn-done" value="Event cancel"
+                    <input type="submit" class="btn-done cancelEvent" value="Event cancel"
                            style="background: #e74c3c; margin-top: 20px">
                 </td>
             </tr>
@@ -323,57 +313,10 @@
 
 
 
-<#--<div class="popup-window">-->
-<#--    <p class="close">x</p>-->
-
-<#--    <form method="post" >-->
-<#--        <table>-->
-<#--            <tr>-->
-<#--                <td>-->
-<#--                    <p style="margin-left:  100px; margin-right: 100px;">Enter the reason for canceling the event</p>-->
-<#--                </td>-->
-<#--            </tr>-->
-<#--            <tr>-->
-<#--                <td>-->
-<#--                    <input ng-model="reason" name="reason" style="margin-top: 20px" class="form-control" type="text"/>-->
-<#--                    <input ng-model="id" id="postInputId" name="id" hidden type="text">-->
-<#--                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
-<#--                </td>-->
-<#--            </tr>-->
-<#--            <tr>-->
-<#--                <td colspan="2" align="center">-->
-<#--                    <input type="submit" class="btn-done" value="Event cancel"-->
-<#--                           style="background: #e74c3c; margin-top: 20px">-->
-<#--                </td>-->
-<#--            </tr>-->
-<#--        </table>-->
-<#--    </form>-->
-<#--</div>-->
 
 <div class="backpopup"></div>
 
 
-
-<#--<table>-->
-<#--    <tr>-->
-<#--        <td>Name</td>-->
-<#--        <td>Patient</td>-->
-<#--        <td>Status</td>-->
-<#--    </tr>-->
-<#--    <tr ng-repeat="ev in events">-->
-<#--        <td>{{ev.name}}</td>-->
-<#--        <td>{{ev.patient}}</td>-->
-<#--        <td>{{ev.status}}</td>-->
-
-<#--    </tr>-->
-<#--</table>-->
-
-<#--<div ng-controller="ctrl">-->
-<#--    {{date}}-->
-<#--    </br>-->
-<#--    </br>-->
-<#--    {{date3}}-->
-<#--</div>-->
 
 
 

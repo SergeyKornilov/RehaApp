@@ -109,10 +109,16 @@
         </div>
     </div>
 
-    <div class="row">
-        <h4 style="margin-top: 30px">Prescribings:</h4>
-
-
+        <div class="row" style="margin-top: 30px; margin-bottom: 15px">
+            <div class="col-10">
+        <h4>Prescribings:</h4>
+            </div>
+            <div class="col-2">
+        <a href="/prescribing/export/${patient.id}" ><button id="btnExportPdf" type="button" class="btn-add-prescribing">Export in PDF
+        </button></a>
+            </div>
+        </div>
+        <div class="row">
         <#if prescribings??>
             <table class="table">
                 <tr>

@@ -48,11 +48,18 @@ public class EventService {
     @Transactional
     public void deleteEvent(Event event) {
         eventDAO.deleteEvent(event);
+        messageService.sendMessage();
+        try {
+            updateEventsService.updateEventList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Transactional
     public void updateEvent(Event event) {
         eventDAO.updateEvent(event);
+
     }
 
     @Transactional
@@ -67,18 +74,18 @@ public class EventService {
 
 
     @Transactional
-    public void setStatusClose(int id) throws InterruptedException {
+    public void setStatusClose(int id) {
         Event event = getEventById(id);
         if (event.getStatus().equals("open")) {
             event.setStatus("close");
             System.out.println( getEventById(id));
+
             try {
                 updateEventsService.updateEventList();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             messageService.sendMessage();
-
 
 
         }

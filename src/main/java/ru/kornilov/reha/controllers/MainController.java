@@ -27,9 +27,10 @@ public class MainController {
 
     @GetMapping("/")
     public String loginPage() {
-               logger.debug("running method loginPage, on GetMapping /");
+        logger.debug("running method loginPage, on GetMapping /");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         switch (auth.getAuthorities().toString()) {
             case ("[ROLE_ANONYMOUS]"):
                 break;

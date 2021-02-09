@@ -63,7 +63,6 @@ public class PatientController {
                               @AuthenticationPrincipal User user) {
                logger.debug("running method patientSave, on PostMapping /patient-add");
 
-
         patientService.patientValidate(patient, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -73,6 +72,7 @@ public class PatientController {
                 }
             }
             model.addAttribute("errors", bindingResult.getAllErrors());
+
             model.addAttribute("add", true);
             model.addAttribute("user", user);
             model.addAttribute("users", userService.findAllUsersRolDoctor());
