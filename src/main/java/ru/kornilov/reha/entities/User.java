@@ -48,6 +48,9 @@ public class User implements UserDetails {
     @Column(name = "activationCode")
     private String activationCode;
 
+    @Column(name = "imgName")
+    private String imgName;
+
     public User() {
     }
 
@@ -127,6 +130,14 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public String getImgName() {
+        return imgName;
+    }
+
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
     }
 
     @Override

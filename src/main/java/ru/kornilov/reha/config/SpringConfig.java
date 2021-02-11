@@ -1,5 +1,6 @@
 package ru.kornilov.reha.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,8 @@ import ru.kornilov.reha.config.security.SecurityConfig;
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
+    @Value("C:/Users/Serega/Desktop/T-System/Reha/src/uploads")
+    private String uploadPath;
 
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("main/login");
@@ -46,5 +49,9 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.addResourceHandler("js/**").addResourceLocations("/WEB-INF/resources/js/");
         registry.addResourceHandler("img/**").addResourceLocations("/WEB-INF/resources/img/");
         registry.addResourceHandler("css/**").addResourceLocations("/WEB-INF/resources/css/");
+//        registry.addResourceHandler("upload/**")
+//                .addResourceLocations("/WEB-INF/resources/uploads/");
+        registry.addResourceHandler("upload/**")
+                .addResourceLocations("file:/C:/Users/Serega/Desktop/T-System/Reha/src/uploads/");
     }
 }

@@ -75,9 +75,13 @@
                 </a>
             </#if>
             <div class="col-2 btn-profile">
+                <#if user.imgName??>
+                    <img class="custom-avatar" src="/upload/${user.imgName}">
+                <#else>
                 <a href="/profile">
                     <img src="/img/profile.png">
                 </a>
+                </#if>
                 <a href="/profile">
                     <lable id="profile-lable" class="profile-lable"><#if user??>
                             ${user.fullName}</#if></lable>

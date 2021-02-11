@@ -129,3 +129,9 @@ a {
 .form-control {
     box-shadow: none !important;
 }
+
+.custom-avatar{
+    border-radius: 100px;
+    width: 27px;
+    height: 27px;
+}

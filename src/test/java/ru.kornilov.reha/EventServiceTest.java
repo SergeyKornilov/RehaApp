@@ -10,6 +10,8 @@ import ru.kornilov.reha.DAO.PrescribingDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.service.EventService;
+import ru.kornilov.reha.service.MessageService;
+import ru.kornilov.reha.service.message.UpdateEventsService;
 
 import java.util.*;
 
@@ -21,6 +23,14 @@ public class EventServiceTest {
 
     @InjectMocks
     private EventService eventService;
+
+
+
+    @Mock
+    MessageService messageService;
+
+    @Mock
+    UpdateEventsService updateEventsService;
 
     @Mock
     PrescribingDAO prescribingDAO;

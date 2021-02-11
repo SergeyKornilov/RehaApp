@@ -14,7 +14,9 @@ import ru.kornilov.reha.DAO.EventDAO;
 import ru.kornilov.reha.DAO.PrescribingDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Prescribing;
+import ru.kornilov.reha.service.MessageService;
 import ru.kornilov.reha.service.PrescribingService;
+import ru.kornilov.reha.service.message.UpdateEventsService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,6 +37,10 @@ public class PrescribingServiceTest {
     PrescribingDAO prescribingDAO;
     @Mock
     EventDAO eventDAO;
+    @Mock
+    MessageService messageService;
+    @Mock
+    private UpdateEventsService updateEventsService;
 
     private final static int idPrescribing = 0;
 

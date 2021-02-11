@@ -2,28 +2,39 @@ package ru.kornilov.reha.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.UserService;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+
 
 @Controller
 public class UserController {
     private static final Logger logger = Logger.getLogger(UserController.class);
+
+//    @Value("C:/Users/Serega/Desktop/T-System/Reha/src/main/webapp/WEB-INF/resources/uploads")
+
 
     @Autowired
     private UserService userService;
@@ -111,6 +122,24 @@ public class UserController {
     public String openProfile(@AuthenticationPrincipal User user, Model model) {
         logger.debug("running method openProfile, on GetMapping /profile");
         model.addAttribute("user", user);
+        return "main/profile";
+    }
+
+
+
+
+
+    @PostMapping("/profile")
+    public String uploadImg(@RequestParam("file") MultipartFile file,
+                            @AuthenticationPrincipal User user,
+                            Model model) throws IOException{
+
+        String error = userService.addImg(user, file);
+
+
+        model.addAttribute("error", error);
+        model.addAttribute("user", user);
+
         return "main/profile";
     }
 
