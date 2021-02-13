@@ -2,6 +2,8 @@ package ru.kornilov.reha.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kornilov.reha.DAO.UserDAO;
@@ -35,15 +37,16 @@ public class UserService {
     @Transactional
     public void addUser(User user) {
         user.setEnabled(false);
-
         user.setActivationCode(UUID.randomUUID().toString());
-
         userDAO.addUser(user);
         mailSender.send(user);
     }
 
     @Transactional
     public void updateUser(User user) {
+        user.setEnabled(false);
+        user.setActivationCode(UUID.randomUUID().toString());
+        mailSender.send(user);
         userDAO.updateUser(user);
     }
 
@@ -111,4 +114,28 @@ public class UserService {
             return true;
         } else return false;
     }
+
+    public String getAuthorizedRedirect(){
+        String viewName = "";
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        switch (auth.getAuthorities().toString()) {
+
+            case ("[ROLE_ADMIN]"):
+                viewName = "redirect:/admin";
+                break;
+            case ("[ROLE_DOCTOR]"):
+                viewName = "redirect:/patient-list";
+                break;
+            case ("[ROLE_NURSE]"):
+                viewName = "redirect:/event-list";
+                break;
+            default: viewName = "main/login";
+                break;
+        }
+
+        return viewName;
+    }
+
 }

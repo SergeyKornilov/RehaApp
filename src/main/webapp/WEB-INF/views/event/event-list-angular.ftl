@@ -39,6 +39,10 @@
     var statusFilterValue = ["open"];
     var dateFilterValue = '';
 
+    <#list user.roles as role>
+        var roleUser = "${role}";
+    </#list>
+
     var a = "${_csrf.parameterName}";
     var b = "${_csrf.token}";
 
@@ -89,9 +93,6 @@
 
     function mainCtrl ($scope, $http) {
 
-
-
-
             $scope.dateChangeAngular = function() {
 
                 dateFilterValue = moment(document.getElementById("inputDateOfBirth").value, "YYYY/MM/DD").format("YYYY-MM-DD 00:00:00.0");
@@ -119,7 +120,7 @@
 
 
 
-        var socket = new SockJS('/chat');
+        var socket = new SockJS('/ang');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function(frame) {
             console.log('Connected: ' + frame);
@@ -137,60 +138,68 @@
                 })
             };
 
-
             //TEST POST
             $scope.data = {};
 
             $scope.submitForm = function (form) {
-
-
                 var request = $http({
                     method: "post",
                     url: "http://localhost:8080/rest/cancel",
                     headers: {'Content-Type' : 'application/json',
                                 'X-CSRF-TOKEN' : b},
-
                     data: $scope.data
                 });
             };
 
             //event done
-            $scope.setEventDone = function(eventId) {
-                $http.get('/event/done/' + eventId);
+            $scope.setEventDone = function(eventId, eventDate) {
+
+                var event = new Date(eventDate);
+                event.setDate(event.getDate() + 1);
+                var today = new Date();
+
+                if(event.getTime() > today.getTime() || roleUser !== "ROLE_NURSE") {
+                    $http.get('/event/done/' + eventId);
+                } else {
+                    alert("You can't change events on past date");
+                }
             };
 
             //check status
             $scope.checkStatusEvent = function(eventStatus) {
-                if(eventStatus === "open") {
-                    return true;
-                } else {
-                    return false;
-                }
+                return eventStatus === "open";
             };
             $scope.checkStatusCancel = function(eventStatus) {
-                if(eventStatus === "Cancel") {
-                    return true;
-                } else {
-                    return false;
-                }
+                return eventStatus === "Cancel";
             };
-
 
             $scope.events = [];
 
             $http.get('http://localhost:8080/get-all-events').then(function (data) {
                 $scope.events = data.data;
-                console.log($scope.events);
-                console.log("Hello from MainCtrl");
             });
 
             stompClient.subscribe('/topic/messages', function(messageOutput) {
 
-            $http.get('http://localhost:8080/get-all-events').then(function (data) {
-                $scope.events = data.data;
-                console.log($scope.events);
-                console.log("Hello from MainCtrl!!!!!!");
-            });
+                console.log(messageOutput.body !== "update all");
+
+                var idEvent = messageOutput.body;
+                console.log(idEvent);
+
+                if(messageOutput.body !== "update all"){
+                    $http.get('http://localhost:8080/get-event/' + idEvent).then(function (data) {
+                        for(i = 0; i < $scope.events.length; i ++){
+                            var idid = $scope.events[i].id;
+                            if (idid === idEvent){
+                                $scope.events[i] = data.data[0];
+                            }
+                        }
+                    });
+                } else {
+                    $http.get('http://localhost:8080/get-all-events').then(function (data) {
+                        $scope.events = data.data;
+                    });
+                }
             });
         });
 
@@ -206,6 +215,7 @@
 
 
 </script>
+
 <body ng-app="eventList" ng-controller="eventListController">
 
 <#include "../parts/head.ftl">
@@ -264,7 +274,7 @@
                         </td>
                      <td>
                         <#--<a href='/event/done/{{ev.id}}'>-->
-                                    <button ng-if='checkStatusEvent(ev.status)' ng-click='setEventDone(ev.id)' class="btn-done" type="button">Done</button>
+                                    <button ng-if='checkStatusEvent(ev.status)' ng-click='setEventDone(ev.id, ev.date)' class="btn-done" type="button">Done</button>
 <#--                            </a>-->
                             <button ng-if='checkStatusEvent(ev.status)' ng-click='setEventIdPostForm(ev.id)' class="btn-done open"
                                     style="background: #e74c3c" type="button">Cancel</button>

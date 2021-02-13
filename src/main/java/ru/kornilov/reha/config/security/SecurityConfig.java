@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/patient-list/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
+                .antMatchers("/my-patient-list/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/patient/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/add-patient-page/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
                 .antMatchers("/prescribing/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")

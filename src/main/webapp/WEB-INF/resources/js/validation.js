@@ -2,12 +2,13 @@ var nameValidFlag;
 var passwordValidFlag;
 var roleValidFlag;
 var fullNameValidFlag;
+var emailInputFlag;
 
 var addUserBtn = document.getElementById("addUserBtn");
 
 function checkBtn() {
 
-    if (nameValidFlag && passwordValidFlag && roleValidFlag && fullNameValidFlag) {
+    if (nameValidFlag && passwordValidFlag && roleValidFlag && fullNameValidFlag && emailInputFlag) {
         addUserBtn.removeAttribute("disabled");
     } else {
         addUserBtn.setAttribute("disabled", "true");
@@ -42,6 +43,39 @@ function checkFullName() {
 
     if (error1.classList.contains("valid") && error2.classList.contains("valid")) fullNameValidFlag = true;
     else fullNameValidFlag = false;
+}
+
+
+function checkEmail() {
+    var el = document.getElementById("emailInput");
+
+    var str = el.value;
+
+    var error1 = document.getElementById("errorsEmail").querySelector("li:nth-child(1)");
+    var error2 = document.getElementById("errorsEmail").querySelector("li:nth-child(2)");
+
+    if (str.length < 1 || str.length > 50) {
+        error1.classList.add('invalid');
+        error1.classList.remove('valid');
+    } else {
+        error1.classList.add('valid');
+        error1.classList.remove('invalid');
+    }
+
+
+    if (
+        !/\S+@\S+\.\S+/.test(str)
+
+    ) {
+        error2.classList.add('invalid');
+        error2.classList.remove('valid');
+    } else {
+        error2.classList.add('valid');
+        error2.classList.remove('invalid');
+    }
+
+    if (error1.classList.contains("valid") && error2.classList.contains("valid")) emailInputFlag = true;
+    else emailInputFlag = false;
 }
 
 function checkPassword() {
@@ -121,4 +155,8 @@ document.getElementById("passwordInput").addEventListener('keyup', checkBtn);
 
 document.getElementById("fullNameInput").addEventListener('keyup', checkFullName);
 document.getElementById("fullNameInput").addEventListener('keyup', checkBtn);
+
+document.getElementById("emailInput").addEventListener('keyup', checkEmail);
+document.getElementById("emailInput").addEventListener('keyup', checkBtn);
+
 

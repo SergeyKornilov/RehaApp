@@ -12,10 +12,14 @@ public class UpdateEventsService {
     @Autowired
     private SimpMessagingTemplate template;
 
-    public void updateEventList() throws JMSException {
+    public void updateEventList(int id) throws JMSException {
         System.out.println("HELLO from fireGreeting method");
 
-        this.template.convertAndSend("/topic/messages", "messageCreator");
+        this.template.convertAndSend("/topic/messages", id);
+    }
+
+    public void updateAllEvents(){
+        this.template.convertAndSend("/topic/messages", "update all");
     }
 
 }

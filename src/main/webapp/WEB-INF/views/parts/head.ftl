@@ -67,7 +67,7 @@
             </#if>
 
             <#if userRole = "ROLE_ADMIN" || userRole = "ROLE_DOCTOR">
-                <a href="/patient-list">
+                <a href="/my-patient-list">
                     <div class="col-2 btn-my-patients">
                         <img src="/img/patients.png">
                         <p class="my-patients-lable">My Patients</p>
@@ -75,10 +75,10 @@
                 </a>
             </#if>
             <div class="col-2 btn-profile">
+                <a href="/profile">
                 <#if user.imgName??>
                     <img class="custom-avatar" src="/upload/${user.imgName}">
                 <#else>
-                <a href="/profile">
                     <img src="/img/profile.png">
                 </a>
                 </#if>

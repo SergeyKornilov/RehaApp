@@ -7,12 +7,19 @@ import ru.kornilov.reha.DAO.PatientDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
+import ru.kornilov.reha.service.message.UpdateEventsService;
 
 import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
 public class PatientService {
+
+    @Autowired
+    MessageService messageService;
+
+    @Autowired
+    UpdateEventsService updateEventsService;
 
     @Autowired
     private PatientDAO patientDAO;
@@ -37,6 +44,8 @@ public class PatientService {
 
     @Transactional
     public void updatePatient(Patient patient) {
+
+
         patientDAO.updatePatient(patient);
     }
 
@@ -69,33 +78,40 @@ public class PatientService {
     }
 
     @Transactional
-    public void cancelAllEventsWhenIssued(Patient patient) {
-        Set<Prescribing> prescribings = patient.getPrescribings();
+    public void updateChildEvents(Patient patient){
+        if (patient.getStatus().equals("Issued")) {
+            Set<Prescribing> prescribings = getPatientById(patient.getId()).getPrescribings();
+            if (prescribings != null) {
+                cancelAllEventsWhenIssued(prescribings);
+            }
+        }
+        messageService.sendMessage();
+        updateEventsService.updateAllEvents();
+    }
 
-        Calendar today = Calendar.getInstance();
-        today.roll(Calendar.DATE, -1);
-
-        Calendar dateOfEvent = new GregorianCalendar();
-
-        for (Prescribing prescribing :
-                prescribings) {
-            Set<Event> events = new HashSet<>(prescribing.getEvents());
-            if (events.size() != 0) {
-                for (Event event :
-                        events) {
-
-                    dateOfEvent.setTime(event.getDate());
-                    if (dateOfEvent.after(today) && event.getStatus().equals("open")) {
-                        event.setStatus("Cancel");
-                        event.setReason("Patient was issued");
-                        eventService.updateEvent(event);
+    @Transactional
+    public void cancelAllEventsWhenIssued(Set<Prescribing> prescribings) {
+            Calendar today = Calendar.getInstance();
+            today.roll(Calendar.DATE, -1);
+            Calendar dateOfEvent = new GregorianCalendar();
+            for (Prescribing prescribing :
+                    prescribings) {
+                Set<Event> events = new HashSet<>(prescribing.getEvents());
+                if (events.size() != 0) {
+                    for (Event event :
+                            events) {
+                        dateOfEvent.setTime(event.getDate());
+                        if (dateOfEvent.after(today) && event.getStatus().equals("open")) {
+                            event.setStatus("Cancel");
+                            event.setReason("Patient was issued");
+                            eventService.updateEvent(event);
+                        }
                     }
                 }
             }
-        }
     }
 
-    public void checkAge(Patient patient, Errors errors) {
+    private void checkAge(Patient patient, Errors errors) {
         if (patient.getDateOfBirth() != null) {
             Calendar patientBirthDay = new GregorianCalendar();
             patientBirthDay.setTime(patient.getDateOfBirth());
@@ -117,5 +133,12 @@ public class PatientService {
         } else {
             errors.rejectValue("dateOfBirth", "", "Empty date of birth");
         }
+    }
+
+    @Transactional
+    public List<Patient> selectPatientsByAttendingDoctor(String doctorFullname) {
+
+        return patientDAO.getByAttendingDoctor(doctorFullname);
+
     }
 }

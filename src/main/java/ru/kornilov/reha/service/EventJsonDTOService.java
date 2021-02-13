@@ -30,6 +30,18 @@ public class EventJsonDTOService {
         return eventJsonDTO;
     }
 
+    public List<EventJsonDTO> getEventsJsonDtoById(int id){
+
+        List<Event> events = new ArrayList<>();
+
+        events.add(eventService.getEventById(id));
+
+        List<EventJsonDTO> eventJsonDTO = convertEventToEventJsonDTO(events);
+
+        return eventJsonDTO;
+    }
+
+
     public List<EventJsonDTO> getEventsJsonDtoOnCurrentDate(){
         Date today = new Date(Calendar.getInstance().getTime().getTime());
         String todayStr = new SimpleDateFormat("yyyy-MM-dd").format(today);

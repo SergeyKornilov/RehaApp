@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.EventService;
+import ru.kornilov.reha.service.MessageService;
+import ru.kornilov.reha.service.message.UpdateEventsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,7 +21,11 @@ import java.util.List;
 @Controller
 public class EventController {
     private static final Logger logger = Logger.getLogger(EventController.class);
+    @Autowired
+    MessageService messageService;
 
+    @Autowired
+    UpdateEventsService updateEventsService;
 
     @Autowired
     private EventService eventService;
@@ -27,33 +33,18 @@ public class EventController {
     @GetMapping("/event-list")
     public String allEventPage(Model model, @AuthenticationPrincipal User user) {
         logger.debug("running method allEventPage, on GetMapping /event-list");
-
         model.addAttribute("user", user);
         model.addAttribute("events", eventService.getAllEventsSortedByTime());
-
         return "event/event-list-angular";
     }
-
-//    @PostMapping("/event-list")
-//    public String setEventCancel(@RequestParam int id,
-//                                 HttpServletRequest request,
-//                                 @RequestParam String reason) {
-//
-//        eventService.setStatusCancel(id, reason);
-//
-//        String referer = request.getHeader("Referer");
-//        return "redirect:" + referer;
-//    }
 
     @GetMapping("/event/done/{id}")
     public String setEventDone(@PathVariable("id") int id, HttpServletRequest request)  {
         logger.debug("running method eventChangeStatus, on GetMapping /event/done/{id}");
-
-            eventService.setStatusClose(id);
+        eventService.setStatusClose(id);
+        eventService.updateEventsOnFront(id);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
-
-
 }

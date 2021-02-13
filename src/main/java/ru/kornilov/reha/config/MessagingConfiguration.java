@@ -24,7 +24,6 @@ import static org.apache.activemq.artemis.jms.client.DefaultConnectionProperties
 public class MessagingConfiguration {
     private static final Logger logger = Logger.getLogger(MessagingConfiguration.class);
 
-
     private static final String CONNECTION_FACTORY = "jms/RemoteConnectionFactory";
     private static final String DESTINATION = "jms/queue/test";
     private static final String MESSAGE_COUNT = "1";
@@ -67,7 +66,6 @@ public class MessagingConfiguration {
     @Bean
     public JmsTemplate jmsTemplate() throws NamingException {
 
-
         Context namingContext = null;
 
             String userName = System.getProperty("username", USERNAME);
@@ -95,14 +93,9 @@ public class MessagingConfiguration {
 
 //        this.cachingConnectionFactory = new CachingConnectionFactory(cfCredentialsAdapter);
 
-
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(cfCredentialsAdapter);
         template.setDefaultDestination(destination);
-
         return template;
-
-
     }
-
 }

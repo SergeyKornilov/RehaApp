@@ -20,17 +20,17 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
 public class EventService {
 
     @Autowired
-    MessageService messageService;
+    private MessageService messageService;
 
     @Autowired
-    UpdateEventsService updateEventsService;
-
+    private UpdateEventsService updateEventsService;
 
     @Autowired
     private EventDAO eventDAO;
@@ -50,7 +50,7 @@ public class EventService {
         eventDAO.deleteEvent(event);
         messageService.sendMessage();
         try {
-            updateEventsService.updateEventList();
+            updateEventsService.updateEventList(event.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,18 +78,19 @@ public class EventService {
         Event event = getEventById(id);
         if (event.getStatus().equals("open")) {
             event.setStatus("close");
-            System.out.println( getEventById(id));
-
-            try {
-                updateEventsService.updateEventList();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            messageService.sendMessage();
-
-
+            updateEvent(event);
         }
     }
+
+    public void updateEventsOnFront(int id){
+        try {
+            updateEventsService.updateEventList(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        messageService.sendMessage();
+    }
+
 
     @Transactional
     public void setStatusCancel(int id, String reason) {
@@ -97,12 +98,7 @@ public class EventService {
         if (event.getStatus().equals("open")) {
             event.setStatus("Cancel");
             event.setReason(reason);
-            try {
-                updateEventsService.updateEventList();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
-            messageService.sendMessage();
+            updateEvent(event);
 
 
         }
@@ -119,7 +115,6 @@ public class EventService {
     @Transactional
     public String validationMatchesDateAndTimeEventsTypeProcedure(Prescribing prescribing, Patient patient) {
 
-
         if (!prescribing.getType().equals("procedure")) return "";
         LocalDate eventsDateStart = prescribing.getDateStart().toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -134,7 +129,14 @@ public class EventService {
             String dayOfWeekUpperCase = eventsDateStart.getDayOfWeek().toString().substring(0, 1);
             String dayOfWeek = dayOfWeekUpperCase + eventsDateStart.getDayOfWeek().toString().substring(1).toLowerCase();
             if (prescribing.getDayOfWeeks().contains(dayOfWeek)) {
-                Set<Prescribing> oldPrescribings = patient.getPrescribings();
+
+                Set<Prescribing> oldPrescribings = patient.getPrescribings()
+                        .stream()
+                        .filter(prescribing1 -> prescribing1.getType().equals("procedure"))
+                        .collect(Collectors.toSet());
+                System.out.println(oldPrescribings);
+
+
                 for (Prescribing oldPrescribing :
                         oldPrescribings) {
                     Set<Event> oldEvents = new HashSet<>(oldPrescribing.getEvents());
@@ -161,7 +163,7 @@ public class EventService {
 
     @Transactional
     public void createEvents(Prescribing prescribing) {
-
+        System.out.println("createEvents");
         LocalDate eventsDateStart = prescribing.getDateStart().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
@@ -180,16 +182,12 @@ public class EventService {
                         prescribing.getTime()) {
                     Event event = new Event(date, "open", time, prescribing);
                     addEvent(event);
-                    messageService.sendMessage();
-                    try {
-                        updateEventsService.updateEventList();
-                    } catch (JMSException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
             eventsDateStart = eventsDateStart.plusDays(1);
         } while (!eventsDateStart.isAfter(eventsDateEnd));
+        messageService.sendMessage();
+        updateEventsService.updateAllEvents();
     }
 
     public void sortEventsByTime(List<Event> events) {

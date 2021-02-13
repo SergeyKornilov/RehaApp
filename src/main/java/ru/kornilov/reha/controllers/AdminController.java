@@ -15,19 +15,15 @@ import ru.kornilov.reha.service.UserService;
 public class AdminController {
     private static final Logger logger = Logger.getLogger(AdminController.class);
 
-    @Autowired
-    private MailSender mailSender;
 
     @Autowired
     UserService userService;
 
     @GetMapping("/admin")
-    public String registration(@AuthenticationPrincipal User user, Model model) throws Exception {
+    public String getAdminPage(@AuthenticationPrincipal User user, Model model) {
         logger.debug("running method registration, on GetMapping /admin");
         model.addAttribute("users", userService.allUsers());
         model.addAttribute("user", user);
-
-
         return "admin/admin-panel";
     }
 }

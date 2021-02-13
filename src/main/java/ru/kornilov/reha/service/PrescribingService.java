@@ -44,7 +44,7 @@ public class PrescribingService {
         prescribingDao.deletePrescribing(prescribing);
         messageService.sendMessage();
         try {
-            updateEventsService.updateEventList();
+            updateEventsService.updateAllEvents();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,12 +69,12 @@ public class PrescribingService {
             eventDAO.deleteEvent(event);
         }
         prescribing.getEvents().clear();
-        messageService.sendMessage();
-        try {
-            updateEventsService.updateEventList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        messageService.sendMessage();
+//        try {
+//            updateEventsService.updateAllEvents();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 

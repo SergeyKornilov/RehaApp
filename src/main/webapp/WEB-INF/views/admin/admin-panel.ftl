@@ -61,13 +61,13 @@
                 </div>
 
                 <div class="group">
-                    <input id="emailInput" onblur="" class="dynamic" type="text" name="email"
+                    <input id="emailInput" onblur="checkEmail()" class="dynamic" type="text" name="email"
                            required autocomplete="off">
                     <span class="bar"></span>
                     <label>Email</label>
                     <ul id="errorsEmail" class="input-requirements">
-                        <li>Enter correct address!</li>
                         <li>Can`t be empty</li>
+                        <li>Enter correct address!</li>
                     </ul>
                 </div>
 
@@ -110,7 +110,7 @@
                             <td><a href="/user/delete/${(usr.username)!}"><img src="/img/delete.png"></a></td>
                             <td>
                                 <img style="cursor: pointer;" src="/img/edit.png"
-                                     onclick="editUser('${(usr.username)!}', '${(usr.fullName)!}', '${(usr.password)!}')">
+                                     onclick="editUser('${(usr.username)!}', '${(usr.fullName)!}', '${(usr.password)!}', '${(usr.email)!}')">
                             </td>
                         </tr>
                     </#if>
@@ -129,11 +129,12 @@
         document.getElementById("fullNameInput").value = "";
         document.getElementById("passwordInput").value = "";
         document.getElementById("role").value = "";
+        document.getElementById("emailInput").value = "";
         roleValidFlag = false;
         nameValidFlag = false;
         passwordValidFlag = false;
         fullNameValidFlag = false;
-
+        emailInputFlag = false;
 
         document.getElementById("inputGroupSelect01").value = 1;
         addUserBtn.setAttribute("disabled", "true");
@@ -146,7 +147,7 @@
 
     }
 
-    function editUser(username, fullName, password) {
+    function editUser(username, fullName, password, email) {
 
 
         var role = document.getElementById("role" + username).innerText;
@@ -177,11 +178,14 @@
         document.getElementById("usernameInput").value = username;
         document.getElementById("fullNameInput").value = fullName;
         document.getElementById("passwordInput").value = password;
+        document.getElementById("emailInput").value = email;
 
         checkFullName();
         checkPassword();
         checkName();
+        checkEmail();
         checkRole();
+
     }
 
 

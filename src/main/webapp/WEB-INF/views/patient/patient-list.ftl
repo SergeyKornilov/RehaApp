@@ -38,20 +38,33 @@
 <div class="container">
 
 
-    <div class="col"><h1 style="text-align: center; margin-top: 30px;margin-bottom: 30px" class="display-4">Patients
-            list</h1></div>
+    <div class="col"><h1 style="text-align: center; margin-top: 30px;margin-bottom: 30px" class="display-4">
+            <#if myPatients??>
+                My patients
+            </#if>
+            <#if allPatients??>
+                All patients
+            </#if>
+            </h1></div>
     <div class="row ">
-        <div class="col-10">
+        <div class="col-4">
 
             <input class="form-control" style="margin-bottom: 30px; width: 350px" type="text" placeholder="Search"
                    id="search-text" onkeyup="patientsTableSearch()">
 
         </div>
+        <div class="col-6">
+            <#if allPatients??>
+            <a href="/my-patient-list"><button style="margin-top: 1px" class="btn-add-patient" type="button">My patients</button></a>
+            </#if>
+            <#if myPatients??>
+                <a href="/patient-list"><button style="margin-top: 1px"  class="btn-add-patient" type="button">All patients</button></a>
+            </#if>
+        </div>
         <div class="col-2 text-right">
             <a style="margin-left: 30px" class="pull-right" href="/add-patient-page">
                 <button type="button" class="btn-add-patient">Add patient</button>
             </a>
-
         </div>
     </div>
     <div class="row">

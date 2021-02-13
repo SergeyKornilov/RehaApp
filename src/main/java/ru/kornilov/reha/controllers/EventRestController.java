@@ -27,46 +27,35 @@ public class EventRestController {
         return eventJsonDTOService.getEventsJsonDtoOnCurrentDate();
     }
 
-    @MessageMapping("/chat")
+    @MessageMapping("/ang")
     @SendTo("/topic/messages")
-    public String send(String message) throws Exception {
-
-
+    public String send(String message) {
         return message;
     }
 
     @RequestMapping("/test/get-events")
     public List<EventJsonDTO> getEvents(){
-
-        //TODO  on first call - "eventJsonDTOService.getEventsJsonDtoOnCurrentDate()" return not updated event
-        eventJsonDTOService.getEventsJsonDtoOnCurrentDate();
-
         return eventJsonDTOService.getEventsJsonDtoOnCurrentDate();
-
     }
 
     @RequestMapping("/get-all-events")
     public List<EventJsonDTO> getAllEvents(){
-
-        //TODO  on first call - "eventJsonDTOService.getEventsJsonDtoOnCurrentDate()" return not updated event
-        eventJsonDTOService.getAllEventsJsonDto();
-        System.out.println(eventJsonDTOService.getAllEventsJsonDto());
-
         return eventJsonDTOService.getAllEventsJsonDto();
+    }
+
+    @RequestMapping("/get-event/{id}")
+    public List<EventJsonDTO> getAllEvents(@PathVariable("id") int id){
+        System.out.println("REST CONTROLLER");
+        return eventJsonDTOService.getEventsJsonDtoById(id);
 
     }
 
 
     @RequestMapping(value = "/rest/cancel", method = RequestMethod.POST)
         public String cancel(@RequestBody EventDTO data){
+        eventService.setStatusCancel(Integer.parseInt(data.getId()), data.getReason());
 
-            eventService.setStatusCancel(Integer.parseInt(data.getId()), data.getReason());
-
+        eventService.updateEventsOnFront(Integer.parseInt(data.getId()));
         return "test";
     }
-
-
-
-
-
 }

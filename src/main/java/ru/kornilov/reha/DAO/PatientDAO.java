@@ -3,9 +3,11 @@ package ru.kornilov.reha.DAO;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.kornilov.reha.entities.Patient;
+import ru.kornilov.reha.entities.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,5 +55,14 @@ public class PatientDAO {
                 .filter(patient -> patient.getInsuranceNumber().equals(insuranceNumber))
                 .collect(Collectors.toList());
         return patients.size() > 0 ? patients.get(0) : null;
+    }
+
+    public List<Patient> getByAttendingDoctor(String doctorFullname) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("select e from Patient as e where e.attendingDoctor = :doctorFullname");
+        query.setParameter("doctorFullname", doctorFullname);
+
+        return query.list();
     }
 }
