@@ -59,13 +59,36 @@ public class PatientController {
     }
 
 
+//    @PostMapping("/add-patient-page")
+//    public String patientSave(@ModelAttribute @Valid Patient patient,
+//                              BindingResult bindingResult,
+//                              Model model,
+//                              @AuthenticationPrincipal User user) {
+//        logger.debug("running method patientSave, on PostMapping /patient-add");
+//        patientService.patientValidate(patient, bindingResult);
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("errors", bindingResult.getAllErrors());
+//            model.addAttribute("add", true);
+//            model.addAttribute("user", user);
+//            model.addAttribute("users", userService.findAllUsersRolDoctor());
+//            return "patient/patient-form";
+//        } else {
+//            patientService.addPatient(patient);
+//            return "redirect:/patient-list";
+//        }
+//    }
+
     @PostMapping("/add-patient-page")
-    public String patientSave(@ModelAttribute @Valid Patient patient,
+    public String patientSave2(@ModelAttribute @Valid Patient patient,
                               BindingResult bindingResult,
                               Model model,
                               @AuthenticationPrincipal User user) {
         logger.debug("running method patientSave, on PostMapping /patient-add");
         patientService.patientValidate(patient, bindingResult);
+        return patientSaveModelBuilder(model, bindingResult, user, patient);
+    }
+
+    private String patientSaveModelBuilder(Model model, BindingResult bindingResult, User user, Patient patient){
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             model.addAttribute("add", true);
@@ -77,6 +100,9 @@ public class PatientController {
             return "redirect:/patient-list";
         }
     }
+
+
+
 
     @GetMapping("/patient/edit/{id}")
     public String editPatientPage(@PathVariable("id") int id, @AuthenticationPrincipal User user, Model model) {

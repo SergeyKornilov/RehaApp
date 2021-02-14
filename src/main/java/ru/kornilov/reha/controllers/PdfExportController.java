@@ -31,22 +31,6 @@ public class PdfExportController {
 
     @GetMapping("/prescribing/export/{id}")
     public void exportToPDF(@PathVariable("id") int id, HttpServletResponse response) throws DocumentException, IOException {
-
-        response.setContentType("application/pdf");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-
-
-//        Patient patient = patientService.getPatientById(id);
-
-//        Set<Prescribing> prescribingList = patient.getPrescribings();
-
-
-
         prescribingPdfExporterService.export(response, id);
-
     }
 }

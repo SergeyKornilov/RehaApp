@@ -19,7 +19,7 @@
         <div class="col-5">
 
             <h3 style="padding-bottom: 15px; margin-top: 15px">Add user:</h3>
-            <p style="color: #e74c3c">${(message)!}</p>
+            <p id="duplicateUsernameError" style="color: #e74c3c"></p>
 
             <form method="post">
                 <div hidden><label>ROLE: <input id="role" type="text" name="roles"/></label></div>
@@ -226,6 +226,10 @@
     </#if>
     <#if error = "password">
     document.getElementById("fullNameInput").classList.add("invalidInput");
+    </#if>
+    <#if error = "duplicate username">
+    console.log("duplicate username error");
+    document.getElementById("duplicateUsernameError").innerText = "User with the same username exists!";
     </#if>
     </#list>
     </#if>

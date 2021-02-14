@@ -25,9 +25,14 @@ public class PrescribingService {
     MessageService messageService;
     @Autowired
     UpdateEventsService updateEventsService;
+    @Autowired
+    EventService eventService;
 
     @Autowired
     private PrescribingDAO prescribingDao;
+
+    @Autowired
+    private PrescribingService prescribingService;
 
     @Transactional
     public List<Prescribing> allPrescribings() {
@@ -37,6 +42,7 @@ public class PrescribingService {
     @Transactional
     public void addPrescribing(Prescribing prescribing) {
         prescribingDao.addPrescribing(prescribing);
+        eventService.createEvents(prescribing);
     }
 
     @Transactional
@@ -52,7 +58,12 @@ public class PrescribingService {
 
     @Transactional
     public void updatePrescribing(Prescribing prescribing) {
+//        Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
+
+//        prescribingService.deleteChildEvents(oldPrescribing);
+
         prescribingDao.updatePrescribing(prescribing);
+        eventService.createEvents(prescribing);
     }
 
     @Transactional
@@ -77,13 +88,39 @@ public class PrescribingService {
 //        }
 
     }
+    public void validateAndUpdatePrescribing(Prescribing prescribing, Errors errors, int idPatient) {
+        if (prescribingValidate(prescribing, errors, idPatient)) {
 
-    public void prescribingValidate(Prescribing prescribing, Errors errors) {
+            Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
+            prescribingService.deleteChildEvents(oldPrescribing);
+
+            prescribingService.updatePrescribing(prescribing);
+
+        }
+    }
+
+    public void validateAndCreatePrescribing(Prescribing prescribing, Errors errors, int idPatient){
+        if(prescribingValidate(prescribing, errors, idPatient)){
+            prescribingService.addPrescribing(prescribing);
+        }
+    }
+
+    public boolean prescribingValidate(Prescribing prescribing, Errors errors, int idPatient) {
 
         prescribingCheckDatesStartEnd(prescribing, errors);
         prescribingCheckWeekdays(prescribing, errors);
         prescribingCheckTime(prescribing, errors);
 
+        if(!errors.hasErrors()){
+            prescribingService.setPatient(prescribing, idPatient);
+            String errorMathesTime =
+                    eventService.validationMatchesDateAndTimeEventsTypeProcedure(prescribing, patientService.getPatientById(idPatient));
+            if(errorMathesTime.length() != 0) {
+                errors.rejectValue("time", "", errorMathesTime);
+            }
+        }
+
+        return !errors.hasErrors();
 
     }
 

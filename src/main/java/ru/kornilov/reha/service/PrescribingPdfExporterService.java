@@ -3,6 +3,7 @@ package ru.kornilov.reha.service;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import java.awt.Color;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
@@ -137,6 +138,15 @@ public class PrescribingPdfExporterService {
 
 
     public void export(HttpServletResponse response, Integer id) throws DocumentException, IOException {
+
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+
         this.patientId = id;
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());

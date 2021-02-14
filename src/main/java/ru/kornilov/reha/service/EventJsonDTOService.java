@@ -18,17 +18,34 @@ import java.util.Calendar;
 
 import java.util.List;
 
+/**
+ * contains methods that serve EventJsonDTO
+ *
+ *
+ * contains methods that prepares EventJsonDTO
+ */
+
 @Service
 public class EventJsonDTOService {
 
     @Autowired
     EventService eventService;
 
+    /**
+     * Gets List of Event from DB and convert to EventJsonDTO
+     * @return List of EventJsonDTO
+     */
     public List<EventJsonDTO> getAllEventsJsonDto(){
         List<Event> events = eventService.getAllEventsSortedByTime();
         List<EventJsonDTO> eventJsonDTO = convertEventToEventJsonDTO(events);
         return eventJsonDTO;
     }
+
+    /**
+     * Gets Event by id from DB and convert to EventJsonDTO
+     * @param id id of Event
+     * @return List of EventJsonDTO
+     */
 
     public List<EventJsonDTO> getEventsJsonDtoById(int id){
 

@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kornilov.reha.DAO.UserDAO;
 import ru.kornilov.reha.entities.Role;
@@ -14,7 +17,9 @@ import ru.kornilov.reha.service.mail.MailSender;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -136,6 +141,46 @@ public class UserService {
         }
 
         return viewName;
+    }
+
+    @Transactional
+    public Set<String> editUser(BindingResult bindingResult, User newUser){
+        Set<String> errors = validateUser(bindingResult, newUser);
+
+        if (errors.isEmpty()) {
+            updateUser(newUser);
+        }
+
+        return errors;
+    }
+
+    @Transactional
+    public Set<String> createUser(BindingResult bindingResult, User newUser){
+        Set<String> errors = validateUser(bindingResult, newUser);
+
+        User userFromDb = findByUsername(newUser.getUsername());
+        if (userFromDb != null) {
+            errors.add("duplicate username");
+        }
+
+        if (errors.isEmpty()) {
+            addUser(newUser);
+        }
+        return errors;
+    }
+
+    public Set<String> validateUser(BindingResult bindingResult, User newUser){
+
+        Set<String> errors = new HashSet<>();
+
+        if (bindingResult.hasErrors()) {
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                String fieldError = ((FieldError) error).getField();
+                errors.add(fieldError);
+            }
+        }
+
+        return errors;
     }
 
 }

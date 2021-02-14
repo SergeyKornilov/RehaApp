@@ -99,10 +99,7 @@ public class EventService {
             event.setStatus("Cancel");
             event.setReason(reason);
             updateEvent(event);
-
-
         }
-
     }
 
     @Transactional
@@ -134,8 +131,6 @@ public class EventService {
                         .stream()
                         .filter(prescribing1 -> prescribing1.getType().equals("procedure"))
                         .collect(Collectors.toSet());
-                System.out.println(oldPrescribings);
-
 
                 for (Prescribing oldPrescribing :
                         oldPrescribings) {

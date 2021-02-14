@@ -10,11 +10,14 @@ import ru.kornilov.reha.entities.User;
 import ru.kornilov.reha.service.mail.MailSender;
 import ru.kornilov.reha.service.UserService;
 
+/**
+ * responsible for requests
+ * related to the administrator user role
+ */
 
 @Controller
 public class AdminController {
     private static final Logger logger = Logger.getLogger(AdminController.class);
-
 
     @Autowired
     UserService userService;

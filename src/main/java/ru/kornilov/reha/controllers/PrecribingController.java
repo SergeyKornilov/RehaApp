@@ -50,28 +50,9 @@ public class PrecribingController {
                                  BindingResult bindingResult,
                                  @AuthenticationPrincipal User user,
                                  Model model) {
-             logger.debug("running method addPrescribing, on PostMapping patient/card/{idPatient}");
-
-        prescribingService.prescribingValidate(prescribing, bindingResult);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("user", user);
-            model.addAttribute("patient", patientService.getPatientById(idPatient));
-            model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
-            return "patient/patient-card";
-        }
-        prescribingService.setPatient(prescribing, idPatient);
-        String existingProcedureErrorMessage =
-                eventService.validationMatchesDateAndTimeEventsTypeProcedure(prescribing, patientService.getPatientById(idPatient));
-        if (existingProcedureErrorMessage.length() != 0) {
-            model.addAttribute("existingProcedureErrorMessage", existingProcedureErrorMessage);
-            model.addAttribute("user", user);
-            model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
-            model.addAttribute("patient", patientService.getPatientById(idPatient));
-            return "patient/patient-card";
-        }
-        prescribingService.addPrescribing(prescribing);
-        eventService.createEvents(prescribing);
+        logger.debug("running method addPrescribing, on PostMapping patient/card/{idPatient}");
+        prescribingService.validateAndCreatePrescribing(prescribing, bindingResult, idPatient);
+        model.addAttribute("errors", bindingResult.getAllErrors());
         model.addAttribute("user", user);
         model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));
@@ -84,45 +65,12 @@ public class PrecribingController {
                                   BindingResult bindingResult,
                                   @AuthenticationPrincipal User user,
                                   Model model) {
-             logger.debug("running method editPrescribing, on PostMapping patient/card/{idPatient}");
-
-        prescribingService.prescribingValidate(prescribing, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            Patient patient = patientService.getPatientById(idPatient);
-            Set<Prescribing> prescribings = patient.getPrescribings();
-
-            model.addAttribute("user", user);
-            model.addAttribute("patient", patient);
-            model.addAttribute("prescribings", prescribings);
-
-            return "patient/patient-card";
-        }
-
-        String existingProcedureErrorMessage =
-                eventService.validationMatchesDateAndTimeEventsTypeProcedure(prescribing, patientService.getPatientById(idPatient));
-
-        if (existingProcedureErrorMessage.length() != 0) {
-
-            model.addAttribute("existingProcedureErrorMessage", existingProcedureErrorMessage);
-            model.addAttribute("user", user);
-            model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
-            model.addAttribute("patient", patientService.getPatientById(idPatient));
-
-            return "patient/patient-card";
-        }
-
-        Prescribing oldPrescribing = prescribingService.getPrescribingById(prescribing.getId());
-        prescribingService.deleteChildEvents(oldPrescribing);
-        prescribingService.setPatient(prescribing, idPatient);
-        prescribingService.updatePrescribing(prescribing);
-        eventService.createEvents(prescribing);
-
+        logger.debug("running method editPrescribing, on PostMapping patient/card/{idPatient}");
+        prescribingService.validateAndUpdatePrescribing(prescribing, bindingResult, idPatient);
+        model.addAttribute("errors", bindingResult.getAllErrors());
         model.addAttribute("user", user);
-        model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         model.addAttribute("patient", patientService.getPatientById(idPatient));
-
+        model.addAttribute("prescribings", patientService.getPatientById(idPatient).getPrescribings());
         return "patient/patient-card";
     }
 }

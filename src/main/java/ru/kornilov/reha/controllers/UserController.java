@@ -33,8 +33,6 @@ import java.util.UUID;
 public class UserController {
     private static final Logger logger = Logger.getLogger(UserController.class);
 
-//    @Value("C:/Users/Serega/Desktop/T-System/Reha/src/main/webapp/WEB-INF/resources/uploads")
-
 
     @Autowired
     private UserService userService;
@@ -45,28 +43,30 @@ public class UserController {
                            @AuthenticationPrincipal User user,
                            Map<String, Object> model) {
 
-        if (bindingResult.hasErrors()) {
-            Set<String> errors = new HashSet<>();
+//        if (bindingResult.hasErrors()) {
+//            Set<String> errors = new HashSet<>();
+//
+//            for (ObjectError error : bindingResult.getAllErrors()) {
+//                String fieldError = ((FieldError) error).getField();
+//                errors.add(fieldError);
+//            }
+//
+//
+//            model.put("users", userService.allUsers());
+//            model.put("errors", errors);
+//            model.put("user", user);
+//
+//            return "admin/admin-panel";
+//        }
 
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                String fieldError = ((FieldError) error).getField();
-                errors.add(fieldError);
-            }
-
-
-            model.put("users", userService.allUsers());
-            model.put("errors", errors);
-            model.put("user", user);
-
-            return "admin/admin-panel";
-        }
+        Set<String> errors = userService.editUser(bindingResult, newUser);
 
         userService.updateUser(newUser);
         model.put("user", user);
+        model.put("errors", errors);
         model.put("users", userService.allUsers());
 
         return "admin/admin-panel";
-
 
     }
 
@@ -77,38 +77,33 @@ public class UserController {
                           Map<String, Object> model) {
 
 
-        if (bindingResult.hasErrors()) {
-            Set<String> errors = new HashSet<>();
+//        if (bindingResult.hasErrors()) {
 
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                String fieldError = ((FieldError) error).getField();
-                errors.add(fieldError);
-            }
-
+            Set<String> errors = userService.createUser(bindingResult, newUser);
 
             model.put("users", userService.allUsers());
             model.put("errors", errors);
             model.put("user", user);
 
             return "admin/admin-panel";
-        }
+//        }
 
-             logger.debug("running method addUser, on PostMapping /registration");
-        User userFromDb = userService.findByUsername(newUser.getUsername());
-
-        if (userFromDb != null) {
-            model.put("message", "User with the same username exists!");
-            model.put("users", userService.allUsers());
-            model.put("user", user);
-            return "admin/admin-panel";
-        }
-
-
-        userService.addUser(newUser);
-        model.put("user", user);
-        model.put("users", userService.allUsers());
-
-        return "admin/admin-panel";
+//        logger.debug("running method addUser, on PostMapping /registration");
+//
+//        User userFromDb = userService.findByUsername(newUser.getUsername());
+//
+//        if (userFromDb != null) {
+//            model.put("message", "User with the same username exists!");
+//            model.put("users", userService.allUsers());
+//            model.put("user", user);
+//            return "admin/admin-panel";
+//        }
+//
+//        userService.addUser(newUser);
+//        model.put("user", user);
+//        model.put("users", userService.allUsers());
+//
+//        return "admin/admin-panel";
     }
 
     @GetMapping("/access-denied")
@@ -126,20 +121,12 @@ public class UserController {
     }
 
 
-
-
-
     @PostMapping("/profile")
     public String uploadImg(@RequestParam("file") MultipartFile file,
                             @AuthenticationPrincipal User user,
                             Model model) throws IOException{
-
-        String error = userService.addImg(user, file);
-
-
-        model.addAttribute("error", error);
+        model.addAttribute("error", userService.addImg(user, file));
         model.addAttribute("user", user);
-
         return "main/profile";
     }
 
@@ -154,7 +141,6 @@ public class UserController {
     public String activateUser(Model model, @PathVariable String code){
         userService.activateUser(code);
         model.addAttribute("successActivate","Your account has been successfully activated!");
-//        return "redirect:/";
         return "main/login";
     }
 }

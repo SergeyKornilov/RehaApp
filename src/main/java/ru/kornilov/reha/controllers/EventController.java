@@ -18,6 +18,7 @@ import ru.kornilov.reha.service.message.UpdateEventsService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
 @Controller
 public class EventController {
     private static final Logger logger = Logger.getLogger(EventController.class);

@@ -45,17 +45,13 @@ public class EventRestController {
 
     @RequestMapping("/get-event/{id}")
     public List<EventJsonDTO> getAllEvents(@PathVariable("id") int id){
-        System.out.println("REST CONTROLLER");
         return eventJsonDTOService.getEventsJsonDtoById(id);
-
     }
-
 
     @RequestMapping(value = "/rest/cancel", method = RequestMethod.POST)
         public String cancel(@RequestBody EventDTO data){
         eventService.setStatusCancel(Integer.parseInt(data.getId()), data.getReason());
-
         eventService.updateEventsOnFront(Integer.parseInt(data.getId()));
-        return "test";
+        return "canceled";
     }
 }
