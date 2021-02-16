@@ -15,17 +15,23 @@ import org.springframework.stereotype.Service;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.entities.dto.PrescribingPdfDTO;
+import ru.kornilov.reha.service.interfaces.PatientService;
+import ru.kornilov.reha.service.interfaces.PdfExporterService;
 
+/**
+ * This class responsible for export prescribing in pdf file
+ */
 @Service
-public class PrescribingPdfExporterService {
+public class PdfExporterServiceImpl implements PdfExporterService {
 
     @Autowired
     PatientService patientService;
-
     private int patientId;
 
-
-
+    /**
+     * This method fills header of prescribing table
+     * @param table instance of table
+     */
     private void writeTableHeaderPrescribing(PdfPTable table) {
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(Color.blue);
@@ -36,41 +42,33 @@ public class PrescribingPdfExporterService {
         font.setSize(12);
         font.setColor(Color.WHITE);
 
-
         cell.setPhrase(new Phrase("Type", font));
         table.addCell(cell);
-
         cell.setPhrase(new Phrase("Name", font));
         table.addCell(cell);
-
         cell.setPhrase(new Phrase("Time", font));
         table.addCell(cell);
-
         cell.setPhrase(new Phrase("Dose", font));
         table.addCell(cell);
-
         cell.setPhrase(new Phrase("Date start", font));
         table.addCell(cell);
-
         cell.setPhrase(new Phrase("Date end", font));
         table.addCell(cell);
-
         cell.setPhrase(new Phrase("Day of weeks", font));
         table.addCell(cell);
-
-
     }
 
+    /**
+     * This method gets prescribing from DB
+     * and writes them in table
+     * @param table instance of table
+     */
     private void writeTableDataPrescribing(PdfPTable table) {
 
         Patient patient = patientService.getPatientById(patientId);
-
         Set<Prescribing> prescribingSet = patient.getPrescribings();
-
         Set<PrescribingPdfDTO> prescribingPdfDTO = getPrescribingPdfDTO(prescribingSet);
-
         for (PrescribingPdfDTO prescribing : prescribingPdfDTO) {
-
             table.addCell(prescribing.getType());
             table.addCell(prescribing.getName());
             table.addCell(prescribing.getTime());
@@ -81,10 +79,14 @@ public class PrescribingPdfExporterService {
         }
     }
 
+    /**
+     * This method prepare prescribing to export in pdf
+     * @param prescribingSet Set of prescribing
+     * @return set of PrescribingPdfDTO
+     */
     private Set<PrescribingPdfDTO> getPrescribingPdfDTO(Set<Prescribing> prescribingSet){
 
         Set<PrescribingPdfDTO> getPrescribingPdfDTOSet = new HashSet<>();
-
         for (Prescribing prescribing :
                 prescribingSet) {
             PrescribingPdfDTO prescribingPdfDto = new PrescribingPdfDTO();
@@ -95,23 +97,15 @@ public class PrescribingPdfExporterService {
                 prescribingPdfDto.setDose(prescribing.getDose());
             }
             prescribingPdfDto.setName(prescribing.getName());
-
             StringBuilder strTime = new StringBuilder();
-
-
             List<String> sortedTime = new ArrayList<>(prescribing.getTime());
-
             Collections.sort(sortedTime);
-
             for (String time :
                     sortedTime) {
                 strTime.append(time).append(" ");
             }
 
             prescribingPdfDto.setTime(strTime.toString());
-
-
-
             String dateStartStr = new SimpleDateFormat("dd.MM.yyyy").format(prescribing.getDateStart());
             String dateEndStr = new SimpleDateFormat("dd.MM.yyyy").format(prescribing.getDateEnd());
 
@@ -137,6 +131,12 @@ public class PrescribingPdfExporterService {
     }
 
 
+    /**
+     * This method exports prescribing in pdf
+     * @param response instance of response
+     * @param id id of prescribing
+     */
+    @Override
     public void export(HttpServletResponse response, Integer id) throws DocumentException, IOException {
 
         response.setContentType("application/pdf");
@@ -146,7 +146,6 @@ public class PrescribingPdfExporterService {
         String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-
         this.patientId = id;
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
@@ -154,41 +153,31 @@ public class PrescribingPdfExporterService {
         document.open();
         Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
         font.setSize(18);
-//        font.setColor(Color.lightGray);
-
         Paragraph p = new Paragraph("List of Prescribings", font);
         p.setAlignment(Paragraph.ALIGN_CENTER);
 
         document.add(p);
-
         font.setSize(14);
-
         Paragraph patientName = new Paragraph("Patient: " + patientService.getPatientById(patientId).getName() +
                 " " + patientService.getPatientById(patientId).getSecondname() + " " +
                 patientService.getPatientById(patientId).getSurname(), font);
 
         document.add(patientName);
-
         String dateTodayStr = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
         Paragraph date = new Paragraph("Date: " + dateTodayStr, font);
 
         document.add(date);
-
         PdfPTable table = new PdfPTable(7);
         table.setWidthPercentage(110f);
         table.setWidths(new float[] {1.3f, 1.8f, 1.4f, 1.0f, 1.4f, 1.4f, 2.5f});
         table.setSpacingBefore(10);
-
         writeTableHeaderPrescribing(table);
         writeTableDataPrescribing(table);
-
         document.add(table);
-
         Paragraph doctorStr = new Paragraph("Attending doctor: " +
-                patientService.getPatientById(patientId).getAttendingDoctor(), font);
+        patientService.getPatientById(patientId).getAttendingDoctor(), font);
 
         document.add(doctorStr);
-
         document.close();
 
     }

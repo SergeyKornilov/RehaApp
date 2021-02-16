@@ -2,31 +2,21 @@ package ru.kornilov.reha.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 import ru.kornilov.reha.entities.User;
-import ru.kornilov.reha.service.UserService;
+import ru.kornilov.reha.exceptions.UploadImgException;
+import ru.kornilov.reha.service.interfaces.UserService;
 
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 
 @Controller
@@ -43,21 +33,6 @@ public class UserController {
                            @AuthenticationPrincipal User user,
                            Map<String, Object> model) {
 
-//        if (bindingResult.hasErrors()) {
-//            Set<String> errors = new HashSet<>();
-//
-//            for (ObjectError error : bindingResult.getAllErrors()) {
-//                String fieldError = ((FieldError) error).getField();
-//                errors.add(fieldError);
-//            }
-//
-//
-//            model.put("users", userService.allUsers());
-//            model.put("errors", errors);
-//            model.put("user", user);
-//
-//            return "admin/admin-panel";
-//        }
 
         Set<String> errors = userService.editUser(bindingResult, newUser);
 
@@ -77,7 +52,6 @@ public class UserController {
                           Map<String, Object> model) {
 
 
-//        if (bindingResult.hasErrors()) {
 
             Set<String> errors = userService.createUser(bindingResult, newUser);
 
@@ -86,24 +60,7 @@ public class UserController {
             model.put("user", user);
 
             return "admin/admin-panel";
-//        }
 
-//        logger.debug("running method addUser, on PostMapping /registration");
-//
-//        User userFromDb = userService.findByUsername(newUser.getUsername());
-//
-//        if (userFromDb != null) {
-//            model.put("message", "User with the same username exists!");
-//            model.put("users", userService.allUsers());
-//            model.put("user", user);
-//            return "admin/admin-panel";
-//        }
-//
-//        userService.addUser(newUser);
-//        model.put("user", user);
-//        model.put("users", userService.allUsers());
-//
-//        return "admin/admin-panel";
     }
 
     @GetMapping("/access-denied")
@@ -124,7 +81,7 @@ public class UserController {
     @PostMapping("/profile")
     public String uploadImg(@RequestParam("file") MultipartFile file,
                             @AuthenticationPrincipal User user,
-                            Model model) throws IOException{
+                            Model model) throws UploadImgException {
         model.addAttribute("error", userService.addImg(user, file));
         model.addAttribute("user", user);
         return "main/profile";

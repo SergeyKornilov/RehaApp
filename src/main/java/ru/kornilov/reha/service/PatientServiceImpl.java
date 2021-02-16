@@ -7,13 +7,19 @@ import ru.kornilov.reha.DAO.PatientDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Patient;
 import ru.kornilov.reha.entities.Prescribing;
-import ru.kornilov.reha.service.message.UpdateEventsService;
+import ru.kornilov.reha.service.interfaces.EventService;
+import ru.kornilov.reha.service.interfaces.MessageService;
+import ru.kornilov.reha.service.interfaces.PatientService;
+import ru.kornilov.reha.service.interfaces.UpdateEventsService;
 
 import javax.transaction.Transactional;
 import java.util.*;
 
+/**
+ * This class contains methods that serve Patient
+ */
 @Service
-public class PatientService {
+public class PatientServiceImpl implements PatientService {
 
     @Autowired
     MessageService messageService;
@@ -27,39 +33,74 @@ public class PatientService {
     @Autowired
     private EventService eventService;
 
+    /**
+     * This method gets all patient from DB
+     * @return List of Patient
+     */
+    @Override
     @Transactional
     public List<Patient> allPatients() {
         return patientDAO.allPatients();
     }
 
+    /**
+     * This method adds Patient in DB
+     * @param patient instance of Patient that will add in DB
+     */
+    @Override
     @Transactional
     public void addPatient(Patient patient) {
         patientDAO.addPatient(patient);
     }
 
+    /**
+     * This method delete Patient from DB
+     * @param patient instance of Patient that will be deleted from DB
+     */
+    @Override
     @Transactional
     public void deletePatient(Patient patient) {
         patientDAO.deletePatient(patient);
     }
 
+    /**
+     * This method update Patient in DB
+     * @param patient instance of Patient that will be updated in DB
+     */
+    @Override
     @Transactional
     public void updatePatient(Patient patient) {
-
-
         patientDAO.updatePatient(patient);
     }
 
+    /**
+     * This method gets Patient from DB by id
+     * @param id id of Patient
+     * @return Patient
+     */
+    @Override
     @Transactional
     public Patient getPatientById(int id) {
         return patientDAO.getById(id);
     }
 
+    /**
+     * This method gets Patient from DB by insurance number
+     * @param insuranceNumber String insuranceNumber
+     * @return Patient
+     */
+    @Override
     @Transactional
     public Patient selectPatientByInsurance(String insuranceNumber) {
-
         return patientDAO.getByInsuranceNumber(insuranceNumber);
     }
 
+    /**
+     * This method validate Patient before edit
+     * @param patient instance of Patient
+     * @param errors instance of Errors
+     */
+    @Override
     @Transactional
     public void patientValidateForEdit(Patient patient, Errors errors) {
         if (selectPatientByInsurance(patient.getInsuranceNumber()) != null &&
@@ -68,7 +109,12 @@ public class PatientService {
         checkAge(patient, errors);
     }
 
-
+    /**
+     * This method validate Patient
+     * @param patient instance of Patient
+     * @param errors instance of Errors
+     */
+    @Override
     @Transactional
     public void patientValidate(Patient patient, Errors errors) {
         if (selectPatientByInsurance(patient.getInsuranceNumber()) != null) {
@@ -77,6 +123,14 @@ public class PatientService {
         checkAge(patient, errors);
     }
 
+    /**
+     * If patient field status is "Issued",
+     * this method gets prescribings from DB,
+     * cancel all child events
+     * and update events on front
+     * @param patient instance of Patient
+     */
+    @Override
     @Transactional
     public void updateChildEvents(Patient patient){
         if (patient.getStatus().equals("Issued")) {
@@ -89,6 +143,12 @@ public class PatientService {
         updateEventsService.updateAllEvents();
     }
 
+    /**
+     * This method set event status "Cancel"
+     * and update Event in DB
+     * @param prescribings Set of Prescribing
+     */
+    @Override
     @Transactional
     public void cancelAllEventsWhenIssued(Set<Prescribing> prescribings) {
             Calendar today = Calendar.getInstance();
@@ -111,6 +171,11 @@ public class PatientService {
             }
     }
 
+    /**
+     * This method validate age of patient
+     * @param patient instance of Patient
+     * @param errors instance of Errors
+     */
     private void checkAge(Patient patient, Errors errors) {
         if (patient.getDateOfBirth() != null) {
             Calendar patientBirthDay = new GregorianCalendar();
@@ -135,10 +200,14 @@ public class PatientService {
         }
     }
 
+    /**
+     * This method gets Patient from DB by field AttendingDoctor
+     * @param doctorFullname String AttendingDoctor full name
+     * @return List of Patient
+     */
+    @Override
     @Transactional
     public List<Patient> selectPatientsByAttendingDoctor(String doctorFullname) {
-
         return patientDAO.getByAttendingDoctor(doctorFullname);
-
     }
 }

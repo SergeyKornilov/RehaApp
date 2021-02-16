@@ -6,8 +6,8 @@
 //import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.GetMapping;
 //import ru.kornilov.reha.entities.User;
-//import ru.kornilov.reha.service.EventJsonDTOService;
-//import ru.kornilov.reha.service.message.UpdateEventsService;
+//import ru.kornilov.reha.service.interfaces.EventJsonDTOService;
+//import ru.kornilov.reha.service.interfaces.UpdateEventsService;
 //
 //import javax.jms.JMSException;
 //

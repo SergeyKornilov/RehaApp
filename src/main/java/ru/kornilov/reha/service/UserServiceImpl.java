@@ -12,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.kornilov.reha.DAO.UserDAO;
 import ru.kornilov.reha.entities.Role;
 import ru.kornilov.reha.entities.User;
-import ru.kornilov.reha.service.mail.MailSender;
+import ru.kornilov.reha.exceptions.UploadImgException;
+import ru.kornilov.reha.service.interfaces.UserService;
+import ru.kornilov.reha.service.interfaces.MailSender;
 
 import javax.transaction.Transactional;
 import java.io.File;
@@ -24,7 +26,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     @Value("C:/Users/Serega/Desktop/T-System/Reha/src/uploads/")
     private String uploadPath;
@@ -34,11 +36,13 @@ public class UserService {
     @Autowired
     private MailSender mailSender;
 
+    @Override
     @Transactional
     public User findByUsername(String name) {
         return userDAO.findByUsername(name);
     }
 
+    @Override
     @Transactional
     public void addUser(User user) {
         user.setEnabled(false);
@@ -47,6 +51,7 @@ public class UserService {
         mailSender.send(user);
     }
 
+    @Override
     @Transactional
     public void updateUser(User user) {
         user.setEnabled(false);
@@ -55,16 +60,19 @@ public class UserService {
         userDAO.updateUser(user);
     }
 
+    @Override
     @Transactional
     public void deleteUser(User user) {
         userDAO.deleteUser(user);
     }
 
+    @Override
     @Transactional
     public List<User> allUsers() {
         return userDAO.allUsers();
     }
 
+    @Override
     @Transactional
     public List<User> findAllUsersRolDoctor() {
 
@@ -74,6 +82,7 @@ public class UserService {
 
     }
 
+    @Override
     @Transactional
     public void activateUser(String code){
         User user = userDAO.findByActivationCode(code).get(0);
@@ -82,8 +91,9 @@ public class UserService {
 
     }
 
+    @Override
     @Transactional
-    public String addImg(User user, MultipartFile file) throws IOException {
+    public String addImg(User user, MultipartFile file) throws UploadImgException {
         System.out.println(file);
         if(file.getSize() != 0){
             File uploadDir = new File(uploadPath);
@@ -98,7 +108,11 @@ public class UserService {
                 String uuidFile = UUID.randomUUID().toString();
                 String resultFilename = uuidFile + "." + file.getOriginalFilename();
 
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
+                try {
+                    file.transferTo(new File(uploadPath + "/" + resultFilename));
+                } catch (IOException e) {
+                    throw new UploadImgException(e);
+                }
 
                 user.setImgName(resultFilename);
                 updateUser(user);
@@ -120,6 +134,7 @@ public class UserService {
         } else return false;
     }
 
+    @Override
     public String getAuthorizedRedirect(){
         String viewName = "";
 
@@ -143,6 +158,7 @@ public class UserService {
         return viewName;
     }
 
+    @Override
     @Transactional
     public Set<String> editUser(BindingResult bindingResult, User newUser){
         Set<String> errors = validateUser(bindingResult, newUser);
@@ -154,6 +170,7 @@ public class UserService {
         return errors;
     }
 
+    @Override
     @Transactional
     public Set<String> createUser(BindingResult bindingResult, User newUser){
         Set<String> errors = validateUser(bindingResult, newUser);
@@ -169,6 +186,7 @@ public class UserService {
         return errors;
     }
 
+    @Override
     public Set<String> validateUser(BindingResult bindingResult, User newUser){
 
         Set<String> errors = new HashSet<>();

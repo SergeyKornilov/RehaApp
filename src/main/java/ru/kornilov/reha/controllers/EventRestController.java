@@ -1,14 +1,15 @@
 package ru.kornilov.reha.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import ru.kornilov.reha.entities.dto.EventDTO;
 import ru.kornilov.reha.entities.dto.EventJsonDTO;
-import ru.kornilov.reha.service.EventJsonDTOService;
-import ru.kornilov.reha.service.EventService;
+import ru.kornilov.reha.service.interfaces.EventJsonDTOService;
+import ru.kornilov.reha.service.interfaces.EventService;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class EventRestController {
     EventService eventService;
 
     @GetMapping("/rest/event")
-    public List<EventJsonDTO> getEvent(){
+    public List<EventJsonDTO> getEvent() throws JsonProcessingException {
         return eventJsonDTOService.getEventsJsonDtoOnCurrentDate();
     }
 
@@ -34,7 +35,7 @@ public class EventRestController {
     }
 
     @RequestMapping("/test/get-events")
-    public List<EventJsonDTO> getEvents(){
+    public List<EventJsonDTO> getEvents() throws JsonProcessingException {
         return eventJsonDTOService.getEventsJsonDtoOnCurrentDate();
     }
 

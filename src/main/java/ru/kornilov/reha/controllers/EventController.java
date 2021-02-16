@@ -7,16 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.User;
-import ru.kornilov.reha.service.EventService;
-import ru.kornilov.reha.service.MessageService;
-import ru.kornilov.reha.service.message.UpdateEventsService;
+import ru.kornilov.reha.service.interfaces.MessageService;
+import ru.kornilov.reha.service.interfaces.EventService;
+import ru.kornilov.reha.service.interfaces.UpdateEventsService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 
 @Controller
@@ -33,7 +29,9 @@ public class EventController {
 
     @GetMapping("/event-list")
     public String allEventPage(Model model, @AuthenticationPrincipal User user) {
+
         logger.debug("running method allEventPage, on GetMapping /event-list");
+
         model.addAttribute("user", user);
         model.addAttribute("events", eventService.getAllEventsSortedByTime());
         return "event/event-list-angular";

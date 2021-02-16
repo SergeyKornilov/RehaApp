@@ -9,9 +9,9 @@ import ru.kornilov.reha.DAO.EventDAO;
 import ru.kornilov.reha.DAO.PrescribingDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Prescribing;
-import ru.kornilov.reha.service.EventService;
-import ru.kornilov.reha.service.MessageService;
-import ru.kornilov.reha.service.message.UpdateEventsService;
+import ru.kornilov.reha.service.EventServiceImpl;
+import ru.kornilov.reha.service.interfaces.MessageService;
+import ru.kornilov.reha.service.interfaces.UpdateEventsService;
 
 import java.util.*;
 
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class EventServiceTest {
 
     @InjectMocks
-    private EventService eventService;
+    private EventServiceImpl eventService;
 
 
 

@@ -3,21 +3,20 @@ package ru.kornilov.reha.service.message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
-import javax.jms.JMSException;
+import ru.kornilov.reha.service.interfaces.UpdateEventsService;
 
 @Service
-public class UpdateEventsService {
+public class UpdateEventsServiceImpl implements UpdateEventsService {
 
     @Autowired
     private SimpMessagingTemplate template;
 
-    public void updateEventList(int id) throws JMSException {
-        System.out.println("HELLO from fireGreeting method");
-
+    @Override
+    public void updateEventList(int id)  {
         this.template.convertAndSend("/topic/messages", id);
     }
 
+    @Override
     public void updateAllEvents(){
         this.template.convertAndSend("/topic/messages", "update all");
     }

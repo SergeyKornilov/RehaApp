@@ -5,23 +5,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import ru.kornilov.reha.DAO.EventDAO;
 import ru.kornilov.reha.DAO.PrescribingDAO;
 import ru.kornilov.reha.entities.Event;
 import ru.kornilov.reha.entities.Prescribing;
-import ru.kornilov.reha.service.MessageService;
-import ru.kornilov.reha.service.PrescribingService;
-import ru.kornilov.reha.service.message.UpdateEventsService;
+import ru.kornilov.reha.service.PrescribingServiceImpl;
+
+import ru.kornilov.reha.service.interfaces.MessageService;
+import ru.kornilov.reha.service.interfaces.UpdateEventsService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -31,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class PrescribingServiceTest {
 
     @InjectMocks
-    private PrescribingService prescribingService;
+    private PrescribingServiceImpl prescribingService;
 
     @Mock
     PrescribingDAO prescribingDAO;

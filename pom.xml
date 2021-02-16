@@ -6,6 +6,7 @@
 
   <groupId>ru.kornilov.reha</groupId>
   <artifactId>Reha-app</artifactId>
+
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
@@ -271,6 +272,8 @@
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
         </plugin>
+
+
       </plugins>
     </pluginManagement>
       <plugins>
@@ -282,6 +285,9 @@
                   <target>8</target>
               </configuration>
           </plugin>
+
+
+
       </plugins>
   </build>
 </project>

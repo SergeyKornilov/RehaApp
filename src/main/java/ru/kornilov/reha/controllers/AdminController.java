@@ -7,12 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.kornilov.reha.entities.User;
-import ru.kornilov.reha.service.mail.MailSender;
-import ru.kornilov.reha.service.UserService;
+import ru.kornilov.reha.service.interfaces.UserService;
 
 /**
- * responsible for requests
- * related to the administrator user role
+ * This controller is responsible for
+ * displaying the user administration page
  */
 
 @Controller

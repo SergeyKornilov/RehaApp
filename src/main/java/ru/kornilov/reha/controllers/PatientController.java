@@ -11,15 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kornilov.reha.entities.Patient;
-import ru.kornilov.reha.entities.Prescribing;
 import ru.kornilov.reha.entities.User;
-import ru.kornilov.reha.service.PatientService;
-import ru.kornilov.reha.service.PrescribingService;
-import ru.kornilov.reha.service.UserService;
+import ru.kornilov.reha.service.interfaces.UserService;
+import ru.kornilov.reha.service.interfaces.PatientService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Set;
 
 @Controller
 public class PatientController {

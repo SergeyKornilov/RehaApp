@@ -5,16 +5,24 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
+import ru.kornilov.reha.service.interfaces.MessageService;
 
 import javax.jms.*;
 
+/**
+ * This class contains method for send message
+ */
 @Service
-public class MessageService {
+public class MessageServiceImpl implements MessageService {
 
     @Lazy
     @Autowired
     JmsTemplate jmsTemplate;
 
+    /**
+     * This method create and send message
+     */
+    @Override
     public void sendMessage(){
         MessageCreator messageCreator = new MessageCreator() {
             @Override
