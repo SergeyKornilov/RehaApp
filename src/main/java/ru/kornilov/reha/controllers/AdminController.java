@@ -11,9 +11,8 @@ import ru.kornilov.reha.service.interfaces.UserService;
 
 /**
  * This controller is responsible for
- * displaying the user administration page
+ * displaying the users administration page
  */
-
 @Controller
 public class AdminController {
     private static final Logger logger = Logger.getLogger(AdminController.class);

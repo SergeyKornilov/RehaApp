@@ -104,8 +104,9 @@ public class PatientServiceImpl implements PatientService {
     @Transactional
     public void patientValidateForEdit(Patient patient, Errors errors) {
         if (selectPatientByInsurance(patient.getInsuranceNumber()) != null &&
-                selectPatientByInsurance(patient.getInsuranceNumber()).getId() != patient.getId())
+                selectPatientByInsurance(patient.getInsuranceNumber()).getId() != patient.getId()){
             errors.rejectValue("insuranceNumber", "", "Duplicate insurance number");
+        }
         checkAge(patient, errors);
     }
 

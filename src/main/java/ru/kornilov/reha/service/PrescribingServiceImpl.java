@@ -165,7 +165,7 @@ public class PrescribingServiceImpl implements PrescribingService {
         if(!errors.hasErrors()){
             prescribingService.setPatient(prescribing, idPatient);
             String errorMathesTime =
-                    eventService.validationMatchesDateAndTimeEventsTypeProcedure(prescribing, patientService.getPatientById(idPatient));
+                    eventService.validationMatchesDateAndTimeEvents(prescribing, patientService.getPatientById(idPatient));
             if(errorMathesTime.length() != 0) {
                 errors.rejectValue("time", "", errorMathesTime);
             }

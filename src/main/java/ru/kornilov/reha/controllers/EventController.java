@@ -14,7 +14,11 @@ import ru.kornilov.reha.service.interfaces.UpdateEventsService;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * This controller is responsible for
+ * displaying event-list page
+ * and set status event done
+ */
 @Controller
 public class EventController {
     private static final Logger logger = Logger.getLogger(EventController.class);

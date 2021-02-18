@@ -1,5 +1,7 @@
 package ru.kornilov.reha.entities.dto;
 
+import java.util.Objects;
+
 public class EventJsonDTO {
 
     private String id;
@@ -112,5 +114,26 @@ public class EventJsonDTO {
                 ", dose='" + dose + '\'' +
                 ", patient='" + patient + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EventJsonDTO that = (EventJsonDTO) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(time, that.time) &&
+                Objects.equals(reason, that.reason) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(dose, that.dose) &&
+                Objects.equals(patient, that.patient);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, date, status, time, reason, type, name, dose, patient);
     }
 }

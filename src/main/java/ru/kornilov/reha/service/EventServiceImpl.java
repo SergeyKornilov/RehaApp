@@ -166,7 +166,7 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     @Transactional
-    public String validationMatchesDateAndTimeEventsTypeProcedure(Prescribing prescribing, Patient patient) {
+    public String validationMatchesDateAndTimeEvents(Prescribing prescribing, Patient patient) {
 
         if (!prescribing.getType().equals("procedure")) return "";
         LocalDate eventsDateStart = prescribing.getDateStart().toInstant()
@@ -175,7 +175,6 @@ public class EventServiceImpl implements EventService {
         LocalDate eventsDateEnd = prescribing.getDateEnd().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
-
         String errorMessage;
         do {
             String dayOfWeekUpperCase = eventsDateStart.getDayOfWeek().toString().substring(0, 1);
@@ -217,7 +216,6 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public void createEvents(Prescribing prescribing) {
-        System.out.println("createEvents");
         LocalDate eventsDateStart = prescribing.getDateStart().toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();

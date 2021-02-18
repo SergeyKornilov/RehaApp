@@ -13,6 +13,9 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This controller is processes request for export pdf
+ */
 @Controller
 public class PdfExportController {
 

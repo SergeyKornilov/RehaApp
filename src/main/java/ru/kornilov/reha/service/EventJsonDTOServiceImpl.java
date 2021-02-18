@@ -50,9 +50,7 @@ public class EventJsonDTOServiceImpl implements EventJsonDTOService {
     public List<EventJsonDTO> getEventsJsonDtoById(int id){
 
         List<Event> events = new ArrayList<>();
-
         events.add(eventService.getEventById(id));
-
         List<EventJsonDTO> eventJsonDTO = convertEventToEventJsonDTO(events);
 
         return eventJsonDTO;
@@ -73,15 +71,12 @@ public class EventJsonDTOServiceImpl implements EventJsonDTOService {
         List<Event> events = eventService.getAllEventsSortedByTime();
         for (Event event :
                 events) {
-//            String eventDate = event.getDate().toString();
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(event.getDate());
             if(timeStamp.equals(todayStr)){
                 eventsToday.add(event);
             }
         }
         ObjectMapper objectMapper = new ObjectMapper();
-//        String eventsJson = null;
-//        eventsJson = objectMapper.writeValueAsString(convertEventToEventJsonDTO(eventsToday));
         return convertEventToEventJsonDTO(eventsToday);
     }
 
@@ -111,6 +106,7 @@ public class EventJsonDTOServiceImpl implements EventJsonDTOService {
             prescribing.getPatient().getSecondname());
             listEventJsonDTO.add(eventJsonDTO);
         }
+
         return listEventJsonDTO;
     }
 }

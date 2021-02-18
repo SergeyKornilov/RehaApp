@@ -19,6 +19,10 @@ import ru.kornilov.reha.service.interfaces.EventService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+/**
+ * This controller is responsible for
+ * requests related with Prescribings
+ */
 @Controller
 public class PrecribingController {
     private static final Logger logger = Logger.getLogger(PrecribingController.class);

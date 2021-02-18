@@ -13,7 +13,9 @@ import ru.kornilov.reha.service.interfaces.EventService;
 
 import java.util.List;
 
-
+/**
+ * This class is responsible for rest controller
+ */
 @RestController
 public class EventRestController {
 

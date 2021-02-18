@@ -170,8 +170,7 @@ public class Patient {
                 ", insuranceNumber='" + insuranceNumber + '\'' +
                 ", attendingDoctor='" + attendingDoctor + '\'' +
                 ", status='" + status + '\'' +
+                ", prescribings=" + prescribings +
                 '}';
     }
-
-
 }

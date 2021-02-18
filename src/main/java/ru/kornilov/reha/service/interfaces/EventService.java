@@ -34,7 +34,7 @@ public interface EventService {
     List<Event> getAllEventsSortedByTime();
 
 
-    String validationMatchesDateAndTimeEventsTypeProcedure(Prescribing prescribing, Patient patient);
+    String validationMatchesDateAndTimeEvents(Prescribing prescribing, Patient patient);
 
 
     void createEvents(Prescribing prescribing);

@@ -10,7 +10,11 @@ import ru.kornilov.reha.service.interfaces.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * This controller is responsible for
+ * displaying login page and
+ * login-error page
+ */
 @Controller
 public class MainController {
     private static final Logger logger = Logger.getLogger(MainController.class);
@@ -20,11 +24,11 @@ public class MainController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/main")
-    public String main() {
-        logger.debug("running method main, on GetMapping /main");
-        return "main/main";
-    }
+//    @GetMapping("/main")
+//    public String main() {
+//        logger.debug("running method main, on GetMapping /main");
+//        return "main/main";
+//    }
 
     @GetMapping("/")
     public String loginPage() {

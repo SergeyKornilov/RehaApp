@@ -18,6 +18,10 @@ import ru.kornilov.reha.service.interfaces.PatientService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+/**
+ * This controller is responsible for
+ * requests related patients
+ */
 @Controller
 public class PatientController {
     private static final Logger logger = Logger.getLogger(PatientController.class);
@@ -54,26 +58,6 @@ public class PatientController {
         model.addAttribute("add", true);
         return "patient/patient-form";
     }
-
-
-//    @PostMapping("/add-patient-page")
-//    public String patientSave(@ModelAttribute @Valid Patient patient,
-//                              BindingResult bindingResult,
-//                              Model model,
-//                              @AuthenticationPrincipal User user) {
-//        logger.debug("running method patientSave, on PostMapping /patient-add");
-//        patientService.patientValidate(patient, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("errors", bindingResult.getAllErrors());
-//            model.addAttribute("add", true);
-//            model.addAttribute("user", user);
-//            model.addAttribute("users", userService.findAllUsersRolDoctor());
-//            return "patient/patient-form";
-//        } else {
-//            patientService.addPatient(patient);
-//            return "redirect:/patient-list";
-//        }
-//    }
 
     @PostMapping("/add-patient-page")
     public String patientSave2(@ModelAttribute @Valid Patient patient,
@@ -119,6 +103,10 @@ public class PatientController {
                                 @AuthenticationPrincipal User user) {
         logger.debug("running method patientUpdate, on PostMapping /patient-edit");
         patientService.patientValidateForEdit(patient, bindingResult);
+        return patientEditModelBuilder(model, bindingResult, user, patient);
+    }
+
+    private String patientEditModelBuilder(Model model, BindingResult bindingResult, User user, Patient patient) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("users", userService.findAllUsersRolDoctor());
             model.addAttribute("errors", bindingResult.getAllErrors());

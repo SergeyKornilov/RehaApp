@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * This controller is responsible for
+ * requests related with users
+ */
 @Controller
 public class UserController {
     private static final Logger logger = Logger.getLogger(UserController.class);
@@ -33,16 +36,12 @@ public class UserController {
                            @AuthenticationPrincipal User user,
                            Map<String, Object> model) {
 
-
         Set<String> errors = userService.editUser(bindingResult, newUser);
-
         userService.updateUser(newUser);
         model.put("user", user);
         model.put("errors", errors);
         model.put("users", userService.allUsers());
-
         return "admin/admin-panel";
-
     }
 
     @PostMapping(path = "/admin", params = {"action=addUser"})
@@ -50,17 +49,11 @@ public class UserController {
                           BindingResult bindingResult,
                           @AuthenticationPrincipal User user,
                           Map<String, Object> model) {
-
-
-
             Set<String> errors = userService.createUser(bindingResult, newUser);
-
             model.put("users", userService.allUsers());
             model.put("errors", errors);
             model.put("user", user);
-
             return "admin/admin-panel";
-
     }
 
     @GetMapping("/access-denied")
@@ -69,14 +62,12 @@ public class UserController {
         return "main/access-denied";
     }
 
-
     @GetMapping("/profile")
     public String openProfile(@AuthenticationPrincipal User user, Model model) {
         logger.debug("running method openProfile, on GetMapping /profile");
         model.addAttribute("user", user);
         return "main/profile";
     }
-
 
     @PostMapping("/profile")
     public String uploadImg(@RequestParam("file") MultipartFile file,

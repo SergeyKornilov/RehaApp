@@ -25,6 +25,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains methods that serve Users
+ */
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -36,12 +40,22 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailSender mailSender;
 
+    /**
+     * This method gets user form DB by username
+     * @param name String username
+     * @return User
+     */
     @Override
     @Transactional
     public User findByUsername(String name) {
         return userDAO.findByUsername(name);
     }
 
+    /**
+     * This method add User in DB
+     * and sends message to user`s Email
+     * @param user
+     */
     @Override
     @Transactional
     public void addUser(User user) {
@@ -51,6 +65,11 @@ public class UserServiceImpl implements UserService {
         mailSender.send(user);
     }
 
+    /**
+     * This method updates user in DB
+     * and sends message to user`s Email
+     * @param user instance of User
+     */
     @Override
     @Transactional
     public void updateUser(User user) {
@@ -60,18 +79,30 @@ public class UserServiceImpl implements UserService {
         userDAO.updateUser(user);
     }
 
+    /**
+     * This method delete user from DB
+     * @param user instance of User
+     */
     @Override
     @Transactional
     public void deleteUser(User user) {
         userDAO.deleteUser(user);
     }
 
+    /**
+     * This method gets all users from DB
+     * @return List of User
+     */
     @Override
     @Transactional
     public List<User> allUsers() {
         return userDAO.allUsers();
     }
 
+    /**
+     * This method gets users from DB by Role = ROLE_DOCTOR
+     * @return List of User
+     */
     @Override
     @Transactional
     public List<User> findAllUsersRolDoctor() {
@@ -82,24 +113,35 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * This method gets user from DB by field ActivationCode
+     * and set Enabled true
+     * @param code
+     */
     @Override
     @Transactional
     public void activateUser(String code){
         User user = userDAO.findByActivationCode(code).get(0);
 
         user.setEnabled(true);
-
     }
 
+    /**
+     * This method validate image file,
+     * upload image
+     * and set User`s image name
+     * @param user instance of User
+     * @param file image file
+     * @return String error
+     * @throws UploadImgException error during upload
+     */
     @Override
     @Transactional
     public String addImg(User user, MultipartFile file) throws UploadImgException {
-        System.out.println(file);
         if(file.getSize() != 0){
             File uploadDir = new File(uploadPath);
 
             if(checkTypeFile(file.getOriginalFilename())) {
-
 
                 if (!uploadDir.exists()) {
                     uploadDir.mkdir();
@@ -121,6 +163,11 @@ public class UserServiceImpl implements UserService {
         } return "You need to select file first!";
     }
 
+    /**
+     * This method validate type image file
+     * @param fileName image file
+     * @return boolean true when valid, else false
+     */
     private boolean checkTypeFile(String fileName){
 
         String fileExtentions = ".JPEG,.JPG,.PNG";
@@ -134,6 +181,10 @@ public class UserServiceImpl implements UserService {
         } else return false;
     }
 
+    /**
+     * This method create redirect url depends User role
+     * @return String redirect url
+     */
     @Override
     public String getAuthorizedRedirect(){
         String viewName = "";
@@ -158,6 +209,13 @@ public class UserServiceImpl implements UserService {
         return viewName;
     }
 
+    /**
+     * This method validate User,
+     * if valid update in in DB
+     * @param bindingResult instance of bindingResult
+     * @param newUser instance of User
+     * @return Set of String errors
+     */
     @Override
     @Transactional
     public Set<String> editUser(BindingResult bindingResult, User newUser){
@@ -170,6 +228,13 @@ public class UserServiceImpl implements UserService {
         return errors;
     }
 
+    /**
+     * This method validate User,
+     * if valid adds it in DB
+     * @param bindingResult instance of BindingResult
+     * @param newUser instance of User
+     * @return Set of String errors
+     */
     @Override
     @Transactional
     public Set<String> createUser(BindingResult bindingResult, User newUser){
@@ -186,6 +251,13 @@ public class UserServiceImpl implements UserService {
         return errors;
     }
 
+    /**
+     * This method adds errors from BindingResult
+     * to Set of String
+     * @param bindingResult instance of BindingResult
+     * @param newUser instance of User
+     * @return Set of String errors
+     */
     @Override
     public Set<String> validateUser(BindingResult bindingResult, User newUser){
 
@@ -200,5 +272,6 @@ public class UserServiceImpl implements UserService {
 
         return errors;
     }
+
 
 }
